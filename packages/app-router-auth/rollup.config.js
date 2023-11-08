@@ -16,13 +16,6 @@ module.exports = {
       file: pkg.module,
       format: "esm",
     },
-    pkg.unpkg && {
-      file: pkg.unpkg,
-      format: "iife",
-      name: "MetaUltraAppRouter",
-      // https://rollupjs.org/guide/en/#outputglobals
-      globals: {},
-    },
   ],
   external: ["react", "react-dom", "react-router-dom"],
   plugins: [
