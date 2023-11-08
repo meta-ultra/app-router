@@ -4,3 +4,8 @@ export type { ErrorProps } from "./error/ErrorProps";
 export type { RootErrorElementProps } from "./error/RootErrorElement";
 export { default as RootErrorElement } from "./error/RootErrorElement";
 export type { Metadata } from "./metadata/Metadata";
+export type { RouteSegmentElementProps } from "./routing/RouteSegmentElement";
+export {
+  default as RouteSegmentElement,
+  RouteSegmentElementLayout,
+} from "./routing/RouteSegmentElement";
