@@ -1,29 +1,40 @@
-import commonjs from "rollup-plugin-commonjs";
-import babel from "rollup-plugin-babel";
-import resolve from "rollup-plugin-node-resolve";
+const commonjs = require("rollup-plugin-commonjs");
+const babel = require("rollup-plugin-babel");
+const resolve = require("rollup-plugin-node-resolve");
+const pkg = require("./package.json");
 
-export default {
+const extensions = [".tsx", ".ts", ".jsx", ".js"];
+
+module.exports = {
   input: "./src/index.ts",
   output: [
-    {
-      file: "./dist/esm/index.js",
+    pkg.main && {
+      file: pkg.main,
+      format: "cjs",
+    },
+    pkg.module && {
+      file: pkg.module,
       format: "esm",
     },
-    {
-      file: "./dist/cjs/index.js",
-      format: "commonjs",
+    pkg.unpkg && {
+      file: pkg.unpkg,
+      format: "iife",
+      name: "MetaUltraAppRouter",
+      // https://rollupjs.org/guide/en/#outputglobals
+      globals: {},
     },
   ],
-  external: ["react", "react-dom"],
+  external: ["react", "react-dom", "react-router-dom"],
   plugins: [
-    resolve(),
-    commonjs({
-      include: "./node_modules/**",
+    resolve({
+      extensions,
+      modulesOnly: true,
     }),
+    commonjs(),
     babel({
       runtimeHelpers: true,
-      extensions: [".tsx", ".ts", ".jsx", ".js"],
       exclude: "./node_module/**/*",
+      extensions,
     }),
   ],
 };
