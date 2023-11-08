@@ -38,8 +38,8 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
       </LoadingBoundary>
     );
 
+    //* The top-most not found provider to handle unprocessed invocation of notFound
     const layoutElement = (
-      //* The top-most not found provider to handle unprocessed invocation of notFound
       <NotFoundProvider fallback={notFound}>
         <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
           <MetadataBoundary component={children}>

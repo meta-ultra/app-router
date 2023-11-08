@@ -104,4 +104,3 @@ const notFound = () => {
 
 export type { NotFoundProviderProps };
 export { NotFoundContext, NotFoundProvider, useNotFound, notFound };
-export default { NotFoundContext, NotFoundProvider, useNotFound, notFound };
