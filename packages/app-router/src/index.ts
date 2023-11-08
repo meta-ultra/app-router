@@ -1,2 +1,5 @@
 export { default as ErrorResponse } from "./not-found/ErrorResponse";
 export { useNotFound, notFound } from "./not-found/notFound";
+export type { ErrorProps } from "./error/ErrorProps";
+export type { RootErrorElementProps } from "./error/RootErrorElement";
+export { default as RootErrorElement } from "./error/RootErrorElement";
