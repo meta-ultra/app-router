@@ -5,8 +5,11 @@
   "description": "Authentication perfectly works with @meta-ultra/app-router",
   "scripts": {
     "clean": "rimraf ./dist",
+    "dev": "pnpm run \"/^dev:.*/\"",
+    "dev:src": "rollup --watch -c ./rollup.config.js",
+    "dev:types": "tsc --watch -P ./tsconfig.types.json",
     "build": "pnpm clean && pnpm run \"/^build:.*/\"",
-    "build:any": "rollup -c ./rollup.config.js",
+    "build:src": "rollup -c ./rollup.config.js",
     "build:types": "tsc -P ./tsconfig.types.json"
   },
   "module": "./dist/bundle.esm.js",

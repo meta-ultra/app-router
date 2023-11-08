@@ -1,10 +1,9 @@
 interface Authorize {
-  (path: string): Promise<boolean>;
+  (path: string): Promise<boolean> | boolean;
 }
 
 interface AuthMeta {
   authorize?: Authorize;
-  authorizeInterval?: number;
 }
 
 export type { Authorize, AuthMeta };
