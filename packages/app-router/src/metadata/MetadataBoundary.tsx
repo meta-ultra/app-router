@@ -1,62 +1,104 @@
 import {
-  useEffect,
   isValidElement,
   createContext,
   useContext,
+  useRef,
   type ReactElement,
   type FC,
   type PropsWithChildren,
   type ComponentType,
-  useRef,
 } from "react";
-import { Metadata } from "./Metadata";
+import type { Metadata, GenerateMetadata, GenerateMetadataSearchParams } from "./Metadata";
+import { useParams, useSearchParams } from "react-router-dom";
 
 type MetadataBoundaryProps = PropsWithChildren<{
   component: ComponentType | ReactElement;
 }>;
 
 interface MetadataContextType {
-  getMetadata: () => Metadata | undefined;
+  getParentMetadata: () => Promise<Metadata>;
 }
 const MetadataContext = createContext<MetadataContextType | undefined>(undefined);
 
 const MetadataBoundary: FC<MetadataBoundaryProps> = ({ component, children }) => {
-  const metadataRef = useRef<Metadata>();
-  const { getMetadata } = useContext(MetadataContext) || {};
+  const params = useParams();
+  const [urlSearchParams] = useSearchParams();
+  const searchParams = Array.from(urlSearchParams.keys()).reduce<GenerateMetadataSearchParams>(
+    (searchParams, key) => {
+      const value = urlSearchParams.getAll(key);
+      searchParams[key] = value.length > 1 ? value : value[0] === undefined ? "" : value[0];
+      return searchParams;
+    },
+    {}
+  );
+  const { getParentMetadata } = useContext(MetadataContext) || {};
 
-  useEffect(() => {
-    const Component = component as {
-      _payload?: { _result?: { default?: { metadata?: Metadata }; metadata?: Metadata } }; // for lazy component
-      metadata?: Metadata; // for normal component
-    };
-    if (Component && !isValidElement(Component)) {
-      let metadata = undefined;
-      if (Component._payload && Component._payload._result) {
-        // for lazy component
-        if (Component._payload._result.metadata !== undefined) {
-          metadata = Component._payload._result.metadata;
-        } else if (Component._payload._result.default) {
-          metadata = Component._payload._result.default.metadata;
-        }
+  const metadataRef = useRef<Metadata>({});
+  const parentMetadata = (getParentMetadata && getParentMetadata()) || Promise.resolve({});
+
+  const Component = component as {
+    _payload?: {
+      _result?: {
+        default?: { metadata?: Metadata; generateMetadata?: GenerateMetadata };
+        metadata?: Metadata;
+        generateMetadata?: GenerateMetadata;
+      };
+    }; // for lazy component
+    metadata?: Metadata; // for normal component
+    generateMetadata?: GenerateMetadata;
+  };
+
+  /**-----------------------------------------------------------------------------------------------------------------------
+   * !                                                     WARNING
+   * ! For lazy components, at the first rendering phase, it's possible for the child component to get an uninitialized metadata
+   * ! belongs to parent component.
+   * ! `isMetadataReady` acts as a switch to make sure that metadata has been initialized before fetched by child component no
+   * ! matter which phase it's going on.
+   *-----------------------------------------------------------------------------------------------------------------------**/
+  let isMetadataReady = Promise.resolve();
+  //! DO NOT wrap the following inside `useEffect`, which will execute in different order amongst lazy component tree.
+  if (Component && !isValidElement(Component)) {
+    let metadata: undefined | Metadata | Promise<Metadata> = undefined;
+    if (Component._payload && Component._payload._result) {
+      // for lazy component
+      const generateMetadata =
+        Component._payload._result.generateMetadata ||
+        (Component._payload._result.default && Component._payload._result.default.generateMetadata);
+      if (generateMetadata) {
+        metadata = generateMetadata({ params, searchParams }, parentMetadata);
+      } else if (Component._payload._result.metadata !== undefined) {
+        metadata = Component._payload._result.metadata;
+      } else if (Component._payload._result.default) {
+        metadata = Component._payload._result.default.metadata;
+      }
+    } else {
+      // for normal component
+      const generateMetadata = Component.generateMetadata;
+      if (generateMetadata) {
+        metadata = generateMetadata({ params, searchParams }, parentMetadata);
       } else {
-        // for normal component
         metadata = Component.metadata;
       }
+    }
+
+    metadata = metadata instanceof Promise ? metadata : Promise.resolve(metadata || {});
+    isMetadataReady = Promise.all([parentMetadata, metadata]).then(([parentMetadata, metadata]) => {
       // merge the parent metadata with its own one as the final metadata
-      metadataRef.current = Object.assign({}, getMetadata ? getMetadata() : {}, metadata);
+      metadataRef.current = Object.assign({}, parentMetadata, metadata);
 
       if (metadataRef.current) {
         if (metadataRef.current.title !== undefined) {
           document.title = metadataRef.current.title;
         }
       }
-    }
-  });
+    });
+  }
 
   return (
     <MetadataContext.Provider
       value={{
-        getMetadata() {
+        async getParentMetadata() {
+          await isMetadataReady;
           return metadataRef.current;
         },
       }}

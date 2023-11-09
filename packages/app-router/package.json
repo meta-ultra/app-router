@@ -1,7 +1,7 @@
 {
   "name": "@meta-ultra/app-router",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Next.js App Router like routing convention for pure client rendering React application",
   "scripts": {
     "clean": "rimraf ./dist",
@@ -12,7 +12,6 @@
     "build:src": "rollup -c ./rollup.config.js",
     "build:types": "tsc -P ./tsconfig.types.json"
   },
-  "unpkg": "./dist/bundle.unpkg.js",
   "module": "./dist/bundle.esm.js",
   "main": "./dist/bundle.cjs.js",
   "typings": "./dist/types/index.d.ts",
