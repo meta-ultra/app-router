@@ -1,7 +1,7 @@
 {
   "name": "@meta-ultra/app-router-auth",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Authentication perfectly works with @meta-ultra/app-router",
   "scripts": {
     "clean": "rimraf ./dist",
