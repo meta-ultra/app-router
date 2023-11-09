@@ -1,12 +1,15 @@
 {
   "name": "@meta-ultra/app-router",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Next.js App Router like routing convention for pure client rendering React application",
   "scripts": {
     "clean": "rimraf ./dist",
+    "dev": "pnpm run \"/^dev:.*/\"",
+    "dev:src": "rollup --watch -c ./rollup.config.js",
+    "dev:types": "tsc --watch -P ./tsconfig.types.json",
     "build": "pnpm clean && pnpm run \"/^build:.*/\"",
-    "build:any": "rollup -c ./rollup.config.js",
+    "build:src": "rollup -c ./rollup.config.js",
     "build:types": "tsc -P ./tsconfig.types.json"
   },
   "unpkg": "./dist/bundle.unpkg.js",

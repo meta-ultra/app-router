@@ -13,7 +13,7 @@ enum RouteSegmentElementLayout {
 }
 
 //* The default fallback for ErrorBoundary when the valid notFound property exists to make the calling of `notFound` work properly.
-const NOT_FOUND_ERROR_FALLBACK = <div />;
+const NOT_FOUND_ERROR_FALLBACK = <div>Default Error Fallback for Custom Not Found Fallback.</div>;
 
 interface RouteSegmentElementProps {
   children: ComponentType | ReactElement;
