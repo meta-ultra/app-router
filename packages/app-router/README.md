@@ -1,13 +1,17 @@
 # Welcome to @meta-ultra/app-router
 
-<img src="https://img.shields.io/github/package-json/v/meta-ultra/app-router?filename=packages%2Fapp-router%2Fpackage.json">
-<img src="https://img.shields.io/bundlephobia/min/%40meta-ultra/app-router">
-<img src="https://img.shields.io/bundlejs/size/%40meta-ultra/app-router">
-<img src="https://img.shields.io/github/license/meta-ultra/app-router">
+<div>
+  <img style="display:inline;" src="https://img.shields.io/github/package-json/v/meta-ultra/app-router?filename=packages%2Fapp-router%2Fpackage.json">
+  <img style="display:inline;" src="https://img.shields.io/bundlephobia/min/%40meta-ultra/app-router">
+  <img style="display:inline;" src="https://img.shields.io/bundlejs/size/%40meta-ultra/app-router">
+  <img style="display:inline;" src="https://img.shields.io/github/license/meta-ultra/app-router">
+</div>
 
 With `@meta-ultra/app-router`, it's not only possible to structure the application routing in a meaningful, intuitive and highly-maintainable way as the Next.js App Router does, but also improves user experience effortlessly.
 
-If you're familiar to Next.js 13 or later version, or you've got stuck in providing great UX with react-router, `@meta-ultra/app-router` will is the place where you're looking forward. Give a ⭐️ if this project helped you!
+If you're familiar to Next.js 13 or later version, or you've got stuck in providing great UX with react-router, `@meta-ultra/app-router` will be the place where you're looking forward.
+
+Give a ⭐️ if this project helped you!
 
 ## 🌟 Features
 
