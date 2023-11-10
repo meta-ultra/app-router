@@ -119,10 +119,12 @@ Let's demonstrate how to use `@meta-ultra/app-router` with Next.js App Router co
   // Naming starts with `use` to pass the validations of using React hooks.
   export const generateMetadata = async function useGenerateMetadata(
     { params, searchParams }, 
-    parentMetadata
+    parentMetadataPromise
   ) {
     const location = useLocation()
     const notFound = useNotFound()
+
+    const parentMetadata = await parentMetadataPromise
 
     // It's able to do some authorization works, except changing application metadata.
     const perms = await getPermissions()
@@ -133,7 +135,8 @@ Let's demonstrate how to use `@meta-ultra/app-router` with Next.js App Router co
 
     return {
       title: perm.title,
-      description: perm.description
+      description: perm.description,
+      keys: parentMetadata.keys,
     }
   } 
 
