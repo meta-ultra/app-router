@@ -128,6 +128,8 @@ Let's demonstrate how to use `@meta-ultra/app-router` with Next.js App Router co
     const location = useLocation()
     const notFound = useNotFound()
 
+    // Notice that, the second parameter is an instance of Promise here, 
+    // rather not Metadata plain old object in Next.js.
     const parentMetadata = await parentMetadataPromise
 
     // It's able to do some authorization works, except changing application metadata.
