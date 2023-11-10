@@ -7,7 +7,7 @@
   <img style="display:inline;" src="https://img.shields.io/github/license/meta-ultra/app-router">
 </div>
 
-Out of box authentication perfectly works with `@meta-ultra/app-router` and functions well standalone.
+Out of box authentication perfectly works with `@meta-ultra/app-router` and also functions well standalone.
 
 Give a ⭐️ if this project helped you!
 
