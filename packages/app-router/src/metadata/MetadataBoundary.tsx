@@ -10,6 +10,7 @@ import {
 } from "react";
 import type { Metadata, GenerateMetadata, GenerateMetadataSearchParams } from "./Metadata";
 import { useParams, useSearchParams } from "react-router-dom";
+import updateMetadata from "./updateMetadata";
 
 type MetadataBoundaryProps = PropsWithChildren<{
   component: ComponentType | ReactElement;
@@ -87,9 +88,8 @@ const MetadataBoundary: FC<MetadataBoundaryProps> = ({ component, children }) =>
       metadataRef.current = Object.assign({}, parentMetadata, metadata);
 
       if (metadataRef.current) {
-        if (metadataRef.current.title !== undefined) {
-          document.title = metadataRef.current.title;
-        }
+        // optimize #4: delay updating metadata to avoid the document title flash and other performance issue.
+        updateMetadata(metadataRef.current);
       }
     });
   }

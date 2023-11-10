@@ -1,7 +1,7 @@
 {
   "name": "@meta-ultra/app-router",
   "private": false,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Next.js App Router like routing convention for pure client rendering React application",
   "scripts": {
     "clean": "rimraf ./dist",
@@ -33,6 +33,7 @@
     "react-router-dom": "^6.14.1"
   },
   "dependencies": {
+    "lodash-es": "^4.17.21",
     "react-is": "^18.2.0"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@babel/runtime-corejs3": "^7.22.5",
+    "@types/lodash-es": "^4.17.11",
     "@types/node": "^20.2.5",
     "@types/react": "^18.2.9",
     "@types/react-dom": "^18.2.5",
