@@ -1,6 +1,8 @@
 const commonjs = require("rollup-plugin-commonjs");
 const babel = require("rollup-plugin-babel");
-const resolve = require("rollup-plugin-node-resolve");
+const nodeResolve = require("rollup-plugin-node-resolve");
+const replace = require("rollup-plugin-replace");
+const { uglify } = require("rollup-plugin-uglify");
 const pkg = require("./package.json");
 
 const extensions = [".tsx", ".ts", ".jsx", ".js"];
@@ -26,7 +28,11 @@ module.exports = {
   ],
   external: ["react", "react-dom", "react-router-dom"],
   plugins: [
-    resolve({
+    replace({
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
+    }),
+    process.env.NODE_ENV === "production" && uglify(),
+    nodeResolve({
       extensions,
       modulesOnly: true,
     }),
