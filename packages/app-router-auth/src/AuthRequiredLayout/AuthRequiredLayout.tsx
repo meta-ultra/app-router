@@ -1,11 +1,12 @@
-import { type FC, type PropsWithChildren } from "react";
+import { type FC, type ReactElement } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext/AuthContext";
 import type { SealedAuthMeta } from "./sealAuthMeta";
 
-type AuthRequiredLayoutProps = PropsWithChildren<{
+interface AuthRequiredLayoutProps {
   meta: SealedAuthMeta;
-}>;
+  children?: ReactElement;
+}
 
 const AuthRequiredLayout: FC<AuthRequiredLayoutProps> = ({ meta, children }) => {
   const location = useLocation();
