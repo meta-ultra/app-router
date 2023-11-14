@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 registerHandlebarsHelpers();
 const routerTemplate = Handlebars.compile(
-  readFileSync(join(__dirname, "./templates/router.hbs")).toString()
+  readFileSync(join(__dirname, "../templates/router.hbs")).toString()
 );
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {

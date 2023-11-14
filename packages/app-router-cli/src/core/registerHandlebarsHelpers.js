@@ -11,7 +11,7 @@ function undefinable(value) {
 }
 
 const childrenRouteTemplate = Handlebars.compile(
-  readFileSync(join(__dirname, "./templates/childrenRoute.hbs")).toString()
+  readFileSync(join(__dirname, "../templates/childrenRoute.hbs")).toString()
 );
 
 // const childrenRouteTemplate = Handlebars.compile(`{

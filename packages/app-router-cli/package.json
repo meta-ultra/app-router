@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "./src/core/index.js",
+  "bin": {
+    "app-router": "./src/cli-wrapper.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node ./src/cli-wrapper.js"
   },
   "keywords": [],
   "author": "",
