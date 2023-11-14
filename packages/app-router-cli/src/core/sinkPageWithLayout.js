@@ -5,7 +5,7 @@ const sinkPageWithLayout = (children) => {
   for (let i = 0; i < children.length; ++i) {
     const child = children[i];
     sinkPageWithLayout(child.children);
-    if (child.props.page && child.props.layout) {
+    if (child.props && child.props.page && child.props.layout) {
       child.children.push({
         index: true,
         props: {

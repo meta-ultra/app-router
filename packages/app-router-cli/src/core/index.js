@@ -6,6 +6,8 @@ import { traverseFileSystem } from "./traverseFileSystem.js";
 import { sinkPageWithLayout } from "./sinkPageWithLayout.js";
 import { processNotFound } from "./processNotFound.js";
 import { processGlobalError } from "./processGlobalError.js";
+import { remainValidRouteSegments } from "./remainValidRouteSegments.js";
+import { mergeNestedRouteSegments } from "./mergeNestedRouteSegments.js";
 import { collectDefaultImports } from "./collectDefaultImports.js";
 import { registerHandlebarsHelpers } from "./registerHandlebarsHelpers.js";
 
@@ -17,8 +19,12 @@ const routerTemplate = Handlebars.compile(
 );
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {
-  const routes = sinkPageWithLayout(
-    processNotFound(processGlobalError(traverseFileSystem(outputPath, sourcePath)))
+  const routes = mergeNestedRouteSegments(
+    remainValidRouteSegments(
+      sinkPageWithLayout(
+        processNotFound(processGlobalError(traverseFileSystem(outputPath, sourcePath)))
+      )
+    )
   );
 
   return routes;

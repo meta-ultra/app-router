@@ -8,7 +8,7 @@
     "app-router": "./src/cli-wrapper.js"
   },
   "scripts": {
-    "dev": "node ./src/cli-wrapper.js -w"
+    "dev": "node ./src/cli-wrapper.js -s ./logs/app -o ./logs/router.tsx"
   },
   "keywords": [],
   "author": "",

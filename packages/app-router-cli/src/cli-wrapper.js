@@ -61,8 +61,9 @@ const handleChange = debounce(async () => {
   console.log("Generating app router...");
 
   const routes = getRoutesFromFileSystem(outputPath, sourcePath);
-  const output = generateRouterOutput(routes);
-  writeFileSync(outputPath, await format(output, { parser: "babel" }));
+  console.log(JSON.stringify(routes, undefined, 2));
+  // const output = generateRouterOutput(routes);
+  // writeFileSync(outputPath, await format(output, { parser: "babel" }));
 
   console.log("Generating app router is done.");
 }, cli.flags.obtuse);
