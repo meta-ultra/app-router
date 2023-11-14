@@ -14,21 +14,6 @@ const childrenRouteTemplate = Handlebars.compile(
   readFileSync(join(__dirname, "../templates/childrenRoute.hbs")).toString()
 );
 
-// const childrenRouteTemplate = Handlebars.compile(`{
-//   {{#if path}}path: "{{path}}",{{/if}}
-//   {{~#if index}}index: {{index}},{{/if}}
-//   element: (
-//     <RouteSegmentElement layout={RouteSegmentElementLayout.{{#if props.layout}}LAYOUT{{else}}NO{{/if~}} } loading={ {{~undefinable (nameByFullPath props.loading)~}} } error={ {{~undefinable (nameByFullPath props.error)~}} } notFound={ {{~undefinable (nameByFullPath props.notFound)~}} }>
-//       {lazy(() => import("{{#if props.layout}}{{{props.layout}}}{{else}}{{{props.page}}}{{/if}}")}
-//     </RouteSegmentElement>
-//   ),
-//   {{~#if grandchildren}}
-//   children: [
-//     {{~#each grandchildren}}{{{this}}},{{/each}}
-//   ]
-//   {{/if}}
-// }`);
-
 const generateChildrenRoutes = (routes) => {
   const children = [];
   for (let i = 0; routes && i < routes.length; ++i) {
