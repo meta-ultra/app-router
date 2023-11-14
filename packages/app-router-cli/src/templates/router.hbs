@@ -19,3 +19,5 @@ const router = createRouter([{{#each routes}}{
   errorElement: <RootErrorElement notFound={ {{~undefinable (nameByFullPath this.props.notFound)~}} } />,
   children: {{{generateChildrenRoutes this.children}}}
 }{{/each}}])
+
+export default router

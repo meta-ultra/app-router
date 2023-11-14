@@ -12,10 +12,13 @@ const collectDefaultImports = (children, defaultImports = []) => {
 
     for (let j = 0; j < staticImportFileNames.length; j++) {
       const staticImportFileName = staticImportFileNames[j];
-      defaultImports.push({
-        default: nameByFullPath(child.props[staticImportFileName]),
-        path: child.props[staticImportFileName],
-      });
+      const staticImportFilePath = child.props[staticImportFileName];
+      if (staticImportFilePath) {
+        defaultImports.push({
+          default: nameByFullPath(staticImportFilePath),
+          path: staticImportFilePath,
+        });
+      }
     }
 
     collectDefaultImports(child.children, defaultImports);

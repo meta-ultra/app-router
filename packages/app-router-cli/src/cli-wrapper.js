@@ -17,8 +17,10 @@ const helpText = `
     ${chalk.yellow(
       "--obtuse <milliseconds=300>"
     )} Start to generate router after a specified milliseconds when changes finish.
-    ${chalk.yellow("--source, -s=./src/app")} Specify the folder contains app router.
-    ${chalk.yellow("--output, -o=./src/router.tsx")} Specify the react-router-dom router file path.
+    ${chalk.yellow("--source, -s <folder=./src/app>")} Specify the folder contains app router.
+    ${chalk.yellow(
+      "--output, -o <filepath=./src/router.tsx>"
+    )} Specify the react-router-dom router file path.
 `;
 
 const cli = meow(helpText, {
@@ -57,8 +59,11 @@ const outputPath = join(process.cwd(), cli.flags.output);
 
 const handleChange = debounce(async () => {
   console.log("Generating app router...");
-  const output = generateRouterOutput(getRoutesFromFileSystem(outputPath, sourcePath));
+
+  const routes = getRoutesFromFileSystem(outputPath, sourcePath);
+  const output = generateRouterOutput(routes);
   writeFileSync(outputPath, await format(output, { parser: "babel" }));
+
   console.log("Generating app router is done.");
 }, cli.flags.obtuse);
 
