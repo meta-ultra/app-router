@@ -1,27 +1,11 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import Handlebars from "handlebars";
-import { traverseFileSystem } from "./src/traverseFileSystem.js";
-import { sinkPageWithLayout } from "./src/sinkPageWithLayout.js";
-import { processNotFound } from "./src/processNotFound.js";
-import { processGlobalError } from "./src/processGlobalError.js";
-import { collectDefaultImports } from "./src/collectDefaultImports.js";
-import { registerHandlebarsHelpers } from "./src/registerHandlebarsHelpers.js";
+import { getRoutesFromFileSystem, generateRouterOutput } from "./src/index.js";
+import { format } from "prettier";
 
-const sourcePath = join(process.cwd(), "./test_src/app");
-const outputPath = join(process.cwd(), "./test_src/router.tsx");
+const sourcePath = join(process.cwd(), "./logs/app");
+const outputPath = join(process.cwd(), "./logs/router.tsx");
 
-const routes = sinkPageWithLayout(
-  processNotFound(processGlobalError(traverseFileSystem(outputPath, sourcePath)))
-);
-const defaultImports = collectDefaultImports(routes);
+const output = generateRouterOutput(getRoutesFromFileSystem(outputPath, sourcePath));
 
-// generate
-registerHandlebarsHelpers();
-const template = Handlebars.compile(readFileSync("./src/templates/router.hbs").toString());
-const router = template({
-  defaultImports,
-  routes,
-});
-
-writeFileSync(outputPath, router);
+writeFileSync(outputPath, await format(output, { parser: "babel" }));
