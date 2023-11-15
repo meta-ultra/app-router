@@ -1,3 +1,6 @@
+/**
+ * Filter out the route segments contain neither its own "props.page" nor "props.layout" and its descendant route segments don't either.
+ */
 const filterInvalidRouteSegments = (children) => {
   let isValid = false;
   for (let i = 0; children && i < children.length; ++i) {

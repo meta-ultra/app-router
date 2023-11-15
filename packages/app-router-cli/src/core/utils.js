@@ -8,10 +8,10 @@ const pipe =
     let result = args;
     for (let i = fns.length - 1; i >= 0; --i) {
       const fn = fns[i];
-      result = fn.apply(null, isArray(result) ? result : [result]);
+      result = [fn.apply(null, result)];
     }
 
-    return result;
+    return result[0];
   };
 
 export { stripExtension, pipe };
