@@ -6,13 +6,20 @@ import { nameByFullPath } from "./nameByFullPath.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function undefinable(value) {
-  return value == undefined ? "undefined" : value;
-}
-
+/* Compile Template */
 const childrenRouteTemplate = Handlebars.compile(
   readFileSync(join(__dirname, "../templates/childrenRoute.hbs")).toString()
 );
+
+const routerTemplate = Handlebars.compile(
+  readFileSync(join(__dirname, "../templates/router.hbs")).toString()
+);
+/* End of Compile Template */
+
+/* Register Helpers */
+function undefinable(value) {
+  return value == undefined ? "undefined" : value;
+}
 
 const generateChildrenRoutes = (routes) => {
   const children = [];
@@ -26,13 +33,18 @@ const generateChildrenRoutes = (routes) => {
   return children;
 };
 
-const registerHandlebarsHelpers = () => {
-  Handlebars.registerHelper("undefinable", undefinable);
-  Handlebars.registerHelper("nameByFullPath", nameByFullPath);
-  Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
-    const children = generateChildrenRoutes(routes);
-    return `[${children.join(",")}]`;
-  });
-};
+Handlebars.registerHelper("undefinable", undefinable);
+Handlebars.registerHelper("nameByFullPath", nameByFullPath);
+Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
+  const children = generateChildrenRoutes(routes);
+  return `[${children.join(",")}]`;
+});
+/* End of Register Helpers */
 
-export { registerHandlebarsHelpers };
+const generateOutput = (defaultImports, routes) =>
+  routerTemplate({
+    defaultImports,
+    routes,
+  });
+
+export { generateOutput };
