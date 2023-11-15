@@ -9,8 +9,7 @@ import { getRoutesFromFileSystem, generateRouterOutput } from "./core/index.js";
 
 const helpText = `
   Usage
-    ${chalk.green("npx app-router")} ${chalk.yellow("[options]")}
-    ${chalk.green("pnpm dlx app-router")} ${chalk.yellow("[options]")}
+    ${chalk.green("app-router")} ${chalk.yellow("[options]")}
 
   Options
     ${chalk.yellow("--watch, -w")} Enable watch mode.
@@ -61,9 +60,8 @@ const handleChange = debounce(async () => {
   console.log("Generating app router...");
 
   const routes = getRoutesFromFileSystem(outputPath, sourcePath);
-  console.log(JSON.stringify(routes, undefined, 2));
-  // const output = generateRouterOutput(routes);
-  // writeFileSync(outputPath, await format(output, { parser: "babel" }));
+  const output = generateRouterOutput(routes);
+  writeFileSync(outputPath, await format(output, { parser: "babel" }));
 
   console.log("Generating app router is done.");
 }, cli.flags.obtuse);
