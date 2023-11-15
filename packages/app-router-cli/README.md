@@ -13,7 +13,7 @@ Give a ⭐️ if this project helped you!
 
 ## 🌟 Features
 
-- Supports group route segments.
+- Supports group route segments, including extended group route segment `(...name)`.
 - Supports nested route segments.
 - Supports watch mode, easy to integrate to your building workflow.
 
