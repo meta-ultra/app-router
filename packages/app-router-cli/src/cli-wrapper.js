@@ -31,6 +31,11 @@ const cli = meow(helpText, {
       default: false,
       shortFlag: "h",
     },
+    version: {
+      type: "boolean",
+      default: false,
+      shortFlag: "v",
+    },
     watch: {
       type: "boolean",
       default: false,
@@ -38,7 +43,7 @@ const cli = meow(helpText, {
     },
     obtuse: {
       type: "number",
-      default: 300,
+      default: 100,
     },
     source: {
       type: "string",
@@ -56,7 +61,7 @@ const cli = meow(helpText, {
 const sourcePath = join(process.cwd(), cli.flags.source);
 const outputPath = join(process.cwd(), cli.flags.output);
 
-const handleChange = debounce(async () => {
+const main = async () => {
   console.log("Generating app router...");
 
   const routes = getRoutesFromFileSystem(outputPath, sourcePath);
@@ -64,13 +69,18 @@ const handleChange = debounce(async () => {
   writeFileSync(outputPath, await format(output, { parser: "babel" }));
 
   console.log("Generating app router is done.");
-}, cli.flags.obtuse);
+};
 
-if (cli.flags.watch) {
-  watch(sourcePath).on("add", handleChange);
-  watch(sourcePath).on("addDir", handleChange);
-  watch(sourcePath).on("unlink", handleChange);
-  watch(sourcePath).on("unlinkDir", handleChange);
+if (cli.flags.version) {
+  console.log(cli.pkg.version);
 } else {
-  handleChange();
+  if (cli.flags.watch) {
+    const handleChange = debounce(main, cli.flags.obtuse);
+    watch(sourcePath).on("add", handleChange);
+    watch(sourcePath).on("addDir", handleChange);
+    watch(sourcePath).on("unlink", handleChange);
+    watch(sourcePath).on("unlinkDir", handleChange);
+  } else {
+    main();
+  }
 }
