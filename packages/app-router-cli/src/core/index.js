@@ -1,3 +1,4 @@
+import { pipe } from "./utils.js";
 import { traverseFileSystem } from "./traverseFileSystem.js";
 import { sinkPageWithLayout } from "./sinkPageWithLayout.js";
 import { processNotFound } from "./processNotFound.js";
@@ -8,13 +9,14 @@ import { collectDefaultImports } from "./collectDefaultImports.js";
 import { generateOutput } from "./template.js";
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {
-  const routes = mergeNestedRouteSegments(
-    remainValidRouteSegments(
-      sinkPageWithLayout(
-        processNotFound(processGlobalError(traverseFileSystem(outputPath, sourcePath)))
-      )
-    )
-  );
+  const routes = pipe(
+    mergeNestedRouteSegments,
+    remainValidRouteSegments,
+    sinkPageWithLayout,
+    processNotFound,
+    processGlobalError,
+    traverseFileSystem
+  )(outputPath, sourcePath);
 
   return routes;
 };
