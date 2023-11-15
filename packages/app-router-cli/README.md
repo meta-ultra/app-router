@@ -25,9 +25,9 @@ Due to the output of processing which is code snippet will depend on `@meta-ultr
 
 Install `@meta-ultra/app-router` with your favorite package manager:
 
-- pnpm: `pnpm add @meta-ultra/app-router-cli@latest`
-- yarn: `yarn add -S @meta-ultra/app-router-cli@latest`
-- npm: `npm install -S @meta-ultra/app-router-cli@latest`
+- pnpm: `pnpm add -D @meta-ultra/app-router-cli@latest`
+- yarn: `yarn add -D @meta-ultra/app-router-cli@latest`
+- npm: `npm install -D @meta-ultra/app-router-cli@latest`
 
 ## ✨ Usage
 
@@ -40,8 +40,9 @@ Install `@meta-ultra/app-router` with your favorite package manager:
     app-router [options]
 
   Options
+    --version, -w Display the version.
     --watch, -w Enable watch mode.
-    --obtuse <milliseconds=300> Start to generate router after a specified milliseconds when changes finish.
+    --obtuse <milliseconds=100> Start to generate router after a specified milliseconds when changes finish.
     --source, -s <folder=./src/app> Specify the folder contains app router.
     --output, -o <filepath=./src/router.tsx> Specify the react-router-dom router file path.
   ```
