@@ -16,11 +16,13 @@
   "type": "module",
   "main": "./src/core/index.js",
   "bin": {
-    "app-router": "./src/cli-wrapper.js"
+    "app-router": "./dist/index.js"
   },
   "preferGlobal": true,
   "scripts": {
-    "dev": "node ./src/cli-wrapper.js -s ./logs/app -o ./logs/router.tsx"
+    "dev": "node ./src/cli-wrapper.js -s ./logs/app -o ./logs/router.tsx",
+    "precompile": "handlebars ./src/templates -e hbs -f ./src/templates/precompiled.js -k each -k if",
+    "build": "rimraf ./dist && ncc build ./src/cli-wrapper.js -o dist -m"
   },
   "keywords": [
     "react",
@@ -35,5 +37,9 @@
     "lodash-es": "^4.17.21",
     "meow": "^12.1.1",
     "prettier": "^3.1.0"
+  },
+  "devDependencies": {
+    "ncc": "^0.3.6",
+    "rimraf": "^5.0.5"
   }
 }

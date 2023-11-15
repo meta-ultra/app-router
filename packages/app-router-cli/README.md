@@ -64,3 +64,8 @@ Hey, friends. I'm John Huang, a full stack developer majorly code with React, Ne
 
 Contributions, issues and feature requests are welcome!
 Feel free to check [issues page](https://github.com/meta-ultra/app-router/issues).
+
+### ❤️ Caveats
+
+- Prepends `import Handlebars from "handlebars;` to the most top of `./src/templates/precompiled.js` after running `pnpm precompile`.
+- Removes the `require.extension` related if statement from `./dist/index.js` after running `pnpm build`.

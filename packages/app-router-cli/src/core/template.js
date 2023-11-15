@@ -1,19 +1,10 @@
 import Handlebars from "handlebars";
-import { dirname, join } from "node:path";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 import { nameByFullPath } from "./nameByFullPath.js";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import "../templates/precompiled.js";
 
 /* Compile Template */
-const childrenRouteTemplate = Handlebars.compile(
-  readFileSync(join(__dirname, "../templates/childrenRoute.hbs")).toString()
-);
-
-const routerTemplate = Handlebars.compile(
-  readFileSync(join(__dirname, "../templates/router.hbs")).toString()
-);
+const routerTemplate = Handlebars.templates["router"];
+const childrenRouteTemplate = Handlebars.templates["childrenRoute"];
 /* End of Compile Template */
 
 /* Register Helpers */
