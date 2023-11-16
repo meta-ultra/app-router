@@ -1,10 +1,11 @@
 import Handlebars from "handlebars";
 import { nameByFullPath } from "./nameByFullPath.js";
-import "../templates/precompiled.js";
+import routerSpec from "../templates/router.spec.js";
+import childrenRouteSpec from "../templates/childrenRoute.spec.js";
 
 /* Compile Template */
-const routerTemplate = Handlebars.templates["router"];
-const childrenRouteTemplate = Handlebars.templates["childrenRoute"];
+const routerTemplate = Handlebars.template(routerSpec);
+const childrenRouteTemplate = Handlebars.template(childrenRouteSpec);
 /* End of Compile Template */
 
 /* Register Helpers */

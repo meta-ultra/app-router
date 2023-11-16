@@ -21,7 +21,7 @@
   "preferGlobal": true,
   "scripts": {
     "dev": "node ./src/cli-wrapper.js -s ./logs/app -o ./logs/router.tsx",
-    "precompile": "handlebars ./src/templates -e hbs -f ./src/templates/precompiled.js -k each -k if",
+    "precompile": "node ./scripts/precompile.js",
     "build": "rimraf ./dist && ncc build ./src/cli-wrapper.js -o dist -m"
   },
   "keywords": [
