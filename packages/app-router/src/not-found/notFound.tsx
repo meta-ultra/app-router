@@ -37,6 +37,7 @@ import {
 } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorResponse from "./ErrorResponse";
+import useEvent from "../utils/useEvent";
 
 /**----------------------
  *    NotFoundContext
@@ -58,9 +59,9 @@ const useNotFound = () => {
   }
   const { setError } = context;
 
-  return (error?: ErrorResponse) => {
+  return useEvent((error?: ErrorResponse) => {
     setTimeout(() => setError(error || new ErrorResponse(location.pathname)), 16);
-  };
+  });
 };
 /*---- END OF useNotFound ----*/
 
