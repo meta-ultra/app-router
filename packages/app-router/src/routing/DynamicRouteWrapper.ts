@@ -1,4 +1,4 @@
-import { notFound, useNotFound } from "@meta-ultra/app-router";
+import { useNotFound } from "../not-found/notFound";
 import {
   type MutableRefObject,
   type ReactElement,
@@ -59,7 +59,6 @@ const createParamsProxy = (
 };
 
 const useParamsProxy = () => {
-  //! ISSUE Returns a brand new function every rendering.
   const notFound = useNotFound();
   const params = useParams();
   const matches = useMatches();
@@ -106,7 +105,7 @@ const useParamsProxy = () => {
 
     return nextParams;
     // TODO Add "globalNotFound" instead.
-  }, [matches, params]);
+  }, [notFound, matches, params]);
 
   const hasAccessedProxy = useRef(false);
   const [paramsProxy, setParamsProxy] = useState(createParamsProxy(hasAccessedProxy, nextParams));

@@ -5,6 +5,7 @@ import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
+import DynamicRouteWrapper from "./DynamicRouteWrapper";
 
 enum RouteSegmentElementLayout {
   NO = 0,
@@ -69,9 +70,11 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
     );
     return (
       <MetadataBoundary component={children}>
-        {isValidElementType(children)
-          ? createElement(children, undefined, layoutChildren)
-          : cloneElement(children as ReactElement, undefined, layoutChildren)}
+        <DynamicRouteWrapper>
+          {isValidElementType(children)
+            ? createElement(children, undefined, layoutChildren)
+            : cloneElement(children as ReactElement, undefined, layoutChildren)}
+        </DynamicRouteWrapper>
       </MetadataBoundary>
     );
   } else {
@@ -81,7 +84,11 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
         <NotFoundProvider fallback={notFound}>
           <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
             <MetadataBoundary component={children}>
-              {isValidElementType(children) ? createElement(children) : (children as ReactElement)}
+              <DynamicRouteWrapper>
+                {isValidElementType(children)
+                  ? createElement(children)
+                  : (children as ReactElement)}
+              </DynamicRouteWrapper>
             </MetadataBoundary>
           </ErrorBoundary>
         </NotFoundProvider>
