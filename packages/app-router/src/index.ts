@@ -9,3 +9,4 @@ export {
   default as RouteSegmentElement,
   RouteSegmentElementLayout,
 } from "./routing/RouteSegmentElement";
+export type { DynamicRouteProps } from "./routing/DynamicRouteWrapper";
