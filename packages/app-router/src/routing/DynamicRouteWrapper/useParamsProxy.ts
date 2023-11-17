@@ -19,10 +19,15 @@ const useParamsProxy = () => {
     );
     // Map React Router's splats to catch-all and optional catch-all segments in Next.js
     if (params["*"] !== undefined) {
+      /**
+       ** NOTE, the first route configuration will take effect,
+       ** when there're multiple route configurations with the same "path" value.
+       */
       const match = matches[matches.length - 1];
       if (match) {
         const lastRouteSegment = match.id.split("/").pop();
         if (lastRouteSegment) {
+          // For catch-all route
           let match = /^\[\.{3}([a-z][a-z0-9-_])\]$/.exec(lastRouteSegment);
           if (match && match[1]) {
             delete nextParams["*"];
@@ -34,6 +39,7 @@ const useParamsProxy = () => {
               notFound();
             }
           } else {
+            // For optional catch-all route
             match = /^\[\[\.{3}([a-z][a-z0-9-_])\]\]$/.exec(lastRouteSegment);
             if (match && match[1]) {
               delete nextParams["*"];

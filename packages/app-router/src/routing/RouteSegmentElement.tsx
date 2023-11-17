@@ -5,7 +5,7 @@ import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
-import DynamicRouteWrapper from "./DyanmicRouteWrapper/DynamicRouteWrapper";
+import DynamicRouteWrapper from "./DynamicRouteWrapper/DynamicRouteWrapper";
 
 enum RouteSegmentElementLayout {
   NO = 0,
