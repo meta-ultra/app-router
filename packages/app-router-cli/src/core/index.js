@@ -6,10 +6,12 @@ import { processGlobalError } from "./processGlobalError.js";
 import { remainValidRouteSegments } from "./remainValidRouteSegments.js";
 import { mergeNestedRouteSegments } from "./mergeNestedRouteSegments.js";
 import { collectDefaultImports } from "./collectDefaultImports.js";
+import { processDynamicRoutes } from "./processDynamicRoutes.js";
 import { generateOutput } from "./template.js";
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {
   const routes = pipe(
+    processDynamicRoutes,
     mergeNestedRouteSegments,
     remainValidRouteSegments,
     sinkPageWithLayout,

@@ -13,8 +13,17 @@ const isValidFileName = (filename) =>
 const isValidFolderName = (name) => {
   const ROUTE_RE = /^[a-z][a-z0-9-_]*$/;
   const GROUP_RE = /^\(([.]{3})?[a-z][a-z0-9-_]*\)$/;
+  const DYNAMIC_RE = /^\[[a-z][a-z0-9-_]*\]$/;
+  const DYNAMIC_CATCH_ALL_RE = /^\[([.]{3})[a-z][a-z0-9-_]*\]$/;
+  const DYNAMIC_OPTIONAL_CATCH_ALL_RE = /^\[\[([.]{3})[a-z][a-z0-9-_]*\]\]$/;
 
-  return ROUTE_RE.test(name) || GROUP_RE.test(name);
+  return (
+    ROUTE_RE.test(name) ||
+    GROUP_RE.test(name) ||
+    DYNAMIC_RE.test(name) ||
+    DYNAMIC_CATCH_ALL_RE.test(name) ||
+    DYNAMIC_OPTIONAL_CATCH_ALL_RE.test(name)
+  );
 };
 
 const isGroupName = (filename) => /^\([^)(]+\)$/.test(filename);
