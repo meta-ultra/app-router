@@ -38,6 +38,7 @@ import {
 import { useLocation } from "react-router-dom";
 import ErrorResponse from "./ErrorResponse";
 import useEvent from "../utils/useEvent";
+import nextTick from "../utils/nextTick";
 
 /**----------------------
  *    NotFoundContext
@@ -60,7 +61,7 @@ const useNotFound = () => {
   const { setError } = context;
 
   return useEvent((error?: ErrorResponse) => {
-    setTimeout(() => setError(error || new ErrorResponse(location.pathname)), 16);
+    nextTick(() => setError(error || new ErrorResponse(location.pathname)));
   });
 };
 /*---- END OF useNotFound ----*/
