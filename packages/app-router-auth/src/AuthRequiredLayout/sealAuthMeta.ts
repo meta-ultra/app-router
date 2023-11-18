@@ -23,6 +23,7 @@ const sealAuthMeta = (meta?: AuthMeta): SealedAuthMeta => {
       let result: unknown = undefined;
       const authorizeResult = authorize(path);
       if (authorizeResult instanceof Promise) {
+        // loading
         if (!singleThreadAuthorize.suspender) {
           const promiseInstance = authorizeResult.then((value) => {
             if (value) {
@@ -40,8 +41,10 @@ const sealAuthMeta = (meta?: AuthMeta): SealedAuthMeta => {
         }
         result = singleThreadAuthorize.suspender.read();
       } else if (authorizeResult) {
+        // success
         result = authorizeResult;
       } else {
+        // fail
         throw new ErrorResponse(path);
       }
 
