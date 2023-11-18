@@ -3,7 +3,7 @@ import useParamsProxy from "./useParamsProxy";
 import useSearchParamsProxy from "./useSearchParamsProxy";
 
 interface DynamicRouteWrapperProps {
-  children: ReactElement;
+  children: ReactElement<Partial<DynamicRouteProps>>;
 }
 
 const DynamicRouteWrapper: FC<DynamicRouteWrapperProps> = ({ children }) => {

@@ -1,10 +1,10 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { useParams, useMatches } from "react-router-dom";
-import { useNotFound } from "../../not-found/notFound";
+import { useGlobalNotFound } from "../../not-found/globalNotFound";
 import createProxy from "./createProxy";
 
 const useParamsProxy = () => {
-  const notFound = useNotFound();
+  const globalNotFound = useGlobalNotFound();
   const params = useParams();
   const matches = useMatches();
   const nextParams = useMemo(() => {
@@ -36,7 +36,7 @@ const useParamsProxy = () => {
             if (paramValue) {
               nextParams[match[1]] = paramValue;
             } else {
-              notFound();
+              globalNotFound();
             }
           } else {
             // For optional catch-all route
@@ -55,8 +55,7 @@ const useParamsProxy = () => {
     }
 
     return nextParams;
-    // TODO Add "globalNotFound" instead.
-  }, [notFound, matches, params]);
+  }, [globalNotFound, matches, params]);
 
   const hasAccessedProxy = useRef(false);
   const [paramsProxy, setParamsProxy] = useState(createProxy(hasAccessedProxy, nextParams));

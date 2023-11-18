@@ -2,6 +2,7 @@ import { createElement, cloneElement, type ReactElement, type FC, type Component
 import { Outlet } from "react-router-dom";
 import { isValidElementType, isLazy } from "react-is";
 import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
+import { GlobalNotFoundProvider } from "../not-found/globalNotFound";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
@@ -41,15 +42,17 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
 
     //* The top-most not found provider to handle unprocessed invocation of notFound
     const layoutElement = (
-      <NotFoundProvider fallback={notFound}>
-        <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
-          <MetadataBoundary component={children}>
-            {isValidElementType(children)
-              ? createElement(children, undefined, layoutChildren)
-              : cloneElement(children as ReactElement, undefined, layoutChildren)}
-          </MetadataBoundary>
-        </ErrorBoundary>
-      </NotFoundProvider>
+      <GlobalNotFoundProvider fallback={notFound}>
+        <NotFoundProvider fallback={notFound}>
+          <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
+            <MetadataBoundary component={children}>
+              {isValidElementType(children)
+                ? createElement(children, undefined, layoutChildren)
+                : cloneElement(children as ReactElement, undefined, layoutChildren)}
+            </MetadataBoundary>
+          </ErrorBoundary>
+        </NotFoundProvider>
+      </GlobalNotFoundProvider>
     );
 
     return isLazy(children) ? (
