@@ -8,7 +8,7 @@ const doMergeNestedRouteSegments = (children, parent, prevPaths) => {
       mergeables = mergeables.concat(doMergeNestedRouteSegments(child.children, child, paths));
       if (!prevPaths && parent) {
         // Delete the whole route segment if it does not contain a page file, otherwise remove its children only.
-        if (child.props.page) {
+        if (child.props && child.props.page) {
           delete child.children;
         } else {
           parent.children.splice(

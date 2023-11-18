@@ -13,11 +13,12 @@ const getRoutesFromFileSystem = (outputPath, sourcePath) => {
   const routes = pipe(
     mapDynamicRoutesToSplats,
     mergeNestedRouteSegments,
-    remainValidRouteSegments,
+    // remainValidRouteSegments,
     sinkPageWithLayout,
     processNotFound,
     processGlobalError,
     remainValidDynamicRoutes,
+    remainValidRouteSegments,
     traverseFileSystem
   )(outputPath, sourcePath);
 

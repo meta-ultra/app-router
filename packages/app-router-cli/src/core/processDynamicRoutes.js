@@ -6,27 +6,19 @@ const isDynamicRouteSegment = (seg) =>
 const isDynamicCatchAllRouteSegment = (seg) =>
   DYNAMIC_CATCH_ALL_RE.test(seg) || DYNAMIC_OPTIONAL_CATCH_ALL_RE.test(seg);
 const isDynamicRoute = (path) => path.split("/").find(isDynamicRouteSegment);
-const isDynamicSingleRoute = (path) => path.split("/").find((seg) => DYNAMIC_RE.test(seg));
-const isDynamicCatchAllRoute = (path) =>
+const isDynamicNormalRoute = (path) => path.split("/").find((seg) => DYNAMIC_RE.test(seg));
+const isDynamicNormalCatchAllRoute = (path) =>
   path.split("/").find((seg) => DYNAMIC_CATCH_ALL_RE.test(seg));
 const isDynamicOptionalCatchAllRoute = (path) =>
   path.split("/").find((seg) => DYNAMIC_OPTIONAL_CATCH_ALL_RE.test(seg));
 
 const shouldReplace = (existingPath, nextPath) => {
-  console.log(
-    existingPath,
-    nextPath,
-    isDynamicCatchAllRoute(nextPath) && isDynamicSingleRoute(existingPath),
-    isDynamicOptionalCatchAllRoute(nextPath) &&
-      (isDynamicCatchAllRoute(existingPath) || isDynamicSingleRoute(existingPath))
-  );
-
-  if (isDynamicCatchAllRoute(nextPath) && isDynamicSingleRoute(existingPath)) {
+  if (isDynamicNormalCatchAllRoute(nextPath) && isDynamicNormalRoute(existingPath)) {
     return true;
   }
   if (
     isDynamicOptionalCatchAllRoute(nextPath) &&
-    (isDynamicCatchAllRoute(existingPath) || isDynamicSingleRoute(existingPath))
+    (isDynamicNormalCatchAllRoute(existingPath) || isDynamicNormalRoute(existingPath))
   ) {
     return true;
   }
@@ -39,12 +31,12 @@ const remainValidDynamicRoutes = (children) => {
   const deletingCatchAllRouteIndexes = [];
   for (let i = 0; children && i < children.length; ++i) {
     const child = children[i];
-    let hasCatchAll = false;
+    let hasDynamicRoute = false;
     if (child.path) {
-      hasCatchAll = isDynamicRoute(child.path);
+      hasDynamicRoute = isDynamicRoute(child.path);
 
-      // Collect the invalid catch-all routes for further processing.
-      if (hasCatchAll) {
+      // Collect the invalid dynamic routes for further processing.
+      if (hasDynamicRoute) {
         if (validCatchAllRouteIndex === undefined) {
           validCatchAllRouteIndex = i;
         } else if (shouldReplace(children[validCatchAllRouteIndex].path, children[i].path)) {
@@ -60,8 +52,15 @@ const remainValidDynamicRoutes = (children) => {
   }
 
   // Remain the only one valid catch-all route.
-  for (const i of deletingCatchAllRouteIndexes.sort().reverse()) {
-    children.splice(i, 1);
+  if (
+    validCatchAllRouteIndex !== undefined &&
+    isDynamicRoute(children[validCatchAllRouteIndex].path)
+  ) {
+    for (let i = children.length; i >= 0; i--) {
+      if (i !== validCatchAllRouteIndex) {
+        children.splice(i, 1);
+      }
+    }
   }
 
   return children;

@@ -59,6 +59,7 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
       }
     }
   }
+  // Only non-private folder node will be included.
   if (Object.keys(node).length > 0) {
     if (filename) {
       if (!isGroupName(filename)) {
