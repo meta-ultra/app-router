@@ -14,6 +14,7 @@ Give a ⭐️ if this project helped you!
 ## 🌟 Features
 
 - Supports group route segments, including extended group route segment `(...name)`.
+- Supports dynamic routes including catch-all and optional catch-all segments.
 - Supports nested route segments.
 - Supports watch mode, easy to integrate to your building workflow.
 

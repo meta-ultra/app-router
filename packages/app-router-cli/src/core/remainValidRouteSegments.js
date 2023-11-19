@@ -22,7 +22,7 @@ const filterInvalidRouteSegments = (children) => {
         invalidChildrenIndex.push(i);
       }
     } else if (isDynamicCatchAllRoute(child.path)) {
-      // The catch-all and optional catch-all routes must have page or layout file, and no children routes.
+      // The catch-all and optional catch-all routes must have page or layout file, and have no children routes.
       delete child.children;
       if (!child.props || !(child.props.page || child.props.layout)) {
         invalidChildrenIndex.push(i);

@@ -66,6 +66,10 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
         node.path = filename;
       } else {
         node._pathHint = filename;
+        // Group route must not have page file.
+        if (node.props && node.props.page !== undefined) {
+          delete node.props.page;
+        }
       }
     }
 
