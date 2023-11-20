@@ -8,7 +8,7 @@ If you're looking for some way to introduce Next.js App Router into pure client 
 
 - `@meta-ultra/app-router` provides the core functionalities and React components to allow for App Router structuring.(status: v0.3.1)
 - `@meta-ultra/app-router-auth` gives an out of box authentication and authorization solution which can work alone or integrate with `@meta-ultra/app-router` perfectly.(status: v0.2.1)
-- `@meta-ultra/app-router-cli` sets up the router configuration according the structure of your app folder automatically.(status: v0.3.0)
+- `@meta-ultra/app-router-cli` sets up the router configuration according the structure of your app folder automatically.(status: v0.3.1)
 - `@meta-ultra/app-router-webpack-plugin` allows for integrating `@meta-ultra/app-router-cli` with Webpack.(status: in the plan)
 - `@meta-ultra/app-router-rollup-plugin`allows for integrating `@meta-ultra/app-router-cli` with Rollup or Vite.(status: in the plan)
 
