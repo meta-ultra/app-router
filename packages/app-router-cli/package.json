@@ -1,6 +1,6 @@
 {
   "name": "@meta-ultra/app-router-cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A program for generating router configuration abiding by Next.js App Router.",
   "author": "John Huang <fsjohnhuang@hotmail.com>",
   "license": "MIT",
@@ -22,7 +22,7 @@
   "scripts": {
     "dev": "node ./src/cli-wrapper.js -s ./logs/app -o ./logs/router.tsx",
     "precompile": "node ./scripts/precompile.js",
-    "build": "rimraf ./dist && node ./scripts/build.js"
+    "build": "rimraf ./dist && node ./scripts/precompile.js && node ./scripts/build.js"
   },
   "keywords": [
     "react",

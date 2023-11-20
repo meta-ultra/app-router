@@ -10,6 +10,24 @@ export default {
       };
 
     return (
+      'id: "' +
+      container.escapeExpression(
+        container.lambda(depth0 != null ? lookupProperty(depth0, "id") : depth0, depth0)
+      ) +
+      '",'
+    );
+  },
+  3: function (container, depth0, helpers, partials, data) {
+    var lookupProperty =
+      container.lookupProperty ||
+      function (parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined;
+      };
+
+    return (
       'path: "' +
       container.escapeExpression(
         container.lambda(depth0 != null ? lookupProperty(depth0, "path") : depth0, depth0)
@@ -17,7 +35,7 @@ export default {
       '",'
     );
   },
-  3: function (container, depth0, helpers, partials, data) {
+  5: function (container, depth0, helpers, partials, data) {
     var lookupProperty =
       container.lookupProperty ||
       function (parent, propertyName) {
@@ -35,13 +53,13 @@ export default {
       ","
     );
   },
-  5: function (container, depth0, helpers, partials, data) {
+  7: function (container, depth0, helpers, partials, data) {
     return "LAYOUT";
   },
-  7: function (container, depth0, helpers, partials, data) {
+  9: function (container, depth0, helpers, partials, data) {
     return "NO";
   },
-  9: function (container, depth0, helpers, partials, data) {
+  11: function (container, depth0, helpers, partials, data) {
     var stack1,
       lookupProperty =
         container.lookupProperty ||
@@ -61,7 +79,7 @@ export default {
       ? stack1
       : "";
   },
-  11: function (container, depth0, helpers, partials, data) {
+  13: function (container, depth0, helpers, partials, data) {
     var stack1,
       lookupProperty =
         container.lookupProperty ||
@@ -81,7 +99,7 @@ export default {
       ? stack1
       : "";
   },
-  13: function (container, depth0, helpers, partials, data) {
+  15: function (container, depth0, helpers, partials, data) {
     var stack1,
       lookupProperty =
         container.lookupProperty ||
@@ -100,10 +118,10 @@ export default {
         {
           name: "each",
           hash: {},
-          fn: container.program(14, data, 0),
+          fn: container.program(16, data, 0),
           inverse: container.noop,
           data: data,
-          loc: { start: { line: 11, column: 4 }, end: { line: 11, column: 48 } },
+          loc: { start: { line: 12, column: 4 }, end: { line: 12, column: 48 } },
         }
       )) != null
         ? stack1
@@ -111,7 +129,7 @@ export default {
       "\r\n  ]\r\n"
     );
   },
-  14: function (container, depth0, helpers, partials, data) {
+  16: function (container, depth0, helpers, partials, data) {
     var stack1;
 
     return ((stack1 = container.lambda(depth0, depth0)) != null ? stack1 : "") + ",";
@@ -134,14 +152,29 @@ export default {
       "{\r\n  " +
       ((stack1 = lookupProperty(helpers, "if").call(
         alias1,
-        depth0 != null ? lookupProperty(depth0, "path") : depth0,
+        depth0 != null ? lookupProperty(depth0, "id") : depth0,
         {
           name: "if",
           hash: {},
           fn: container.program(1, data, 0),
           inverse: container.noop,
           data: data,
-          loc: { start: { line: 2, column: 2 }, end: { line: 2, column: 38 } },
+          loc: { start: { line: 2, column: 2 }, end: { line: 2, column: 32 } },
+        }
+      )) != null
+        ? stack1
+        : "") +
+      "\r\n  " +
+      ((stack1 = lookupProperty(helpers, "if").call(
+        alias1,
+        depth0 != null ? lookupProperty(depth0, "path") : depth0,
+        {
+          name: "if",
+          hash: {},
+          fn: container.program(3, data, 0),
+          inverse: container.noop,
+          data: data,
+          loc: { start: { line: 3, column: 2 }, end: { line: 3, column: 38 } },
         }
       )) != null
         ? stack1
@@ -152,10 +185,10 @@ export default {
         {
           name: "if",
           hash: {},
-          fn: container.program(3, data, 0),
+          fn: container.program(5, data, 0),
           inverse: container.noop,
           data: data,
-          loc: { start: { line: 3, column: 2 }, end: { line: 3, column: 40 } },
+          loc: { start: { line: 4, column: 2 }, end: { line: 4, column: 40 } },
         }
       )) != null
         ? stack1
@@ -169,10 +202,10 @@ export default {
         {
           name: "if",
           hash: {},
-          fn: container.program(5, data, 0),
-          inverse: container.program(7, data, 0),
+          fn: container.program(7, data, 0),
+          inverse: container.program(9, data, 0),
           data: data,
-          loc: { start: { line: 5, column: 59 }, end: { line: 5, column: 103 } },
+          loc: { start: { line: 6, column: 59 }, end: { line: 6, column: 103 } },
         }
       )) != null
         ? stack1
@@ -190,14 +223,14 @@ export default {
               name: "nameByFullPath",
               hash: {},
               data: data,
-              loc: { start: { line: 5, column: 131 }, end: { line: 5, column: 161 } },
+              loc: { start: { line: 6, column: 131 }, end: { line: 6, column: 161 } },
             }
           ),
           {
             name: "undefinable",
             hash: {},
             data: data,
-            loc: { start: { line: 5, column: 116 }, end: { line: 5, column: 164 } },
+            loc: { start: { line: 6, column: 116 }, end: { line: 6, column: 164 } },
           }
         )
       ) +
@@ -214,14 +247,14 @@ export default {
               name: "nameByFullPath",
               hash: {},
               data: data,
-              loc: { start: { line: 5, column: 190 }, end: { line: 5, column: 218 } },
+              loc: { start: { line: 6, column: 190 }, end: { line: 6, column: 218 } },
             }
           ),
           {
             name: "undefinable",
             hash: {},
             data: data,
-            loc: { start: { line: 5, column: 175 }, end: { line: 5, column: 221 } },
+            loc: { start: { line: 6, column: 175 }, end: { line: 6, column: 221 } },
           }
         )
       ) +
@@ -238,14 +271,14 @@ export default {
               name: "nameByFullPath",
               hash: {},
               data: data,
-              loc: { start: { line: 5, column: 250 }, end: { line: 5, column: 281 } },
+              loc: { start: { line: 6, column: 250 }, end: { line: 6, column: 281 } },
             }
           ),
           {
             name: "undefinable",
             hash: {},
             data: data,
-            loc: { start: { line: 5, column: 235 }, end: { line: 5, column: 284 } },
+            loc: { start: { line: 6, column: 235 }, end: { line: 6, column: 284 } },
           }
         )
       ) +
@@ -258,10 +291,10 @@ export default {
         {
           name: "if",
           hash: {},
-          fn: container.program(9, data, 0),
-          inverse: container.program(11, data, 0),
+          fn: container.program(11, data, 0),
+          inverse: container.program(13, data, 0),
           data: data,
-          loc: { start: { line: 6, column: 26 }, end: { line: 6, column: 95 } },
+          loc: { start: { line: 7, column: 26 }, end: { line: 7, column: 95 } },
         }
       )) != null
         ? stack1
@@ -273,10 +306,10 @@ export default {
         {
           name: "if",
           hash: {},
-          fn: container.program(13, data, 0),
+          fn: container.program(15, data, 0),
           inverse: container.noop,
           data: data,
-          loc: { start: { line: 9, column: 2 }, end: { line: 13, column: 9 } },
+          loc: { start: { line: 10, column: 2 }, end: { line: 14, column: 9 } },
         }
       )) != null
         ? stack1
