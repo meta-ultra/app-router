@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "0.4.0",
   "scripts": {
     "prepare": "husky install",
     "commit": "git-cz"
