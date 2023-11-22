@@ -7,6 +7,7 @@ import { remainValidRouteSegments } from "./remainValidRouteSegments.js";
 import { mergeNestedRouteSegments } from "./mergeNestedRouteSegments.js";
 import { collectDefaultImports } from "./collectDefaultImports.js";
 import { mapDynamicRoutesToSplats, remainValidDynamicRoutes } from "./processDynamicRoutes.js";
+import { fulfillDefaultRootLayout } from "./fulfillDefaultRootLayout.js";
 import { generateOutput } from "./template.js";
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {
@@ -19,6 +20,7 @@ const getRoutesFromFileSystem = (outputPath, sourcePath) => {
     processGlobalError,
     remainValidDynamicRoutes,
     remainValidRouteSegments,
+    fulfillDefaultRootLayout,
     traverseFileSystem
   )(outputPath, sourcePath);
 

@@ -105,16 +105,34 @@ export default {
           }
         )
       ) +
-      '}\r\n    >\r\n      {lazy(() => import("' +
+      "}\r\n    >\r\n      " +
       alias2(
-        container.lambda(
+        lookupProperty(helpers, "preset").call(
+          alias1,
           (stack1 = depth0 != null ? lookupProperty(depth0, "props") : depth0) != null
             ? lookupProperty(stack1, "layout")
             : stack1,
-          depth0
+          lookupProperty(helpers, "lazyImport").call(
+            alias1,
+            (stack1 = depth0 != null ? lookupProperty(depth0, "props") : depth0) != null
+              ? lookupProperty(stack1, "layout")
+              : stack1,
+            {
+              name: "lazyImport",
+              hash: {},
+              data: data,
+              loc: { start: { line: 16, column: 33 }, end: { line: 16, column: 63 } },
+            }
+          ),
+          {
+            name: "preset",
+            hash: {},
+            data: data,
+            loc: { start: { line: 16, column: 6 }, end: { line: 16, column: 65 } },
+          }
         )
       ) +
-      '"))}\r\n    </RouteSegmentElement>\r\n    ), \r\n  errorElement: <RootErrorElement notFound={' +
+      "\r\n    </RouteSegmentElement>\r\n    ), \r\n  errorElement: <RootErrorElement notFound={" +
       alias2(
         lookupProperty(helpers, "undefinable").call(
           alias1,
@@ -168,7 +186,7 @@ export default {
         };
 
     return (
-      'import { lazy } from "react"; \r\nimport { createHashRouter as createRouter } from "react-router-dom"; \r\nimport { RouteSegmentElementLayout, RootErrorElement, RouteSegmentElement } from "@meta-ultra/app-router";\r\n' +
+      'import { lazy } from "react"; \r\nimport { Outlet, createHashRouter as createRouter } from "react-router-dom"; \r\nimport { RouteSegmentElementLayout, RootErrorElement, RouteSegmentElement } from "@meta-ultra/app-router";\r\n' +
       ((stack1 = lookupProperty(helpers, "each").call(
         alias1,
         depth0 != null ? lookupProperty(depth0, "defaultImports") : depth0,

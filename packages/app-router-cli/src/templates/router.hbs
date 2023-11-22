@@ -1,5 +1,5 @@
 import { lazy } from "react"; 
-import { createHashRouter as createRouter } from "react-router-dom"; 
+import { Outlet, createHashRouter as createRouter } from "react-router-dom"; 
 import { RouteSegmentElementLayout, RootErrorElement, RouteSegmentElement } from "@meta-ultra/app-router";
 {{#each defaultImports}}
 import {{this.default}} from "{{this.path}}";
@@ -13,7 +13,7 @@ const router = createRouter([{{#each routes}}{
       error={ {{~undefinable (nameByFullPath this.props.error)~}} }
       notFound={ {{~undefinable (nameByFullPath this.props.notFound)~}} }
     >
-      {lazy(() => import("{{this.props.layout}}"))}
+      {{preset this.props.layout (lazyImport this.props.layout)}}
     </RouteSegmentElement>
     ), 
   errorElement: <RootErrorElement notFound={ {{~undefinable (nameByFullPath this.props.notFound)~}} } />,

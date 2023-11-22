@@ -17,6 +17,8 @@ const OPTIONS = {
     nameByFullPath: true,
     undefinable: true,
     generateChildrenRoutes: true,
+    preset: true,
+    lazyImport: true,
   },
 };
 

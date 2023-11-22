@@ -25,6 +25,24 @@ const generateChildrenRoutes = (routes) => {
   return children;
 };
 
+const preset = (value, defaultValue) => {
+  let output = defaultValue;
+  if (value && value.startsWith("preset:")) {
+    const name = value.replace(/^preset:/, "");
+    if (name === "root-layout") {
+      output = "<Outlet/>";
+    }
+  }
+
+  return new Handlebars.SafeString(output);
+};
+
+const lazyImport = (path) => {
+  return `{lazy(() => import("${path}"))}`;
+};
+
+Handlebars.registerHelper("preset", preset);
+Handlebars.registerHelper("lazyImport", lazyImport);
 Handlebars.registerHelper("undefinable", undefinable);
 Handlebars.registerHelper("nameByFullPath", nameByFullPath);
 Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
