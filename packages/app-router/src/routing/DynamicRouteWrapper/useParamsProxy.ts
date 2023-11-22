@@ -3,6 +3,25 @@ import { useParams, useMatches } from "react-router-dom";
 import { useGlobalNotFound } from "../../not-found/globalNotFound";
 import createProxy from "./createProxy";
 
+const CATCH_ALL_RE = /^\[\.{3}([a-z][a-z0-9-_])\]$/;
+const OPTIONAL_CATCH_ALL_RE = /^\[\[\.{3}([a-z][a-z0-9-_])\]\]$/;
+
+const setCatchAllParamFromAsteriskParam = (
+  nextParams: Record<string, string | string[]>,
+  AsteriskParamValue: string,
+  paramName: string
+) => {
+  delete nextParams["*"];
+  const paramValues = AsteriskParamValue.split("/");
+  const paramValue = paramValues.length >= 2 ? paramValues : paramValues[0];
+  if (paramValue) {
+    nextParams[paramName] = paramValue;
+    return true;
+  } else {
+    return false;
+  }
+};
+
 const useParamsProxy = () => {
   const globalNotFound = useGlobalNotFound();
   const params = useParams();
@@ -28,26 +47,16 @@ const useParamsProxy = () => {
         const lastRouteSegment = match.id.split("/").pop();
         if (lastRouteSegment) {
           // For catch-all route
-          let match = /^\[\.{3}([a-z][a-z0-9-_])\]$/.exec(lastRouteSegment);
+          let match = CATCH_ALL_RE.exec(lastRouteSegment);
           if (match && match[1]) {
-            delete nextParams["*"];
-            const paramValues = params["*"].split("/");
-            const paramValue = paramValues.length > 2 ? paramValues : paramValues[0];
-            if (paramValue) {
-              nextParams[match[1]] = paramValue;
-            } else {
+            if (!setCatchAllParamFromAsteriskParam(nextParams, params["*"], match[1])) {
               globalNotFound();
             }
           } else {
             // For optional catch-all route
-            match = /^\[\[\.{3}([a-z][a-z0-9-_])\]\]$/.exec(lastRouteSegment);
+            match = OPTIONAL_CATCH_ALL_RE.exec(lastRouteSegment);
             if (match && match[1]) {
-              delete nextParams["*"];
-              const paramValues = params["*"].split("/");
-              const paramValue = paramValues.length > 2 ? paramValues : paramValues[0];
-              if (paramValue) {
-                nextParams[match[1]] = paramValue;
-              }
+              setCatchAllParamFromAsteriskParam(nextParams, params["*"], match[1]);
             }
           }
         }
