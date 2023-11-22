@@ -16,6 +16,7 @@ Give a ⭐️ if this project helped you!
 - Supports group route segments, including extended group route segment `(...name)`.
 - Supports dynamic routes including catch-all and optional catch-all segments.
 - Supports nested route segments.
+- Generates root layout automatically if no root layout is found.
 - Supports watch mode, easy to integrate to your building workflow.
 
 ## :alien: Prerequisites
