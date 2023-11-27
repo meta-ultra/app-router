@@ -49,7 +49,7 @@ interface GlobalNotFoundProviderFallbackProps {
 }
 
 type GlobalNotFoundProviderProps = PropsWithChildren<{
-  fallback?:
+  fallback:
     | ComponentType<GlobalNotFoundProviderFallbackProps>
     | ReactElement<GlobalNotFoundProviderFallbackProps>;
 }>;
@@ -57,20 +57,16 @@ type GlobalNotFoundProviderProps = PropsWithChildren<{
 const GlobalNotFoundProvider: FC<GlobalNotFoundProviderProps> = ({ children, fallback }) => {
   const [error, setError] = useState<ErrorResponse>();
 
-  if (fallback) {
-    if (error) {
-      return isValidElement(fallback)
-        ? cloneElement(fallback, { error })
-        : createElement(fallback, { error });
-    } else {
-      return (
-        <GlobalNotFoundContext.Provider value={{ setError }}>
-          {children}
-        </GlobalNotFoundContext.Provider>
-      );
-    }
+  if (error) {
+    return isValidElement(fallback)
+      ? cloneElement(fallback, { error })
+      : createElement(fallback, { error });
   } else {
-    return children;
+    return (
+      <GlobalNotFoundContext.Provider value={{ setError }}>
+        {children}
+      </GlobalNotFoundContext.Provider>
+    );
   }
 };
 /*---- END OF NotFoundProvider ----*/

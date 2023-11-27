@@ -20,8 +20,8 @@ module.exports = {
     },
     pkg.unpkg && {
       file: pkg.unpkg,
-      format: "iife",
-      name: "MetaUltraAppRouter",
+      format: "umd",
+      name: "AppRouter",
       // https://rollupjs.org/guide/en/#outputglobals
       globals: {},
     },

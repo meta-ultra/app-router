@@ -12,8 +12,9 @@
     "build:src": "rollup -c ./rollup.config.js",
     "build:types": "tsc -P ./tsconfig.types.json"
   },
-  "module": "./dist/bundle.esm.js",
-  "main": "./dist/bundle.cjs.js",
+  "unpkg": "./dist/app-router.umd.js",
+  "module": "./dist/app-router.esm.js",
+  "main": "./dist/app-router.cjs.js",
   "typings": "./dist/types/index.d.ts",
   "sideEffects": false,
   "files": [

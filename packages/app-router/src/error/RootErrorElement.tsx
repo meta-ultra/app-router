@@ -10,12 +10,13 @@
 import { type FC } from "react";
 import NoRoutesMachedErrorBoundary from "./NoRoutesMatchedErrorBoundary";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
+import DefaultNotFound from "../defaults/DefaultNotFound";
 
 interface RootErrorElementProps {
   notFound?: NotFoundProviderProps["fallback"];
 }
 const RootErrorElement: FC<RootErrorElementProps> = ({ notFound }) => (
-  <NotFoundProvider fallback={notFound}>
+  <NotFoundProvider fallback={notFound || DefaultNotFound}>
     <NoRoutesMachedErrorBoundary />
   </NotFoundProvider>
 );
