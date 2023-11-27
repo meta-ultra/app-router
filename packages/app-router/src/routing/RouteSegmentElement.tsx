@@ -15,6 +15,7 @@ import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundar
 import MetadataBoundary from "../metadata/MetadataBoundary";
 import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
 import DefaultNotFound from "../defaults/DefaultNotFound";
+import DefaultLoading from "../defaults/DefaultLoading";
 
 enum RouteSegmentElementLayout {
   NO = 0,
@@ -44,7 +45,7 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
     console.log("root layout");
     // for the root layout route
     const layoutChildren = (
-      <LoadingBoundary fallback={loading}>
+      <LoadingBoundary fallback={loading || DefaultLoading}>
         <Outlet />
       </LoadingBoundary>
     );

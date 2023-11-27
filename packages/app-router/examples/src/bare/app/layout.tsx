@@ -1,6 +1,7 @@
-import { Link, Outlet } from "react-router-dom";
+import { type FC, type PropsWithChildren } from "react";
+import { Link } from "react-router-dom";
 
-const RootLayout = () => {
+const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <div>
       <nav>
@@ -18,7 +19,7 @@ const RootLayout = () => {
       </nav>
 
       <hr />
-      <Outlet />
+      {children}
     </div>
   );
 };
