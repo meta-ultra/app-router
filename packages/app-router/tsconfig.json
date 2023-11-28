@@ -30,12 +30,6 @@
         "name": "typescript-plugin-css-modules"
       }
     ],
-    // keep the `paths` option in sync with `resolve.alias` option of Webpack
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
   },
   "include": [
     "src",

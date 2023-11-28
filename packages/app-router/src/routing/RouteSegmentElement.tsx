@@ -16,6 +16,7 @@ import MetadataBoundary from "../metadata/MetadataBoundary";
 import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
 import DefaultNotFound from "../defaults/DefaultNotFound";
 import DefaultLoading from "../defaults/DefaultLoading";
+import DefaultRootLayout from "../defaults/DefaultRootLayout";
 
 enum RouteSegmentElementLayout {
   NO = 0,
@@ -27,7 +28,7 @@ enum RouteSegmentElementLayout {
 const NOT_FOUND_ERROR_FALLBACK = <div>Default Error Fallback for Custom Not Found Fallback.</div>;
 
 interface RouteSegmentElementProps {
-  children: ComponentType | ReactElement | LazyExoticComponent<ComponentType>;
+  children?: ComponentType | ReactElement | LazyExoticComponent<ComponentType>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
@@ -44,6 +45,7 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
   if (layout === RouteSegmentElementLayout.ROOT_LAYOUT) {
     console.log("root layout");
     // for the root layout route
+    children = children || DefaultRootLayout;
     const layoutChildren = (
       <LoadingBoundary fallback={loading || DefaultLoading}>
         <Outlet />

@@ -12,6 +12,10 @@ const router = createBrowserRouter(
       path: "/",
       element: (
         <RouteSegmentElement layout={RouteSegmentElementLayout.ROOT_LAYOUT}>
+          {/**
+           * A default root layout will be created for you if there is no custom root layout.
+           * Comments the custom root layout below to have a try.
+           */}
           <RootLayout />
         </RouteSegmentElement>
       ),

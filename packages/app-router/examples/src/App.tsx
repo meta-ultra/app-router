@@ -1,4 +1,4 @@
-import { type ReactElement, useMemo, useState, useEffect } from "react";
+import { type ReactElement, useMemo, useState, useLayoutEffect } from "react";
 
 import Bare from "./bare";
 import Basic from "./basic";
@@ -13,14 +13,14 @@ const routes: Record<string, ReactElement> = {
 const App = () => {
   const [route, setRoute] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const [_, basename] = location.pathname.split("/");
     if (basename) {
       setRoute(basename);
     }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const [_, basename] = location.pathname.split("/");
     if (route && basename !== route) {
       location.assign(route);
