@@ -5,5 +5,5 @@ This example demonstrates how to use `RouteSegmentElement` to construct routing 
 - Layouts and nested routes
 - Index routes
 - Using `children` for child routes instead of `<Outlet/>`
-- Default not found handling provided by React Router
-- Default global error handling provided by @meta-ultra/app-router
+- Default not found handling
+- Default global error handling

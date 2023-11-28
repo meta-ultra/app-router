@@ -1,6 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import { RouteSegmentElement, RouteSegmentElementLayout } from "../../../src/index";
+import {
+  RootErrorElement,
+  RouteSegmentElement,
+  RouteSegmentElementLayout,
+} from "../../../src/index";
 
 import RootLayout from "./app/layout";
 import Home from "./app/home/page";
@@ -20,6 +24,7 @@ const router = createBrowserRouter(
           <RootLayout />
         </RouteSegmentElement>
       ),
+      errorElement: <RootErrorElement />,
       children: [
         {
           index: true,

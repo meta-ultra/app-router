@@ -7,7 +7,7 @@ import {
   type ComponentType,
 } from "react";
 import { Outlet } from "react-router-dom";
-import { isValidElementType, isLazy } from "react-is";
+import { isValidElementType } from "react-is";
 import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
 import { GlobalNotFoundProvider } from "../not-found/globalNotFound";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
@@ -18,6 +18,7 @@ import DefaultNotFound from "../defaults/DefaultNotFound";
 import DefaultLoading from "../defaults/DefaultLoading";
 import DefaultRootLayout from "../defaults/DefaultRootLayout";
 import DefaultGlobalError from "../defaults/DefaultGlobalError";
+import isLazyElementType from "../utils/isLazyElementType";
 
 enum RouteSegmentElementLayout {
   NO = 0,
@@ -68,8 +69,8 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
       </GlobalNotFoundProvider>
     );
 
-    return isLazy(children) ? (
-      <LoadingBoundary fallback={loading}>{layoutElement}</LoadingBoundary>
+    return isLazyElementType(children) ? (
+      <LoadingBoundary fallback={loading || DefaultLoading}>{layoutElement}</LoadingBoundary>
     ) : (
       layoutElement
     );

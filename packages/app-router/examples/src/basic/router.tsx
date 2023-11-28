@@ -8,8 +8,10 @@ import {
 
 import RootLayout from "./app/layout";
 import RootNotFound from "./app/not-found";
+import GlobalError from "./app/global-error";
 import Home from "./app/home/page";
 import About from "./app/about/page";
+import Error from "./app/error/page";
 
 const router = createBrowserRouter(
   [
@@ -18,12 +20,13 @@ const router = createBrowserRouter(
       element: (
         <RouteSegmentElement
           layout={RouteSegmentElementLayout.ROOT_LAYOUT}
-          notFound={<RootNotFound />}
+          notFound={RootNotFound}
+          error={GlobalError}
         >
           <RootLayout />
         </RouteSegmentElement>
       ),
-      errorElement: <RootErrorElement notFound={<RootNotFound />} />,
+      errorElement: <RootErrorElement notFound={RootNotFound} />,
       children: [
         {
           index: true,
@@ -38,6 +41,14 @@ const router = createBrowserRouter(
           element: (
             <RouteSegmentElement>
               <About />
+            </RouteSegmentElement>
+          ),
+        },
+        {
+          path: "error",
+          element: (
+            <RouteSegmentElement>
+              <Error />
             </RouteSegmentElement>
           ),
         },
