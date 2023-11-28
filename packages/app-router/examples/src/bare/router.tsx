@@ -1,10 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import {
-  RootErrorElement,
-  RouteSegmentElement,
-  RouteSegmentElementLayout,
-} from "../../../src/index";
+import { RootErrorElement, RouteSegmentElement, RootRouteSegmentElement } from "../../../src/index";
 
 import RootLayout from "./app/layout";
 import Home from "./app/home/page";
@@ -16,13 +12,13 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RouteSegmentElement layout={RouteSegmentElementLayout.ROOT_LAYOUT}>
-          {/**
-           * A default root layout will be created for you if there is no custom root layout.
-           * Comments the custom root layout below to have a try.
-           */}
+        /**
+         * A default root layout will be created for you if there is no custom root layout.
+         * Remove the custom root layout below to have a try.
+         */
+        <RootRouteSegmentElement>
           <RootLayout />
-        </RouteSegmentElement>
+        </RootRouteSegmentElement>
       ),
       errorElement: <RootErrorElement />,
       children: [

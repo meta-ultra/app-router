@@ -8,7 +8,7 @@ Enjoy!
 
 ## Setup
 
-1. Navigate to the parent folder, and install all dependencies for `@meta-ultra/app-router`.
+1. Navigate to the parent folder, and install all dependencies for `@meta-ultra/app-router` to ensure examples using the same instance with source code.
 2. Go back to this folder, and install all dependencies for examples.
 3. Run `pnpm dev` in this folder to spring up a Webpack dev server.
 

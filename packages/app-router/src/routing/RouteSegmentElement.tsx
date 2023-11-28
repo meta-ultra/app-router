@@ -30,7 +30,7 @@ enum RouteSegmentElementLayout {
 const NOT_FOUND_ERROR_FALLBACK = <div>Default Error Fallback for Custom Not Found Fallback.</div>;
 
 interface RouteSegmentElementProps {
-  children?: ComponentType | ReactElement | LazyExoticComponent<ComponentType>;
+  children: ComponentType | ReactElement; // | LazyExoticComponent<ComponentType>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
@@ -45,9 +45,7 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
   layout = RouteSegmentElementLayout.NO,
 }) => {
   if (layout === RouteSegmentElementLayout.ROOT_LAYOUT) {
-    console.log("root layout");
     // for the root layout route
-    children = children || DefaultRootLayout;
     const layoutChildren = (
       <LoadingBoundary fallback={loading || DefaultLoading}>
         <Outlet />
@@ -75,7 +73,6 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
       layoutElement
     );
   } else if (layout === RouteSegmentElementLayout.LAYOUT) {
-    console.log("layout");
     // for intermediate layout route
     const layoutChildren = (
       <LoadingBoundary fallback={loading}>
@@ -96,7 +93,6 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
       </MetadataBoundary>
     );
   } else {
-    console.log("leaf node");
     // for leaf route
     return (
       <LoadingBoundary fallback={loading}>

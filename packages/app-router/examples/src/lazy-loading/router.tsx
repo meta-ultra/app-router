@@ -1,11 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import {
-  RouteSegmentElement,
-  RouteSegmentElementLayout,
-  RootErrorElement,
-} from "../../../src/index";
+import { RootRouteSegmentElement, RouteSegmentElement, RootErrorElement } from "../../../src/index";
 
 import RootNotFound from "./app/not-found";
 
@@ -14,12 +10,9 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RouteSegmentElement
-          layout={RouteSegmentElementLayout.ROOT_LAYOUT}
-          notFound={<RootNotFound />}
-        >
+        <RootRouteSegmentElement notFound={<RootNotFound />}>
           {lazy(() => import("./app/layout"))}
-        </RouteSegmentElement>
+        </RootRouteSegmentElement>
       ),
       errorElement: <RootErrorElement notFound={<RootNotFound />} />,
       children: [

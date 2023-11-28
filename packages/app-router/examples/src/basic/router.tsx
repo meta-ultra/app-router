@@ -1,10 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import {
-  RouteSegmentElement,
-  RouteSegmentElementLayout,
-  RootErrorElement,
-} from "../../../src/index";
+import { RouteSegmentElement, RootRouteSegmentElement, RootErrorElement } from "../../../src/index";
 
 import RootLayout from "./app/layout";
 import RootNotFound from "./app/not-found";
@@ -18,13 +14,9 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RouteSegmentElement
-          layout={RouteSegmentElementLayout.ROOT_LAYOUT}
-          notFound={RootNotFound}
-          error={GlobalError}
-        >
+        <RootRouteSegmentElement notFound={RootNotFound} error={GlobalError}>
           <RootLayout />
-        </RouteSegmentElement>
+        </RootRouteSegmentElement>
       ),
       errorElement: <RootErrorElement notFound={RootNotFound} />,
       children: [
