@@ -5,6 +5,7 @@ import { RouteSegmentElement, RouteSegmentElementLayout } from "../../../src/ind
 import RootLayout from "./app/layout";
 import Home from "./app/home/page";
 import About from "./app/about/page";
+import Error from "./app/error/page";
 
 const router = createBrowserRouter(
   [
@@ -33,6 +34,14 @@ const router = createBrowserRouter(
           element: (
             <RouteSegmentElement>
               <About />
+            </RouteSegmentElement>
+          ),
+        },
+        {
+          path: "error",
+          element: (
+            <RouteSegmentElement>
+              <Error />
             </RouteSegmentElement>
           ),
         },

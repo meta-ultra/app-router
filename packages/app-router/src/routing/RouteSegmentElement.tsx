@@ -17,6 +17,7 @@ import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
 import DefaultNotFound from "../defaults/DefaultNotFound";
 import DefaultLoading from "../defaults/DefaultLoading";
 import DefaultRootLayout from "../defaults/DefaultRootLayout";
+import DefaultGlobalError from "../defaults/DefaultGlobalError";
 
 enum RouteSegmentElementLayout {
   NO = 0,
@@ -56,7 +57,7 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
     const layoutElement = (
       <GlobalNotFoundProvider fallback={notFound || DefaultNotFound}>
         <NotFoundProvider fallback={notFound}>
-          <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
+          <ErrorBoundary fallback={error || DefaultGlobalError}>
             <MetadataBoundary component={children}>
               {isValidElementType(children)
                 ? createElement(children, undefined, layoutChildren)

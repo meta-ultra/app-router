@@ -15,6 +15,9 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           <li>
             <Link to="/nothing-here">Nothing Here</Link>
           </li>
+          <li>
+            <Link to="/error">Error</Link>
+          </li>
         </ul>
       </nav>
 
