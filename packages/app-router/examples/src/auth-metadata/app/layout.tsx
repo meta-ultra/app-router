@@ -10,7 +10,7 @@ export const generateMetadata: GenerateMetadata = async function useGenerateMeta
   const notFound = useNotFound();
 
   /**
-   * Be sure the permission fetching is synchronous.
+   * Be sure the permission fetching is synchronous operation.
    */
   const permissions = getPermissions();
   if (permissions.indexOf(location.pathname) === -1) {
