@@ -3,11 +3,13 @@ import { type ReactElement, useMemo, useState, useLayoutEffect } from "react";
 import Bare from "./bare";
 import Basic from "./basic";
 import LazyLoading from "./lazy-loading";
+import Metadata from "./metadata";
 
 const routes: Record<string, ReactElement> = {
   bare: <Bare />,
   basic: <Basic />,
   "lazy-loading": <LazyLoading />,
+  metadata: <Metadata />,
 };
 
 const App = () => {
@@ -31,9 +33,13 @@ const App = () => {
     () =>
       routes[route] || (
         <ul>
-          <li onClick={() => setRoute("bare")}>bare</li>
-          <li onClick={() => setRoute("basic")}>basic</li>
-          <li onClick={() => setRoute("lazy-loading")}>lazy-loading</li>
+          {(Object.keys(routes) || []).map((route) => (
+            <li key={route}>
+              <a href="javascript:void 0" onClick={() => setRoute(route)}>
+                {route}
+              </a>
+            </li>
+          ))}
         </ul>
       ),
     [route]
