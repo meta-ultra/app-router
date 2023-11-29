@@ -1,11 +1,4 @@
-import {
-  LazyExoticComponent,
-  createElement,
-  cloneElement,
-  type ReactElement,
-  type FC,
-  type ComponentType,
-} from "react";
+import { createElement, cloneElement, type ReactElement, type FC, type ComponentType } from "react";
 import { Outlet } from "react-router-dom";
 import { isValidElementType } from "react-is";
 import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
@@ -16,7 +9,6 @@ import MetadataBoundary from "../metadata/MetadataBoundary";
 import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
 import DefaultNotFound from "../defaults/DefaultNotFound";
 import DefaultLoading from "../defaults/DefaultLoading";
-import DefaultRootLayout from "../defaults/DefaultRootLayout";
 import DefaultGlobalError from "../defaults/DefaultGlobalError";
 import isLazyElementType from "../utils/isLazyElementType";
 
@@ -30,7 +22,7 @@ enum RouteSegmentElementLayout {
 const NOT_FOUND_ERROR_FALLBACK = <div>Default Error Fallback for Custom Not Found Fallback.</div>;
 
 interface RouteSegmentElementProps {
-  children: ComponentType | ReactElement; // | LazyExoticComponent<ComponentType>;
+  children: ComponentType | ReactElement;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
@@ -55,7 +47,7 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
     //* The top-most not found provider to handle unprocessed invocation of notFound
     const layoutElement = (
       <GlobalNotFoundProvider fallback={notFound || DefaultNotFound}>
-        <NotFoundProvider fallback={notFound}>
+        <NotFoundProvider fallback={notFound || DefaultNotFound}>
           <ErrorBoundary fallback={error || DefaultGlobalError}>
             <MetadataBoundary component={children}>
               {isValidElementType(children)

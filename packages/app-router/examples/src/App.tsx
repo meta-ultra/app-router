@@ -4,12 +4,14 @@ import Bare from "./bare";
 import Basic from "./basic";
 import LazyLoading from "./lazy-loading";
 import Metadata from "./metadata";
+import AuthMetadata from "./auth-metadata";
 
 const routes: Record<string, ReactElement> = {
   bare: <Bare />,
   basic: <Basic />,
   "lazy-loading": <LazyLoading />,
   metadata: <Metadata />,
+  "auth-metadata": <AuthMetadata />,
 };
 
 const App = () => {
