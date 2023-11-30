@@ -59,6 +59,13 @@ const router = createBrowserRouter(
             </RouteSegmentElement>
           ),
         },
+        {
+          id: "[[...id]]",
+          path: "*",
+          element: (
+            <RouteSegmentElement>{lazy(() => import("./app/[[...id]]/page"))}</RouteSegmentElement>
+          ),
+        },
       ],
     },
   ],

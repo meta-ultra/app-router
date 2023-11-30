@@ -9,7 +9,12 @@ function CatchAll() {
       <h2>CatchAll</h2>
       <button
         onClick={() => {
-          navigate(`${random()}/${random()}?random=${random()}`);
+          const count = random(1, 10);
+          const path = [];
+          for (let i = 0; i < count; i++) {
+            path.push(random(0, 100));
+          }
+          navigate(path.join("/") + `?random=${random(0, 100)}`);
         }}
       >
         Go to random child route
