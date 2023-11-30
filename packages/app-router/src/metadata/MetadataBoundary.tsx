@@ -10,6 +10,8 @@ import {
 } from "react";
 import type { Metadata, GenerateMetadata, GenerateMetadataSearchParams } from "./Metadata";
 import { useParams, useSearchParams } from "react-router-dom";
+import useParamsProxy from "../routing/DynamicRouteWrapper/useParamsProxy";
+import useSearchParamsProxy from "../routing/DynamicRouteWrapper/useSearchParamsProxy";
 import updateMetadata from "./updateMetadata";
 
 type MetadataBoundaryProps = PropsWithChildren<{
@@ -22,16 +24,8 @@ interface MetadataContextType {
 const MetadataContext = createContext<MetadataContextType | undefined>(undefined);
 
 const MetadataBoundary: FC<MetadataBoundaryProps> = ({ component, children }) => {
-  const params = useParams();
-  const [urlSearchParams] = useSearchParams();
-  const searchParams = Array.from(urlSearchParams.keys()).reduce<GenerateMetadataSearchParams>(
-    (searchParams, key) => {
-      const value = urlSearchParams.getAll(key);
-      searchParams[key] = value.length > 1 ? value : value[0] === undefined ? "" : value[0];
-      return searchParams;
-    },
-    {}
-  );
+  const params = useParamsProxy();
+  const searchParams = useSearchParamsProxy();
   const { getParentMetadata } = useContext(MetadataContext) || {};
 
   const metadataRef = useRef<Metadata>({});

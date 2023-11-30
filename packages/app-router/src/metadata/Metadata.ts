@@ -3,7 +3,7 @@
  * A subset of Next.js Metadata. For more detail, please refer to
  * https://nextjs.org/docs/app/api-reference/functions/generate-metadata#the-metadata-object.
  *========================================================================**/
-import { type useParams } from "react-router-dom";
+import useParamsProxy from "../routing/DynamicRouteWrapper/useParamsProxy";
 
 interface Metadata {
   title?: string;
@@ -26,7 +26,7 @@ type GenerateMetadataSearchParams = Record<string, string | string[]>;
 interface GenerateMetadata {
   (
     props: {
-      params: ReturnType<typeof useParams>;
+      params: ReturnType<typeof useParamsProxy>;
       searchParams: GenerateMetadataSearchParams;
     },
     parent: Promise<Metadata>
