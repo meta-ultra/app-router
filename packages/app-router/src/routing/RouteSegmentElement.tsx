@@ -1,4 +1,11 @@
-import { createElement, cloneElement, type ReactElement, type FC, type ComponentType } from "react";
+import {
+  createElement,
+  cloneElement,
+  type ReactElement,
+  type FC,
+  type ComponentType,
+  type LazyExoticComponent,
+} from "react";
 import { Outlet } from "react-router-dom";
 import { isValidElementType } from "react-is";
 import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
@@ -22,7 +29,8 @@ enum RouteSegmentElementLayout {
 const NOT_FOUND_ERROR_FALLBACK = <div>Default Error Fallback for Custom Not Found Fallback.</div>;
 
 interface RouteSegmentElementProps {
-  children: ComponentType | ReactElement;
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
