@@ -93,6 +93,7 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
       </MetadataBoundary>
     );
   } else {
+    console.log(notFound);
     // for leaf route
     return (
       <LoadingBoundary fallback={loading}>

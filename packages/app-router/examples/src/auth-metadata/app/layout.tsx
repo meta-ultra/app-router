@@ -2,7 +2,7 @@ import { type FC, type PropsWithChildren } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { type GenerateMetadata, useNotFound } from "../../../../src";
 
-const getPermissions = (): string[] => ["", "/", "/home"];
+const getPermissions = (): string[] => ["", "/", "/profile", "/avatar"];
 
 // Naming starts with `use` to pass the validations of using React hooks.
 export const generateMetadata: GenerateMetadata = async function useGenerateMetadata() {
