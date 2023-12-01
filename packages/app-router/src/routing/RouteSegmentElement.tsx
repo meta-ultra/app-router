@@ -14,7 +14,7 @@ import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFo
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
 import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
-import DefaultNotFound from "../defaults/DefaultNotFound";
+import DefaultRootRouteSegmentElementNotFound from "../defaults/DefaultRootRouteSegmentElementNotFound";
 import DefaultLoading from "../defaults/DefaultLoading";
 import DefaultGlobalError from "../defaults/DefaultGlobalError";
 import isLazyElementType from "../utils/isLazyElementType";
@@ -54,8 +54,8 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
 
     //* The top-most not found provider to handle unprocessed invocation of notFound
     const layoutElement = (
-      <GlobalNotFoundProvider fallback={notFound || DefaultNotFound}>
-        <NotFoundProvider fallback={notFound || DefaultNotFound}>
+      <GlobalNotFoundProvider fallback={notFound || DefaultRootRouteSegmentElementNotFound}>
+        <NotFoundProvider fallback={notFound || DefaultRootRouteSegmentElementNotFound}>
           <ErrorBoundary fallback={error || DefaultGlobalError}>
             <MetadataBoundary component={children}>
               {isValidElementType(children)
@@ -93,7 +93,6 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
       </MetadataBoundary>
     );
   } else {
-    console.log(notFound);
     // for leaf route
     return (
       <LoadingBoundary fallback={loading}>

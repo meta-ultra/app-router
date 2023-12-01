@@ -61,6 +61,7 @@ const useNotFound = () => {
   const { setError } = context;
 
   return useEvent((error?: ErrorResponse) => {
+    // avoid changing the children to different component while rendering currently.
     nextTick(() => setError(error || new ErrorResponse(location.pathname)));
   });
 };
@@ -90,8 +91,10 @@ const NotFoundProvider: FC<NotFoundProviderProps> = ({ children, fallback }) => 
     } else {
       return <NotFoundContext.Provider value={{ setError }}>{children}</NotFoundContext.Provider>;
     }
-  } else {
+  } else if (isValidElement(children)) {
     return children;
+  } else {
+    return <>{children}</>;
   }
 };
 /*---- END OF NotFoundProvider ----*/

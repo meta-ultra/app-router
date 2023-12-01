@@ -1,4 +1,4 @@
-const DefaultNotFound = () => {
+const DefaultRootErrorElementNotFound = () => {
   return (
     <>
       <h2>Unexpected Application Error!</h2>
@@ -20,4 +20,4 @@ const DefaultNotFound = () => {
   );
 };
 
-export default DefaultNotFound;
+export default DefaultRootErrorElementNotFound;
