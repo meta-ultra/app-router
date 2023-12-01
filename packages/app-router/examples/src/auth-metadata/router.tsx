@@ -1,16 +1,20 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { RootErrorElement, RouteSegmentElement, RootRouteSegmentElement } from "../../../src/index";
-import ProfileNotFound from "./app/home/profile/not-found";
-import AvatarNotFound from "./app/home/avatar/not-found";
+import RootNotFound from "./app/not-found";
+import ProfileNotFound from "./app/profile/not-found";
+import AvatarNotFound from "./app/avatar/not-found";
 
 const router = createBrowserRouter(
   [
     {
+      path: "/",
       element: (
-        <RootRouteSegmentElement>{lazy(() => import("./app/layout"))}</RootRouteSegmentElement>
+        <RootRouteSegmentElement notFound={RootNotFound}>
+          {lazy(() => import("./app/layout"))}
+        </RootRouteSegmentElement>
       ),
-      errorElement: <RootErrorElement notFound={<div>h</div>} />,
+      errorElement: <RootErrorElement notFound={RootNotFound} />,
       children: [
         {
           index: true,
@@ -28,7 +32,7 @@ const router = createBrowserRouter(
           path: "profile",
           element: (
             <RouteSegmentElement notFound={ProfileNotFound}>
-              {lazy(() => import("./app/home/profile/page"))}
+              {lazy(() => import("./app/profile/page"))}
             </RouteSegmentElement>
           ),
         },
@@ -36,7 +40,7 @@ const router = createBrowserRouter(
           path: "avatar",
           element: (
             <RouteSegmentElement notFound={AvatarNotFound}>
-              {lazy(() => import("./app/home/avatar/page"))}
+              {lazy(() => import("./app/avatar/page"))}
             </RouteSegmentElement>
           ),
         },

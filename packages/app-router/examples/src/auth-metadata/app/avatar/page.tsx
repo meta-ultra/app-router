@@ -1,9 +1,9 @@
-import { type GenerateMetadata, useGlobalNotFound as useNotFound } from "../../../../../../src";
+import { type GenerateMetadata, useNotFound } from "../../../../../src";
 
 export const generateMetadata: GenerateMetadata = function useGenerateMetadata() {
   const notFound = useNotFound();
 
-  notFound();
+  notFound("The notFound called from avatar.");
 
   return {};
 };

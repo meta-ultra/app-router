@@ -15,7 +15,7 @@ export const generateMetadata: GenerateMetadata = async function useGenerateMeta
   const permissions = getPermissions();
   if (permissions.indexOf(location.pathname) === -1) {
     // deny access
-    notFound();
+    notFound("NO PERMISSION");
   }
 
   return {
@@ -44,6 +44,12 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           </li>
           <li>
             <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+          <li>
+            <Link to="/avatar">Avatar</Link>
           </li>
         </ul>
       </nav>

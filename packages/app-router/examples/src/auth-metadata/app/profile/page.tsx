@@ -1,9 +1,9 @@
-import { type GenerateMetadata, useGlobalNotFound } from "../../../../../../src";
+import { type GenerateMetadata, useGlobalNotFound } from "../../../../../src";
 
 export const generateMetadata: GenerateMetadata = function useGenerateMetadata() {
   const globalNotFound = useGlobalNotFound();
 
-  globalNotFound();
+  globalNotFound("The globalNotFound called from profile page.");
 
   return {};
 };
