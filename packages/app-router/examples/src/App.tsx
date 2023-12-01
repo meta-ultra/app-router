@@ -6,6 +6,7 @@ import LazyLoading from "./lazy-loading";
 import Metadata from "./metadata";
 import AuthMetadata from "./auth-metadata";
 import DynamicRoutes from "./dynamic-routes";
+import Auth from "./auth";
 
 const routes: Record<string, ReactElement> = {
   bare: <Bare />,
@@ -14,6 +15,7 @@ const routes: Record<string, ReactElement> = {
   metadata: <Metadata />,
   "auth-metadata": <AuthMetadata />,
   "dynamic-routes": <DynamicRoutes />,
+  auth: <Auth />,
 };
 
 const App = () => {
