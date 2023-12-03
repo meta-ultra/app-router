@@ -7,6 +7,7 @@ import Metadata from "./metadata";
 import AuthMetadata from "./auth-metadata";
 import DynamicRoutes from "./dynamic-routes";
 import Auth from "./auth";
+import MultiRootLayouts from "./multi-root-layouts";
 
 const routes: Record<string, ReactElement> = {
   bare: <Bare />,
@@ -16,6 +17,7 @@ const routes: Record<string, ReactElement> = {
   "auth-metadata": <AuthMetadata />,
   "dynamic-routes": <DynamicRoutes />,
   auth: <Auth />,
+  "multi-root-layouts": <MultiRootLayouts />,
 };
 
 const App = () => {
