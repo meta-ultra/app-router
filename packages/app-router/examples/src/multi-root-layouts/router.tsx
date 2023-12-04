@@ -11,7 +11,11 @@ const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <RootRouteSegmentElement notFound={<Sub1RootNotFound />} />,
+      element: (
+        <RootRouteSegmentElement notFound={<RootNotFound />}>
+          {lazy(() => import("./app/layout"))}
+        </RootRouteSegmentElement>
+      ),
       errorElement: <RootErrorElement notFound={<RootNotFound />} />,
       children: [
         {
@@ -22,15 +26,15 @@ const router = createBrowserRouter(
           ),
           children: [
             {
-              path: "sub1/home",
+              path: "sub1-home",
               element: (
                 <RouteSegmentElement>
-                  {lazy(() => import("./app/(sub1)/home/page"))}
+                  {lazy(() => import("./app/(sub1)/sub1-home/page"))}
                 </RouteSegmentElement>
               ),
             },
             {
-              path: "sub1/about",
+              path: "about",
               element: (
                 <RouteSegmentElement>
                   {lazy(() => import("./app/(sub1)/about/page"))}
@@ -47,15 +51,15 @@ const router = createBrowserRouter(
           ),
           children: [
             {
-              path: "sub2/home",
+              path: "sub2-home",
               element: (
                 <RouteSegmentElement>
-                  {lazy(() => import("./app/(sub2)/home/page"))}
+                  {lazy(() => import("./app/(sub2)/sub2-home/page"))}
                 </RouteSegmentElement>
               ),
             },
             {
-              path: "sub2/about",
+              path: "about",
               element: (
                 <RouteSegmentElement>
                   {lazy(() => import("./app/(sub2)/about/page"))}

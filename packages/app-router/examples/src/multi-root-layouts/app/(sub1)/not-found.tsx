@@ -5,7 +5,7 @@ const RootNotFound = () => {
     <div>
       <h2>Sub1 Nothing to see here!</h2>
       <p>
-        <Link to="/">Go to the home page</Link>
+        <Link to="/sub1-home">Go to the home page</Link>
       </p>
     </div>
   );

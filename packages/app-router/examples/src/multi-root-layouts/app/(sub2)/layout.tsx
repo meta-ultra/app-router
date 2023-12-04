@@ -7,13 +7,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       <nav>
         <ul>
           <li>
-            <Link to="/">Sub2 Home</Link>
-          </li>
-          <li>
-            <Link to="/about">Sub2 About</Link>
-          </li>
-          <li>
-            <Link to="/nothing-here">Sub2 Nothing Here</Link>
+            <Link to="/sub2/nothing-here">Sub2 Nothing Here</Link>
           </li>
         </ul>
       </nav>
