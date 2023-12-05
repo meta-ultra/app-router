@@ -40,7 +40,7 @@ class InnerErrorBoundary extends Component<InnerErrorBoundaryProps> {
     if (this.state.hasError) {
       if (
         this.state.error instanceof ErrorResponse ||
-        // fix #2: handle ErrorResponse-like error thrown from other library(e.g. @meta-ultra/app-router-auth)
+        // fix #2: handle ErrorResponse-like error thrown from other libraries (e.g. @meta-ultra/app-router-auth)
         (this.state.error as { status: number }).status === 404
       ) {
         //! Transfer control up to the nearest NotFoundProvider while accepting an ErrorResponse instance created by calling `notFound` function.
@@ -81,8 +81,10 @@ type ErrorBoundaryProps = Partial<InnerErrorBoundaryProps>;
 const ErrorBoundary: FC<ErrorBoundaryProps> = ({ fallback, children }) => {
   if (fallback) {
     return <InnerErrorBoundary fallback={fallback}>{children}</InnerErrorBoundary>;
-  } else {
+  } else if (isValidElement(children)) {
     return children;
+  } else {
+    return <>{children}</>;
   }
 };
 /*---- END OF ErrorBoundary ----*/

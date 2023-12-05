@@ -9,6 +9,7 @@ import {
   type FC,
   type PropsWithChildren,
   type ComponentType,
+  useEffect,
 } from "react";
 import { useLocation } from "react-router-dom";
 import ErrorResponse from "./ErrorResponse";
@@ -55,7 +56,12 @@ type GlobalNotFoundProviderProps = PropsWithChildren<{
 }>;
 
 const GlobalNotFoundProvider: FC<GlobalNotFoundProviderProps> = ({ children, fallback }) => {
+  const location = useLocation();
   const [error, setError] = useState<ErrorResponse>();
+
+  useEffect(() => {
+    setError(undefined);
+  }, [location]);
 
   if (error) {
     return isValidElement(fallback)
