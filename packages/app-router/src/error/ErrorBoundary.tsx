@@ -11,6 +11,7 @@ import {
 import { type ErrorProps } from "./ErrorProps";
 import ErrorResponse from "../not-found/ErrorResponse";
 import { NotFoundContext } from "../not-found/notFound";
+import { useLocation, type Location } from "react-router-dom";
 
 /**----------------------
  *    InnerErrorBoundary
@@ -18,15 +19,18 @@ import { NotFoundContext } from "../not-found/notFound";
 interface InnerErrorBoundaryProps {
   fallback: ReactElement<ErrorProps> | ComponentType<ErrorProps>;
   children: ReactNode;
+  location: Location;
 }
 
 class InnerErrorBoundary extends Component<InnerErrorBoundaryProps> {
   state: {
     hasError: boolean;
     error: unknown;
+    location?: Location;
   } = {
     hasError: false,
     error: undefined,
+    location: undefined,
   };
 
   static getDerivedStateFromError(error: unknown) {
@@ -36,7 +40,32 @@ class InnerErrorBoundary extends Component<InnerErrorBoundaryProps> {
     };
   }
 
+  static getDerivedStateFromProps(
+    nextProps: InnerErrorBoundaryProps,
+    prevState: {
+      hasError: boolean;
+      error: unknown;
+      location?: Location;
+    }
+  ): object | null {
+    if (nextProps.location !== prevState.location) {
+      return {
+        hasError: false,
+        error: undefined,
+        location: nextProps.location,
+      };
+    } else {
+      return null;
+    }
+  }
+
+  constructor(props: InnerErrorBoundaryProps) {
+    super(props);
+    this.state.location = props.location;
+  }
+
   render() {
+    console.log("state", this.state);
     if (this.state.hasError) {
       if (
         this.state.error instanceof ErrorResponse ||
@@ -79,8 +108,14 @@ class InnerErrorBoundary extends Component<InnerErrorBoundaryProps> {
  *------------------------**/
 type ErrorBoundaryProps = Partial<InnerErrorBoundaryProps>;
 const ErrorBoundary: FC<ErrorBoundaryProps> = ({ fallback, children }) => {
+  const location = useLocation();
+  console.log("location", "11");
   if (fallback) {
-    return <InnerErrorBoundary fallback={fallback}>{children}</InnerErrorBoundary>;
+    return (
+      <InnerErrorBoundary location={location} fallback={fallback}>
+        {children}
+      </InnerErrorBoundary>
+    );
   } else if (isValidElement(children)) {
     return children;
   } else {
