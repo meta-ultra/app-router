@@ -35,9 +35,11 @@ interface RouteSegmentElementProps {
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
   layout?: RouteSegmentElementLayout;
+  template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
 }
 
 const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
+  template,
   children,
   loading,
   error,
@@ -86,7 +88,23 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
     return (
       <MetadataBoundary component={children}>
         <DynamicRouteWrapper>
-          {isValidElementType(children)
+          {template
+            ? isValidElementType(template)
+              ? createElement(
+                  template,
+                  {},
+                  isValidElementType(children)
+                    ? createElement(children, undefined, layoutChildren)
+                    : cloneElement(children as ReactElement, undefined, layoutChildren)
+                )
+              : cloneElement(
+                  template as ReactElement,
+                  {},
+                  isValidElementType(children)
+                    ? createElement(children, undefined, layoutChildren)
+                    : cloneElement(children as ReactElement, undefined, layoutChildren)
+                )
+            : isValidElementType(children)
             ? createElement(children, undefined, layoutChildren)
             : cloneElement(children as ReactElement, undefined, layoutChildren)}
         </DynamicRouteWrapper>
@@ -100,7 +118,23 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
           <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
             <MetadataBoundary component={children}>
               <DynamicRouteWrapper>
-                {isValidElementType(children)
+                {template
+                  ? isValidElementType(template)
+                    ? createElement(
+                        template,
+                        {},
+                        isValidElementType(children)
+                          ? createElement(children)
+                          : (children as ReactElement)
+                      )
+                    : cloneElement(
+                        template as ReactElement,
+                        {},
+                        isValidElementType(children)
+                          ? createElement(children)
+                          : (children as ReactElement)
+                      )
+                  : isValidElementType(children)
                   ? createElement(children)
                   : (children as ReactElement)}
               </DynamicRouteWrapper>
