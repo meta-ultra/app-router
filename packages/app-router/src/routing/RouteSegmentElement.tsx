@@ -5,6 +5,7 @@ import {
   type FC,
   type ComponentType,
   type LazyExoticComponent,
+  isValidElement,
 } from "react";
 import { Outlet } from "react-router-dom";
 import { isValidElementType } from "react-is";
@@ -88,56 +89,29 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
     return (
       <MetadataBoundary component={children}>
         <DynamicRouteWrapper>
-          {template
-            ? isValidElementType(template)
-              ? createElement(
-                  template,
-                  {},
-                  isValidElementType(children)
-                    ? createElement(children, undefined, layoutChildren)
-                    : cloneElement(children as ReactElement, undefined, layoutChildren)
-                )
-              : cloneElement(
-                  template as ReactElement,
-                  {},
-                  isValidElementType(children)
-                    ? createElement(children, undefined, layoutChildren)
-                    : cloneElement(children as ReactElement, undefined, layoutChildren)
-                )
-            : isValidElementType(children)
+          {isValidElementType(children)
             ? createElement(children, undefined, layoutChildren)
             : cloneElement(children as ReactElement, undefined, layoutChildren)}
         </DynamicRouteWrapper>
       </MetadataBoundary>
     );
   } else {
+    let child = isValidElementType(children) ? createElement(children) : (children as ReactElement);
+    if (template) {
+      if (isValidElementType(template)) {
+        child = createElement(template, { key: +new Date() }, child);
+      } else if (isValidElement(template)) {
+        child = cloneElement(template, { key: +new Date() }, child);
+      }
+    }
+
     // for leaf route
     return (
       <LoadingBoundary fallback={loading}>
         <NotFoundProvider fallback={notFound}>
           <ErrorBoundary fallback={error || (notFound && NOT_FOUND_ERROR_FALLBACK)}>
             <MetadataBoundary component={children}>
-              <DynamicRouteWrapper>
-                {template
-                  ? isValidElementType(template)
-                    ? createElement(
-                        template,
-                        {},
-                        isValidElementType(children)
-                          ? createElement(children)
-                          : (children as ReactElement)
-                      )
-                    : cloneElement(
-                        template as ReactElement,
-                        {},
-                        isValidElementType(children)
-                          ? createElement(children)
-                          : (children as ReactElement)
-                      )
-                  : isValidElementType(children)
-                  ? createElement(children)
-                  : (children as ReactElement)}
-              </DynamicRouteWrapper>
+              <DynamicRouteWrapper>{child}</DynamicRouteWrapper>
             </MetadataBoundary>
           </ErrorBoundary>
         </NotFoundProvider>

@@ -65,7 +65,6 @@ class InnerErrorBoundary extends Component<InnerErrorBoundaryProps> {
   }
 
   render() {
-    console.log("state", this.state);
     if (this.state.hasError) {
       if (
         this.state.error instanceof ErrorResponse ||
@@ -109,7 +108,6 @@ class InnerErrorBoundary extends Component<InnerErrorBoundaryProps> {
 type ErrorBoundaryProps = Partial<InnerErrorBoundaryProps>;
 const ErrorBoundary: FC<ErrorBoundaryProps> = ({ fallback, children }) => {
   const location = useLocation();
-  console.log("location", "11");
   if (fallback) {
     return (
       <InnerErrorBoundary location={location} fallback={fallback}>
