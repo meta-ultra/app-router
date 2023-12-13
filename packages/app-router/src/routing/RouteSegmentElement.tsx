@@ -86,12 +86,23 @@ const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
         </NotFoundProvider>
       </LoadingBoundary>
     );
+    let child = isValidElementType(children)
+      ? createElement(children, undefined, layoutChildren)
+      : cloneElement(children as ReactElement, undefined, layoutChildren);
+    if (template) {
+      if (isValidElementType(template)) {
+        child = createElement(template, { key: +new Date() }, child);
+      } else if (isValidElement(template)) {
+        child = cloneElement(template, { key: +new Date() }, child);
+      }
+    }
     return (
       <MetadataBoundary component={children}>
         <DynamicRouteWrapper>
-          {isValidElementType(children)
+          {child}
+          {/* {isValidElementType(children)
             ? createElement(children, undefined, layoutChildren)
-            : cloneElement(children as ReactElement, undefined, layoutChildren)}
+            : cloneElement(children as ReactElement, undefined, layoutChildren)} */}
         </DynamicRouteWrapper>
       </MetadataBoundary>
     );

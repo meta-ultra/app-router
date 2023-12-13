@@ -8,7 +8,7 @@ const Page = () => {
   const { state: templateState, setState: setTemplateState } = useTemplateContext();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("step1");
+    console.log("step1 mount");
   }, []);
 
   return (
@@ -20,7 +20,12 @@ const Page = () => {
       <button onClick={() => setTemplateState(templateState + 1)}>
         template {templateState}-Click to increase!
       </button>
-      <button onClick={() => navigate("/template-layout/steps/step2")}>Go to step 2</button>
+      <button onClick={() => navigate("/template-layout/steps/step2")}>
+        Go to step 2 under layout
+      </button>
+      <button onClick={() => navigate("/template-layout/other")}>
+        Go to other page outside layout
+      </button>
     </>
   );
 };

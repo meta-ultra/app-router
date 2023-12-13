@@ -10,13 +10,13 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/static-workflow/step1">Static Workflow Step1</Link>
+            <Link to="/static-workflow/step1">State shared between Layout</Link>
           </li>
           <li>
-            <Link to="/template/step1">Template Step1</Link>
+            <Link to="/template/step1">State isolated by Template</Link>
           </li>
           <li>
-            <Link to="/template-layout/steps/step1">Template Layout Step1</Link>
+            <Link to="/template-layout/steps/step1">Mix Template and Layout</Link>
           </li>
         </ul>
       </nav>

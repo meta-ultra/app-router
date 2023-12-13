@@ -5,7 +5,7 @@ import { Provider } from "./templateContext";
 const Template: FC<LayoutRouteProps> = ({ children }) => {
   const [state, setState] = useState(1);
   useEffect(() => {
-    console.log(123);
+    console.log("template mounted");
   }, []);
 
   return <Provider value={{ state, setState }}>{children}</Provider>;

@@ -74,6 +74,17 @@ const router = createBrowserRouter(
           ),
           children: [
             {
+              path: "other",
+              element: (
+                <RouteSegmentElement
+                  layout={RouteSegmentElementLayout.LAYOUT}
+                  template={lazy(() => import("./app/template-layout/template"))}
+                >
+                  {lazy(() => import("./app/template-layout/other/page"))}
+                </RouteSegmentElement>
+              ),
+            },
+            {
               path: "steps",
               element: (
                 <RouteSegmentElement
