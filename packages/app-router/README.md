@@ -15,7 +15,7 @@ Give a ⭐️ if this project helped you!
 
 ## 🌟 Features
 
-- Follows the file conventions and functionalities of Next.js App Router, such as `page`, `layout`, `loading`, `not-found`, `error`.
+- Follows the file conventions and functionalities of Next.js App Router, such as `page`, `layout`, `template`,`loading`, `not-found`, `error`.
 - Supports receiving `params` and `searchParams` as props in `page`, `layout`.
 - Supports dynamic routes including catch-all segments and optional catch-all segments.<span style="font-size: 12px; color: #888;">(by setting route `id`)</span>
 - Besides the context free `notFound` as Next.js does, an extra `notFound` with context created by `useNotFound()` is available.
