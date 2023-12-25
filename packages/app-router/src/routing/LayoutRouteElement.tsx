@@ -14,6 +14,7 @@ import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFo
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
 import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
+import RouteSegmentElement from "./RouteSegmentElement";
 
 const generateElement = (
   element: unknown,
@@ -42,6 +43,9 @@ type LayoutRouteElementProps = {
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
   template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+  parallelRoutes?: {
+    [name: string]: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+  };
 };
 
 const LayoutRouteElement: FC<LayoutRouteElementProps> = ({
@@ -50,6 +54,7 @@ const LayoutRouteElement: FC<LayoutRouteElementProps> = ({
   error,
   notFound,
   template,
+  parallelRoutes,
 }) => {
   const layoutChildren = (
     <LoadingBoundary fallback={loading}>
@@ -60,7 +65,17 @@ const LayoutRouteElement: FC<LayoutRouteElementProps> = ({
       </NotFoundProvider>
     </LoadingBoundary>
   );
-  let child = generateElement(children, undefined, layoutChildren);
+
+  let props = undefined;
+  if (parallelRoutes) {
+    props = Object.entries(parallelRoutes).reduce((parallelRoutes, entry) => {
+      parallelRoutes[entry[0]] = <RouteSegmentElement>{entry[1]}</RouteSegmentElement>;
+
+      return parallelRoutes;
+    }, {} as Record<string, ReactElement>);
+  }
+
+  let child = generateElement(children, props, layoutChildren);
   if (template) {
     // create a brand new key to make sure create a new Template instance every rendering.
     child = generateElement(template, { key: +new Date() }, child);

@@ -31,9 +31,13 @@ const router = createBrowserRouter(
           path: "gallery",
           element: (
             <LayoutRouteElement
-            // parallelRoutes={{
-            //   list: lazy(() => import("./app/gallery/@list/page"))
-            // }}
+              parallelRoutes={{
+                list: (
+                  <RouteSegmentElement>
+                    {lazy(() => import("./app/gallery/@list/page"))}
+                  </RouteSegmentElement>
+                ),
+              }}
             >
               {lazy(() => import("./app/gallery/layout"))}
             </LayoutRouteElement>
