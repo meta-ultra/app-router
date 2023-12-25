@@ -5,7 +5,7 @@ import {
   RootRouteSegmentElement,
   RouteSegmentElement,
   RootErrorElement,
-  RouteSegmentElementLayout,
+  LayoutRouteElement,
 } from "../../../src/index";
 
 const router = createBrowserRouter(
@@ -26,9 +26,9 @@ const router = createBrowserRouter(
         {
           path: "static-workflow",
           element: (
-            <RouteSegmentElement layout={RouteSegmentElementLayout.LAYOUT}>
+            <LayoutRouteElement>
               {lazy(() => import("./app/static-workflow/layout"))}
-            </RouteSegmentElement>
+            </LayoutRouteElement>
           ),
           children: [
             {
@@ -68,31 +68,25 @@ const router = createBrowserRouter(
         {
           path: "template-layout",
           element: (
-            <RouteSegmentElement layout={RouteSegmentElementLayout.LAYOUT}>
+            <LayoutRouteElement>
               {lazy(() => import("./app/template-layout/layout"))}
-            </RouteSegmentElement>
+            </LayoutRouteElement>
           ),
           children: [
             {
               path: "other",
               element: (
-                <RouteSegmentElement
-                  layout={RouteSegmentElementLayout.LAYOUT}
-                  template={lazy(() => import("./app/template-layout/template"))}
-                >
+                <LayoutRouteElement template={lazy(() => import("./app/template-layout/template"))}>
                   {lazy(() => import("./app/template-layout/other/page"))}
-                </RouteSegmentElement>
+                </LayoutRouteElement>
               ),
             },
             {
               path: "steps",
               element: (
-                <RouteSegmentElement
-                  layout={RouteSegmentElementLayout.LAYOUT}
-                  template={lazy(() => import("./app/template-layout/template"))}
-                >
+                <LayoutRouteElement template={lazy(() => import("./app/template-layout/template"))}>
                   {lazy(() => import("./app/template-layout/steps/layout"))}
-                </RouteSegmentElement>
+                </LayoutRouteElement>
               ),
               children: [
                 {

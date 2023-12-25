@@ -12,3 +12,5 @@ export {
 } from "./routing/RouteSegmentElement";
 export { default as RootRouteSegmentElement } from "./routing/RootRouteSegmentElement";
 export type { DynamicRouteProps } from "./routing/DynamicRouteWrapper/DynamicRouteWrapper";
+export type { LayoutRouteElementProps } from "./routing/LayoutRouteElement";
+export { default as LayoutRouteElement } from "./routing/LayoutRouteElement";
