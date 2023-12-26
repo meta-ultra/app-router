@@ -1,52 +1,42 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import {
-  RouteSegmentElement,
-  RootRouteSegmentElement,
-  RouteSegmentElementLayout,
-} from "../../../src/index";
+import { RootLayoutRouteElement, LayoutRouteElement, PageRouteElement } from "../../../src/index";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement>{lazy(() => import("./app/layout"))}</RootRouteSegmentElement>
+        <RootLayoutRouteElement>{lazy(() => import("./app/layout"))}</RootLayoutRouteElement>
       ),
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "login",
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/login/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/login/page"))}</PageRouteElement>,
         },
         {
           element: (
-            <RouteSegmentElement layout={RouteSegmentElementLayout.LAYOUT}>
-              {lazy(() => import("./app/(...auth)/layout"))}
-            </RouteSegmentElement>
+            <LayoutRouteElement>{lazy(() => import("./app/(...auth)/layout"))}</LayoutRouteElement>
           ),
           children: [
             {
               path: "about",
               element: (
-                <RouteSegmentElement>
+                <PageRouteElement>
                   {lazy(() => import("./app/(...auth)/about/page"))}
-                </RouteSegmentElement>
+                </PageRouteElement>
               ),
             },
             {
               path: "profile",
               element: (
-                <RouteSegmentElement>
+                <PageRouteElement>
                   {lazy(() => import("./app/(...auth)/profile/page"))}
-                </RouteSegmentElement>
+                </PageRouteElement>
               ),
             },
           ],

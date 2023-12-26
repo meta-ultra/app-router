@@ -1,27 +1,23 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { RootErrorElement, RouteSegmentElement, RootRouteSegmentElement } from "../../../src/index";
+import { RootLayoutRouteElement, RootErrorElement, PageRouteElement } from "../../../src/index";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement>{lazy(() => import("./app/layout"))}</RootRouteSegmentElement>
+        <RootLayoutRouteElement>{lazy(() => import("./app/layout"))}</RootLayoutRouteElement>
       ),
       errorElement: <RootErrorElement />,
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "about",
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/about/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/about/page"))}</PageRouteElement>,
         },
       ],
     },

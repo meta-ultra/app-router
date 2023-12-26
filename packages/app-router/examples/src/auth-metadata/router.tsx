@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { RootErrorElement, RouteSegmentElement, RootRouteSegmentElement } from "../../../src/index";
+import { RootLayoutRouteElement, RootErrorElement, PageRouteElement } from "../../../src/index";
 import RootNotFound from "./app/not-found";
 import ProfileNotFound from "./app/profile/not-found";
 import AvatarNotFound from "./app/avatar/not-found";
@@ -10,38 +10,34 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement notFound={RootNotFound}>
+        <RootLayoutRouteElement notFound={RootNotFound}>
           {lazy(() => import("./app/layout"))}
-        </RootRouteSegmentElement>
+        </RootLayoutRouteElement>
       ),
       errorElement: <RootErrorElement notFound={RootNotFound} />,
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "about",
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/about/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/about/page"))}</PageRouteElement>,
         },
         {
           path: "profile",
           element: (
-            <RouteSegmentElement notFound={ProfileNotFound}>
+            <PageRouteElement notFound={ProfileNotFound}>
               {lazy(() => import("./app/profile/page"))}
-            </RouteSegmentElement>
+            </PageRouteElement>
           ),
         },
         {
           path: "avatar",
           element: (
-            <RouteSegmentElement notFound={AvatarNotFound}>
+            <PageRouteElement notFound={AvatarNotFound}>
               {lazy(() => import("./app/avatar/page"))}
-            </RouteSegmentElement>
+            </PageRouteElement>
           ),
         },
       ],

@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import { RootRouteSegmentElement, RouteSegmentElement, RootErrorElement } from "../../../src/index";
+import { RootLayoutRouteElement, RootErrorElement, PageRouteElement } from "../../../src/index";
 
 import RootNotFound from "./app/not-found";
 
@@ -10,60 +10,54 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement notFound={<RootNotFound />}>
+        <RootLayoutRouteElement notFound={<RootNotFound />}>
           {lazy(() => import("./app/layout"))}
-        </RootRouteSegmentElement>
+        </RootLayoutRouteElement>
       ),
       errorElement: <RootErrorElement notFound={<RootNotFound />} />,
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "posts",
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/posts/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/posts/page"))}</PageRouteElement>,
         },
         {
           id: "posts/[id]",
           path: "posts/:id",
           element: (
-            <RouteSegmentElement>{lazy(() => import("./app/posts/[id]/page"))}</RouteSegmentElement>
+            <PageRouteElement>{lazy(() => import("./app/posts/[id]/page"))}</PageRouteElement>
           ),
         },
         {
           id: "posts/[id]/edit",
           path: "posts/:id/edit",
           element: (
-            <RouteSegmentElement>
-              {lazy(() => import("./app/posts/[id]/edit/page"))}
-            </RouteSegmentElement>
+            <PageRouteElement>{lazy(() => import("./app/posts/[id]/edit/page"))}</PageRouteElement>
           ),
         },
         {
           path: "catch-all",
           element: (
-            <RouteSegmentElement>{lazy(() => import("./app/catch-all/page"))}</RouteSegmentElement>
+            <PageRouteElement>{lazy(() => import("./app/catch-all/page"))}</PageRouteElement>
           ),
         },
         {
           id: "catch-all/[...id]",
           path: "catch-all/*",
           element: (
-            <RouteSegmentElement>
+            <PageRouteElement>
               {lazy(() => import("./app/catch-all/[...id]/page"))}
-            </RouteSegmentElement>
+            </PageRouteElement>
           ),
         },
         {
           id: "[[...id]]",
           path: "*",
           element: (
-            <RouteSegmentElement>{lazy(() => import("./app/[[...id]]/page"))}</RouteSegmentElement>
+            <PageRouteElement>{lazy(() => import("./app/[[...id]]/page"))}</PageRouteElement>
           ),
         },
       ],

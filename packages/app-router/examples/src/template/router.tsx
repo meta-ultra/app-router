@@ -2,10 +2,10 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import {
-  RootRouteSegmentElement,
-  RouteSegmentElement,
+  RootLayoutRouteElement,
   RootErrorElement,
   LayoutRouteElement,
+  PageRouteElement,
 } from "../../../src/index";
 
 const router = createBrowserRouter(
@@ -13,15 +13,13 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement>{lazy(() => import("./app/layout"))}</RootRouteSegmentElement>
+        <RootLayoutRouteElement>{lazy(() => import("./app/layout"))}</RootLayoutRouteElement>
       ),
       errorElement: <RootErrorElement />,
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "static-workflow",
@@ -34,17 +32,17 @@ const router = createBrowserRouter(
             {
               path: "step1",
               element: (
-                <RouteSegmentElement>
+                <PageRouteElement>
                   {lazy(() => import("./app/static-workflow/step1/page"))}
-                </RouteSegmentElement>
+                </PageRouteElement>
               ),
             },
             {
               path: "step2",
               element: (
-                <RouteSegmentElement>
+                <PageRouteElement>
                   {lazy(() => import("./app/static-workflow/step2/page"))}
-                </RouteSegmentElement>
+                </PageRouteElement>
               ),
             },
           ],
@@ -52,17 +50,17 @@ const router = createBrowserRouter(
         {
           path: "template/step1",
           element: (
-            <RouteSegmentElement template={lazy(() => import("./app/template/template"))}>
+            <PageRouteElement template={lazy(() => import("./app/template/template"))}>
               {lazy(() => import("./app/template/step1/page"))}
-            </RouteSegmentElement>
+            </PageRouteElement>
           ),
         },
         {
           path: "template/step2",
           element: (
-            <RouteSegmentElement template={lazy(() => import("./app/template/template"))}>
+            <PageRouteElement template={lazy(() => import("./app/template/template"))}>
               {lazy(() => import("./app/template/step2/page"))}
-            </RouteSegmentElement>
+            </PageRouteElement>
           ),
         },
         {
@@ -92,17 +90,17 @@ const router = createBrowserRouter(
                 {
                   path: "step1",
                   element: (
-                    <RouteSegmentElement>
+                    <PageRouteElement>
                       {lazy(() => import("./app/template-layout/steps/step1/page"))}
-                    </RouteSegmentElement>
+                    </PageRouteElement>
                   ),
                 },
                 {
                   path: "step2",
                   element: (
-                    <RouteSegmentElement>
+                    <PageRouteElement>
                       {lazy(() => import("./app/template-layout/steps/step2/page"))}
-                    </RouteSegmentElement>
+                    </PageRouteElement>
                   ),
                 },
               ],

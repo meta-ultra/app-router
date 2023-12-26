@@ -20,6 +20,9 @@ import DefaultLoading from "../defaults/DefaultLoading";
 import DefaultGlobalError from "../defaults/DefaultGlobalError";
 import isLazyElementType from "../utils/isLazyElementType";
 
+/**
+ * @deprecated
+ */
 enum RouteSegmentElementLayout {
   NO = 0,
   LAYOUT = 1,

@@ -2,10 +2,10 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import {
-  RootRouteSegmentElement,
-  RouteSegmentElement,
+  RootLayoutRouteElement,
   RootErrorElement,
-  RouteSegmentElementLayout,
+  LayoutRouteElement,
+  PageRouteElement,
 } from "../../../src/index";
 
 import RootNotFound from "./app/not-found";
@@ -15,33 +15,29 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement notFound={<RootNotFound />}>
+        <RootLayoutRouteElement notFound={<RootNotFound />}>
           {lazy(() => import("./app/layout"))}
-        </RootRouteSegmentElement>
+        </RootLayoutRouteElement>
       ),
       errorElement: <RootErrorElement notFound={<RootNotFound />} />,
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "gallery",
           element: (
-            <RouteSegmentElement layout={RouteSegmentElementLayout.LAYOUT}>
-              {lazy(() => import("./app/gallery/page"))}
-            </RouteSegmentElement>
+            <LayoutRouteElement>{lazy(() => import("./app/gallery/page"))}</LayoutRouteElement>
           ),
           children: [
             {
               id: "img/[id]",
               path: "img/:id",
               element: (
-                <RouteSegmentElement>
+                <PageRouteElement>
                   {lazy(() => import("./app/gallery/img/[id]/page"))}
-                </RouteSegmentElement>
+                </PageRouteElement>
               ),
             },
             // {
