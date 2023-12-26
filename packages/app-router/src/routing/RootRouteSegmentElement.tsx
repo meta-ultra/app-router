@@ -10,6 +10,9 @@ interface RootRouteSegmentElementProps
   children?: RouteSegmentElementProps["children"];
 }
 
+/**
+ * @deprecated
+ */
 const RootRouteSegmentElement: FC<RootRouteSegmentElementProps> = ({ children, ...restProps }) => {
   return (
     <RouteSegmentElement {...restProps} layout={RouteSegmentElementLayout.ROOT_LAYOUT}>

@@ -39,6 +39,9 @@ interface RouteSegmentElementProps {
   template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
 }
 
+/**
+ * @deprecated
+ */
 const RouteSegmentElement: FC<RouteSegmentElementProps> = ({
   template,
   children,

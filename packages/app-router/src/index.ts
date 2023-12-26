@@ -7,6 +7,8 @@ export { default as RootErrorElement } from "./error/RootErrorElement";
 export type { Metadata, GenerateMetadata } from "./metadata/Metadata";
 export type { DynamicRouteProps } from "./dynamic-route";
 
+export type { RootLayoutRouteElementProps } from "./routing/RootLayoutRouteElement";
+export { default as RootLayoutRouteElement } from "./routing/RootLayoutRouteElement";
 export type { LayoutRouteElementProps } from "./routing/LayoutRouteElement";
 export { default as LayoutRouteElement } from "./routing/LayoutRouteElement";
 export type { PageRouteElementProps } from "./routing/PageRouteElement";

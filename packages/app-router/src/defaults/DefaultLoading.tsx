@@ -9,9 +9,17 @@ const DefaultLoading = () => {
             You can provide a way better UX than this when loading async component by passing your
             own global loading or page specific loading component as prop on{" "}
             <code style={{ padding: "2px 4px", backgroundColor: "rgba(200, 200, 200, 0.5)" }}>
-              RouteSegmentElement
+              RootLayoutRouteElement
             </code>
-            .
+            ,{" "}
+            <code style={{ padding: "2px 4px", backgroundColor: "rgba(200, 200, 200, 0.5)" }}>
+              LayoutRouteElement
+            </code>{" "}
+            or{" "}
+            <code style={{ padding: "2px 4px", backgroundColor: "rgba(200, 200, 200, 0.5)" }}>
+              PageRouteElement
+            </code>
+            , .
           </p>
         </>
       )}

@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 const DefaultRootErrorElementNotFound = () => {
   return (
     <>

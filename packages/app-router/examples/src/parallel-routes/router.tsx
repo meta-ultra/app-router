@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import {
-  RootRouteSegmentElement,
+  RootLayoutRouteElement,
   RootErrorElement,
   LayoutRouteElement,
   PageRouteElement,
@@ -22,9 +22,9 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RootRouteSegmentElement notFound={<RootNotFound />}>
+        <RootLayoutRouteElement notFound={<RootNotFound />}>
           {lazy(() => import("./app/layout"))}
-        </RootRouteSegmentElement>
+        </RootLayoutRouteElement>
       ),
       errorElement: <RootErrorElement notFound={<RootNotFound />} />,
       children: [
