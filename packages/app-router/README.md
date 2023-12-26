@@ -15,9 +15,10 @@ Give a ⭐️ if this project helped you!
 
 ## 🌟 Features
 
-- Follows the file conventions and functionalities of Next.js App Router, such as `page`, `layout`, `template`,`loading`, `not-found`, `error`.
+- Follows the file conventions and functionalities of Next.js App Router, such as `page`, `layout`, `template`,`loading`, `not-found` and `error`.
 - Supports receiving `params` and `searchParams` as props in `page`, `layout`.
 - Supports dynamic routes including catch-all segments and optional catch-all segments.<span style="font-size: 12px; color: #888;">(by setting route `id`)</span>
+- Supports parallel routes with its own `template`, `loading`, `not-found` and `error`.
 - Besides the context free `notFound` as Next.js does, an extra `notFound` with context created by `useNotFound()` is available.
 - It's capable of setting the `document.title`, and other metadata like `description`, `keywords` and `author` through `metadata` or `generateMetadata` APIs as Next.js does on Server Components.<span style="font-size: 12px; color: #888;">(At this moment, only basic fields are supported)</span>
 - Based on [React Router v6](https://reactrouter.com/), it's free to structure the application routing and project file-system hierarchy, although it's recommended to abide by the rules of Next.js App Router.
@@ -28,7 +29,7 @@ Give a ⭐️ if this project helped you!
 Install `@meta-ultra/app-router` with your favorite package manager:
 
 - pnpm: `pnpm add @meta-ultra/app-router@latest`
-- yarn: `yarn add -S @meta-ultra/app-router@latest`
+- yarn: `yarn add @meta-ultra/app-router@latest`
 - npm: `npm install -S @meta-ultra/app-router@latest`
 
 ## ✨ Usage
@@ -63,9 +64,10 @@ Let's demonstrate how to use `@meta-ultra/app-router` with Next.js App Router co
   import { lazy } from "react";
   import { createHashRouter } from "react-router-dom";
   import {
-    RouteSegmentElementLayout,
+    RootLayoutRouteElement,
     RootErrorElement,
-    RouteSegmentElement,
+    LayoutRouteElement,
+    PageRouteElement,
   } from "@meta-ultra/app-router";
   import RootLoading from "./app/loading"
   import RootNotFound from "./app/not-found"
@@ -76,35 +78,34 @@ Let's demonstrate how to use `@meta-ultra/app-router` with Next.js App Router co
   const router = createHashRouter([
     {
       element: (
-        <RouteSegmentElement 
-          layout={RouteSegmentElementLayout.ROOT_LAYOUT} 
+        <RootLayoutRouteElement 
           loading={RootLoading} 
           error={GlobalError}
           notFound={RootNotFound}
         >
           {lazy(() => import("./app/layout"))}
-        </RouteSegmentElement>
+        </RootLayoutRouteElement>
       ),
       errorElement: (<RootErrorElement notFound={RootNotFound} />)
       children: [
         {
           index: true,
-          element: (<RouteSegmentElement>{lazy(() => import("./app/page"))}</RouteSegmentElement>),
+          element: (<PageRouteElement>{lazy(() => import("./app/page"))}</PageRouteElement>),
         },
         {
           element: (
-            <RouteSegmentElement layout={RouteSegmentElementLayout.LAYOUT}>
+            <LayoutRouteElement>
               {lazy(() => import("./app/(system)/layout"))}
-            </RouteSegmentElement>
+            </LayoutRouteElement>
           ),
           children: [
             {
               path: "users",
-              element: (<RouteSegmentElement>{lazy(() => import("./app/(system)/users/page"))}</RouteSegmentElement>),
+              element: (<PageRouteElement>{lazy(() => import("./app/(system)/users/page"))}</PageRouteElement>),
             },
             {
               path: "posts"
-              element: (<RouteSegmentElement loading={PostsLoading} error={PostsError}>{lazy(() => import("./app/(system)/posts/page"))}</RouteSegmentElement>),
+              element: (<PageRouteElement loading={PostsLoading} error={PostsError}>{lazy(() => import("./app/(system)/posts/page"))}</PageRouteElement>),
             }
           ]
         }
