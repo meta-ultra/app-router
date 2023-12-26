@@ -1,7 +1,7 @@
-import { type FC, type PropsWithChildren } from "react";
+import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+const RootLayout = ({ children, root }: { children: ReactNode; root: ReactNode }) => {
   return (
     <div>
       <nav>
@@ -17,6 +17,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
 
       <hr />
       {children}
+      {root}
     </div>
   );
 };

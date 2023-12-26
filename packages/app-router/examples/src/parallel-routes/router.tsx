@@ -22,7 +22,20 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: (
-        <RootLayoutRouteElement notFound={<RootNotFound />}>
+        <RootLayoutRouteElement
+          notFound={<RootNotFound />}
+          parallelRoutes={{
+            root: lazy(async () => {
+              /**
+               * Note that,
+               * - The component subtree will not display until all parallel routes of root route have been loaded.
+               * - Once all parallel routes of root route are ready, they display immediately.
+               */
+              await sleep(2000);
+              return import("./app/@root/page");
+            }),
+          }}
+        >
           {lazy(() => import("./app/layout"))}
         </RootLayoutRouteElement>
       ),
