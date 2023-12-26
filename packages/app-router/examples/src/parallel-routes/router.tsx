@@ -3,9 +3,9 @@ import { createBrowserRouter } from "react-router-dom";
 
 import {
   RootRouteSegmentElement,
-  RouteSegmentElement,
   RootErrorElement,
   LayoutRouteElement,
+  PageRouteElement,
 } from "../../../src/index";
 
 import RootNotFound from "./app/not-found";
@@ -30,9 +30,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: (
-            <RouteSegmentElement>{lazy(() => import("./app/home/page"))}</RouteSegmentElement>
-          ),
+          element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
           path: "gallery",
@@ -44,12 +42,12 @@ const router = createBrowserRouter(
                   return import("./app/gallery/@list/page");
                 }),
                 other: (
-                  <RouteSegmentElement loading={OtherLoading}>
+                  <PageRouteElement loading={OtherLoading}>
                     {lazy(async () => {
                       await sleep(10000); // propagate loading state to its own loading component
                       return import("./app/gallery/@other/page");
                     })}
-                  </RouteSegmentElement>
+                  </PageRouteElement>
                 ),
               }}
             >
@@ -59,19 +57,16 @@ const router = createBrowserRouter(
           children: [
             {
               index: true,
-              // element: <PageRouteElement>{lazy(() => import("./app/gallery/page"))}</PageRouteElement>
               element: (
-                <RouteSegmentElement>
-                  {lazy(() => import("./app/gallery/page"))}
-                </RouteSegmentElement>
+                <PageRouteElement>{lazy(() => import("./app/gallery/page"))}</PageRouteElement>
               ),
             },
             {
               path: "imgs/:id",
               element: (
-                <RouteSegmentElement>
+                <PageRouteElement>
                   {lazy(() => import("./app/gallery/imgs/[id]/page"))}
-                </RouteSegmentElement>
+                </PageRouteElement>
               ),
             },
           ],

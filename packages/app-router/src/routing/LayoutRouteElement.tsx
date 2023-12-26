@@ -4,10 +4,9 @@ import ErrorBoundary, { type ErrorBoundaryProps } from "../error/ErrorBoundary";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
-import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
+import { DynamicRouteWrapper } from "../dynamic-route";
 import DefaultErrorForNotFound from "../defaults/DefaultErrorForNotFound";
 import createElement from "../utils/createElement";
-// import RouteSegmentElement from "./RouteSegmentElement";
 import PageRouteElement from "./PageRouteElement";
 
 type LayoutRouteElementProps = {

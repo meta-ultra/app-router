@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { useParams, useMatches } from "react-router-dom";
-import { useGlobalNotFound } from "../../not-found/globalNotFound";
+import { useGlobalNotFound } from "../not-found/globalNotFound";
 import createProxy from "./createProxy";
 
 const CATCH_ALL_RE = /^\[\.{3}([a-z][a-z0-9-_])\]$/;

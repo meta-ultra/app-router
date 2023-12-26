@@ -8,10 +8,8 @@ import {
   type PropsWithChildren,
   type ComponentType,
 } from "react";
-import type { Metadata, GenerateMetadata, GenerateMetadataSearchParams } from "./Metadata";
-import { useParams, useSearchParams } from "react-router-dom";
-import useParamsProxy from "../routing/DynamicRouteWrapper/useParamsProxy";
-import useSearchParamsProxy from "../routing/DynamicRouteWrapper/useSearchParamsProxy";
+import type { Metadata, GenerateMetadata } from "./Metadata";
+import { useParamsProxy, useSearchParamsProxy } from "../dynamic-route";
 import updateMetadata from "./updateMetadata";
 
 type MetadataBoundaryProps = PropsWithChildren<{

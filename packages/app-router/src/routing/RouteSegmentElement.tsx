@@ -14,7 +14,7 @@ import { GlobalNotFoundProvider } from "../not-found/globalNotFound";
 import { NotFoundProvider, type NotFoundProviderProps } from "../not-found/notFound";
 import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import MetadataBoundary from "../metadata/MetadataBoundary";
-import { DynamicRouteWrapper } from "./DynamicRouteWrapper";
+import { DynamicRouteWrapper } from "../dynamic-route";
 import DefaultRootRouteSegmentElementNotFound from "../defaults/DefaultRootRouteSegmentElementNotFound";
 import DefaultLoading from "../defaults/DefaultLoading";
 import DefaultGlobalError from "../defaults/DefaultGlobalError";

@@ -3,7 +3,7 @@
  * A subset of Next.js Metadata. For more detail, please refer to
  * https://nextjs.org/docs/app/api-reference/functions/generate-metadata#the-metadata-object.
  *========================================================================**/
-import useParamsProxy from "../routing/DynamicRouteWrapper/useParamsProxy";
+import { useParamsProxy } from "../dynamic-route";
 
 interface Metadata {
   title?: string;
