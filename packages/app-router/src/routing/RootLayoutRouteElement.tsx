@@ -7,19 +7,21 @@ import LoadingBoundary, { LoadingBoundaryProps } from "../loading/LoadingBoundar
 import MetadataBoundary from "../metadata/MetadataBoundary";
 import isLazyElementType from "../utils/isLazyElementType";
 import DefaultLoading from "../defaults/DefaultLoading";
-import DefaultGlobalNotFound from "../defaults/DefaultGlobalNotfound";
+import DefaultGlobalNotFound from "../defaults/DefaultGlobalNotFound";
 import DefaultGlobalError from "../defaults/DefaultGlobalError";
 import createElement from "../utils/createElement";
 import PageRouteElement from "./PageRouteElement";
 
 type RootLayoutRouteElementProps = {
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+  children?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   parallelRoutes?: {
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     [name: string]: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   };
 };
@@ -47,7 +49,8 @@ const RootLayoutRouteElement: FC<RootLayoutRouteElementProps> = ({
     </LoadingBoundary>
   );
 
-  let child = createElement(children, props, layoutChildren);
+  // layoutChildren acts as default root layout as well
+  let child = children ? createElement(children, props, layoutChildren) : layoutChildren;
   if (template) {
     // create a brand new key to make sure create a new Template instance every rendering.
     child = createElement(template, { key: +new Date() }, child);
@@ -58,7 +61,7 @@ const RootLayoutRouteElement: FC<RootLayoutRouteElementProps> = ({
     <GlobalNotFoundProvider fallback={notFound}>
       <NotFoundProvider fallback={notFound}>
         <ErrorBoundary fallback={error}>
-          <MetadataBoundary component={children}>{child}</MetadataBoundary>
+          {children ? <MetadataBoundary component={children}>{child}</MetadataBoundary> : child}
         </ErrorBoundary>
       </NotFoundProvider>
     </GlobalNotFoundProvider>

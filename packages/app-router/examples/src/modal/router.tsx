@@ -25,32 +25,30 @@ const router = createBrowserRouter(
           index: true,
           element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
+        // {
+        //   id: "imgs/[id]",
+        //   path: "imgs/:id",
+        //   element: (
+        //     <InterceptingRouteElement
+        //       interceptingRoutes={{
+        //         "gallery": (
+        //           <LayoutRouteElement
+        //             parallelRoutes={{
+        //               page: lazy(() => import("./app/gallery/page")),
+        //               children: lazy(() => import("./app/gallery/(..)imgs/[id]/page")),
+        //             }}
+        //           />
+        //         )
+        //       }}
+        //     >
+        //       {lazy(() => import("./app/imgs/[id]/page"))}
+        //     </InterceptingRouteElement>
+
+        //   ),
+        // },
         {
           path: "gallery",
-          element: (
-            <LayoutRouteElement>{lazy(() => import("./app/gallery/page"))}</LayoutRouteElement>
-          ),
-          children: [
-            {
-              id: "img/[id]",
-              path: "img/:id",
-              element: (
-                <PageRouteElement>
-                  {lazy(() => import("./app/gallery/img/[id]/page"))}
-                </PageRouteElement>
-              ),
-            },
-            // {
-            //   path: "*",
-            //   element: (
-            //     <ParallelRoutes>
-            //       <ParallelRoutes index>{lazy(() => import("./app/gallery/page"))}</ParallelRoutes>
-            //       {/* redirect to img/[id] if the previous state is undefined. */}
-            //       <ParallelRoutes id="img/[id]" redirect>{lazy(() => import("./app/gallery/img/[id]/page"))}</ParallelRoutes>
-            //     </ParallelRoutes>
-            //   ),
-            // },
-          ],
+          element: <PageRouteElement>{lazy(() => import("./app/gallery/page"))}</PageRouteElement>,
         },
       ],
     },

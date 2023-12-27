@@ -1,14 +1,14 @@
-import { type FC } from "react";
-import { type LayoutRouteProps, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Page: FC<LayoutRouteProps> = ({ children }) => {
+export default function Page() {
   return (
-    <>
-      <div>Page</div>
-      <Link to="img/123">Image</Link>
-      {children}
-    </>
+    <div>
+      <h1>Gallery</h1>
+      {[1, 2, 3, 4].map((index: number) => (
+        <Link key={index} to={`imgs/${index}`}>
+          Image {index}
+        </Link>
+      ))}
+    </div>
   );
-};
-
-export default Page;
+}
