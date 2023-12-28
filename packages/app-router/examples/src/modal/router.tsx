@@ -6,6 +6,7 @@ import {
   RootErrorElement,
   LayoutRouteElement,
   PageRouteElement,
+  InterceptingRouteElement,
 } from "../../../src/index";
 
 import RootNotFound from "./app/not-found";
@@ -47,9 +48,66 @@ const router = createBrowserRouter(
         //   ),
         // },
         {
-          path: "gallery",
-          element: <PageRouteElement>{lazy(() => import("./app/gallery/page"))}</PageRouteElement>,
+          element: (
+            <LayoutRouteElement>{lazy(() => import("./app/gallery/layout"))}</LayoutRouteElement>
+          ),
+          children: [
+            {
+              path: "gallery",
+              element: (
+                <InterceptingRouteElement>
+                  {lazy(() => import("./app/gallery/page"))}
+                </InterceptingRouteElement>
+              ),
+              children: [
+                {
+                  id: "(..)imgs/[id]",
+                  path: "imgs/:id",
+                  element: (
+                    <PageRouteElement>
+                      {lazy(() => import("./app/gallery/(..)imgs/[id]/page"))}
+                    </PageRouteElement>
+                  ),
+                },
+                {
+                  id: "(..)posts/[id]",
+                  path: "posts/:id",
+                  element: (
+                    <PageRouteElement>
+                      {lazy(() => import("./app/gallery/(..)posts/[id]/page"))}
+                    </PageRouteElement>
+                  ),
+                },
+              ],
+            },
+            // {
+            //   id: "imgs/[id]",
+            //   path: "imgs/:id",
+            //   element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)imgs/[id]/page"))}</PageRouteElement>
+            // },
+            // {
+            //   id: "posts/[id]",
+            //   path: "posts/:id",
+            //   element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)posts/[id]/page"))}</PageRouteElement>
+            // },
+          ],
         },
+        // {
+        //   path: "gallery",
+        //   element: <InterceptingRouteElement from="/gallery">{lazy(() => import("./app/gallery/page"))}</InterceptingRouteElement>,
+        //   children: [
+        //     {
+        //       id: "imgs/[id]",
+        //       path: "imgs/:id",
+        //       element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)imgs/[id]/page"))}</PageRouteElement>
+        //     },
+        //     {
+        //       id: "posts/[id]",
+        //       path: "posts/:id",
+        //       element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)posts/[id]/page"))}</PageRouteElement>
+        //     },
+        //   ]
+        // },
       ],
     },
   ],

@@ -13,6 +13,8 @@ export type { LayoutRouteElementProps } from "./routing/LayoutRouteElement";
 export { default as LayoutRouteElement } from "./routing/LayoutRouteElement";
 export type { PageRouteElementProps } from "./routing/PageRouteElement";
 export { default as PageRouteElement } from "./routing/PageRouteElement";
+export type { InterceptingRouteElementProps } from "./routing/InterceptingRouteElement";
+export { default as InterceptingRouteElement } from "./routing/InterceptingRouteElement";
 
 // deprecated APIs
 export type { RouteSegmentElementProps } from "./routing/RouteSegmentElement";
