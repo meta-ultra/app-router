@@ -35,6 +35,9 @@ module.exports = (mode, envVars) => {
         "@": path.resolve("src"),
       },
       mainFiles: ["index"],
+      fallback: {
+        path: require.resolve("path-browserify"),
+      },
     },
     devtool: "eval-cheap-module-source-map",
     watchOptions: {

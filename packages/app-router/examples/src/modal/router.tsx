@@ -61,7 +61,7 @@ const router = createBrowserRouter(
               ),
               children: [
                 {
-                  id: "(..)imgs/[id]",
+                  id: "/gallery/(..)imgs/[id]",
                   path: "imgs/:id",
                   element: (
                     <PageRouteElement>
@@ -70,7 +70,7 @@ const router = createBrowserRouter(
                   ),
                 },
                 {
-                  id: "(..)posts/[id]",
+                  id: "/gallery/(..)posts/[id]",
                   path: "posts/:id",
                   element: (
                     <PageRouteElement>

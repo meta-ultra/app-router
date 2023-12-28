@@ -32,6 +32,7 @@
   "dependencies": {
     "core-js": "^3.33.3",
     "core-js-pure": "^3.33.3",
+    "path-browserify": "^1.0.1",
     "react-dom": "^18.2.0"
   }
 }
