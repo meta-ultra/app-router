@@ -75,9 +75,9 @@ const InterceptingRouteLayout = ({
   );
 };
 
-type InterceptingRouteElementProps = {
+type InterceptingLayoutRouteElementProps = {
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+  page?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
@@ -85,8 +85,8 @@ type InterceptingRouteElementProps = {
   template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
 };
 
-const InterceptingRouteElement: FC<InterceptingRouteElementProps> = ({
-  children,
+const InterceptingLayoutRouteElement: FC<InterceptingLayoutRouteElementProps> = ({
+  page,
   loading,
   error,
   notFound,
@@ -98,12 +98,12 @@ const InterceptingRouteElement: FC<InterceptingRouteElementProps> = ({
       error={error}
       notFound={notFound}
       template={template}
-      parallelRoutes={children ? { page: children } : undefined}
+      parallelRoutes={page ? { page } : undefined}
     >
       {InterceptingRouteLayout as FunctionComponent}
     </LayoutRouteElement>
   );
 };
 
-export type { InterceptingRouteElementProps };
-export default InterceptingRouteElement;
+export type { InterceptingLayoutRouteElementProps };
+export default InterceptingLayoutRouteElement;

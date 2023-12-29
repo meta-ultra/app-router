@@ -6,7 +6,7 @@ import {
   RootErrorElement,
   LayoutRouteElement,
   PageRouteElement,
-  InterceptingRouteElement,
+  InterceptingLayoutRouteElement,
   InterceptedRouteElement,
 } from "../../../src/index";
 
@@ -53,9 +53,7 @@ const router = createBrowserRouter(
             {
               path: "gallery",
               element: (
-                <InterceptingRouteElement>
-                  {lazy(() => import("./app/gallery/page"))}
-                </InterceptingRouteElement>
+                <InterceptingLayoutRouteElement page={lazy(() => import("./app/gallery/page"))} />
               ),
               children: [
                 {
