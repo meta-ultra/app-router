@@ -12,6 +12,7 @@ import { type LoadingBoundaryProps } from "../loading/LoadingBoundary";
 import { type ErrorBoundaryProps } from "../error/ErrorBoundary";
 import { type NotFoundProviderProps } from "../not-found/notFound";
 import LayoutRouteElement from "./LayoutRouteElement";
+import { info } from "../utils/logging";
 
 type InterceptingRouteElementProps = {
   children: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
@@ -59,20 +60,14 @@ const InterceptingRouteLayout = ({
   const matches = useMatches();
   const navigationType = useNavigationType();
   if (navigationType === "POP") {
-    if (process.env.NODE_ENV === "development") {
-      console.log(
-        "navigate to this route by typing the URL directly or pressing the backward or forward button"
-      );
-    }
+    info("come here through typing URL on the browser URL bar, or backward or forward button");
     const url = getInterceptedUrl(matches);
     if (url) {
       return <Navigate to={url} replace />;
     }
   } else {
     // `REPLACE`, `PUSH`
-    if (process.env.NODE_ENV === "development") {
-      console.log("navigate to this route by `navigate` or `Link` component");
-    }
+    info("come here through `navigate` or `Link` component");
   }
 
   return (

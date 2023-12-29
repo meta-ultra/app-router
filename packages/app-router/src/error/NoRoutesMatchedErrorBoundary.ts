@@ -8,6 +8,7 @@ import { type FC } from "react";
 import { useRouteError } from "react-router-dom";
 import { useNotFound } from "../not-found/notFound";
 import ErrorResponse from "../not-found/ErrorResponse";
+import { warn } from "../utils/logging";
 
 const NoRoutesMachedErrorBoundary: FC = () => {
   /*======= react-router-dom v6 =======*/
@@ -18,10 +19,9 @@ const NoRoutesMachedErrorBoundary: FC = () => {
     notFound(error as ErrorResponse);
     return null;
   } else {
-    console.warn(`
-      For better UX, set the root "element" of router object to an instance of "RouteSegmentElement",
-      of which "layout" property is "RouteSegmentElementLayout.ROOT_LAYOUT", and with valid error property.
-    `);
+    warn(
+      `For better UX, set the "element" property of root route object to an instance of "RootLayoutRouteElement", and with valid error property.`
+    );
     throw error;
   }
 };
