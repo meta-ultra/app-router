@@ -4,7 +4,7 @@ import {
   type ComponentType,
   type ReactElement,
   type LazyExoticComponent,
-  FunctionComponent,
+  type FunctionComponent,
 } from "react";
 import { useNavigationType, useMatches, Navigate } from "react-router-dom";
 import { join } from "path";
@@ -13,16 +13,6 @@ import { type ErrorBoundaryProps } from "../error/ErrorBoundary";
 import { type NotFoundProviderProps } from "../not-found/notFound";
 import LayoutRouteElement from "./LayoutRouteElement";
 import { info } from "../utils/logging";
-
-type InterceptingRouteElementProps = {
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
-  loading?: LoadingBoundaryProps["fallback"];
-  error?: ErrorBoundaryProps["fallback"];
-  notFound?: NotFoundProviderProps["fallback"];
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
-};
 
 const getInterceptedUrl = (matches: ReturnType<typeof useMatches>): undefined | string => {
   let url = undefined;
@@ -62,7 +52,7 @@ const InterceptingRouteLayout = ({
   page,
 }: {
   children: ReactNode;
-  page: ReactNode;
+  page?: ReactNode;
 }): ReactElement => {
   const matches = useMatches();
   const navigationType = useNavigationType();
@@ -85,6 +75,16 @@ const InterceptingRouteLayout = ({
   );
 };
 
+type InterceptingRouteElementProps = {
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+  loading?: LoadingBoundaryProps["fallback"];
+  error?: ErrorBoundaryProps["fallback"];
+  notFound?: NotFoundProviderProps["fallback"];
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+};
+
 const InterceptingRouteElement: FC<InterceptingRouteElementProps> = ({
   children,
   loading,
@@ -98,9 +98,7 @@ const InterceptingRouteElement: FC<InterceptingRouteElementProps> = ({
       error={error}
       notFound={notFound}
       template={template}
-      parallelRoutes={{
-        page: children,
-      }}
+      parallelRoutes={children ? { page: children } : undefined}
     >
       {InterceptingRouteLayout as FunctionComponent}
     </LayoutRouteElement>

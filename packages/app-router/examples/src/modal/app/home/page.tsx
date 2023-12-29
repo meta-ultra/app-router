@@ -32,6 +32,11 @@ function Home() {
           </Link>
         ))}
       </div>
+      <div>
+        <Link to={`posts/detail`} style={{ display: "block" }}>
+          Go to posts/(.)detail
+        </Link>
+      </div>
     </div>
   );
 }

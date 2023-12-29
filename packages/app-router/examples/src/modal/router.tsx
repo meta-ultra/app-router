@@ -7,6 +7,7 @@ import {
   LayoutRouteElement,
   PageRouteElement,
   InterceptingRouteElement,
+  InterceptedRouteElement,
 } from "../../../src/index";
 
 import RootNotFound from "./app/not-found";
@@ -32,6 +33,23 @@ const router = createBrowserRouter(
             <LayoutRouteElement>{lazy(() => import("./app/gallery/layout"))}</LayoutRouteElement>
           ),
           children: [
+            {
+              id: "/posts/detail",
+              path: "posts/detail",
+              element: (
+                <InterceptedRouteElement
+                  interceptingRouteElement={
+                    <PageRouteElement>
+                      {lazy(() => import("./app/posts/(.)detail/page"))}
+                    </PageRouteElement>
+                  }
+                >
+                  <PageRouteElement>
+                    {lazy(() => import("./app/posts/detail/page"))}
+                  </PageRouteElement>
+                </InterceptedRouteElement>
+              ),
+            },
             {
               path: "gallery",
               element: (
