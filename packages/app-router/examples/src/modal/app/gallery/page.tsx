@@ -4,11 +4,27 @@ export default function Page() {
   return (
     <div>
       <h1>Gallery</h1>
-      {[1, 2, 3, 4].map((index: number) => (
-        <Link key={index} to={`imgs/${index}`} style={{ display: "block" }}>
-          Image {index}
-        </Link>
-      ))}
+      <div>
+        {[1, 2].map((index: number) => (
+          <Link key={index} to={`imgs/${index}`} style={{ display: "block" }}>
+            Go to (..)imgs/{index}
+          </Link>
+        ))}
+      </div>
+      <div>
+        {[1, 2].map((index: number) => (
+          <Link key={index} to={`detail/imgs/${index}`} style={{ display: "block" }}>
+            Go to detail/(..)(..)imgs/{index}
+          </Link>
+        ))}
+      </div>
+      <div>
+        {[1, 2].map((index: number) => (
+          <Link key={index} to={`detail/more/imgs/${index}`} style={{ display: "block" }}>
+            Go to detail/more/(...)imgs/{index}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

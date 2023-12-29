@@ -23,30 +23,10 @@ const router = createBrowserRouter(
       errorElement: <RootErrorElement notFound={<RootNotFound />} />,
       children: [
         {
+          id: "/",
           index: true,
           element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
-        // {
-        //   id: "imgs/[id]",
-        //   path: "imgs/:id",
-        //   element: (
-        //     <InterceptingRouteElement
-        //       interceptingRoutes={{
-        //         "gallery": (
-        //           <LayoutRouteElement
-        //             parallelRoutes={{
-        //               page: lazy(() => import("./app/gallery/page")),
-        //               children: lazy(() => import("./app/gallery/(..)imgs/[id]/page")),
-        //             }}
-        //           />
-        //         )
-        //       }}
-        //     >
-        //       {lazy(() => import("./app/imgs/[id]/page"))}
-        //     </InterceptingRouteElement>
-
-        //   ),
-        // },
         {
           element: (
             <LayoutRouteElement>{lazy(() => import("./app/gallery/layout"))}</LayoutRouteElement>
@@ -70,44 +50,43 @@ const router = createBrowserRouter(
                   ),
                 },
                 {
-                  id: "/gallery/(..)posts/[id]",
-                  path: "posts/:id",
+                  id: "/gallery/detail/(..)(..)imgs/[id]",
+                  path: "detail/imgs/:id",
                   element: (
                     <PageRouteElement>
-                      {lazy(() => import("./app/gallery/(..)posts/[id]/page"))}
+                      {lazy(() => import("./app/gallery/detail/(..)(..)imgs/[id]/page"))}
+                    </PageRouteElement>
+                  ),
+                },
+                {
+                  id: "/gallery/detail/more/(...)imgs/[id]",
+                  path: "detail/more/imgs/:id",
+                  element: (
+                    <PageRouteElement>
+                      {lazy(() => import("./app/gallery/detail/more/(...)imgs/[id]/page"))}
+                    </PageRouteElement>
+                  ),
+                },
+                {
+                  id: "/gallery/nested/(group)/(..)(..)imgs/[id]",
+                  path: "nested/imgs/:id",
+                  element: (
+                    <PageRouteElement>
+                      {lazy(() => import("./app/gallery/nested/(group)/(..)(..)imgs/[id]/page"))}
                     </PageRouteElement>
                   ),
                 },
               ],
             },
-            // {
-            //   id: "imgs/[id]",
-            //   path: "imgs/:id",
-            //   element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)imgs/[id]/page"))}</PageRouteElement>
-            // },
-            // {
-            //   id: "posts/[id]",
-            //   path: "posts/:id",
-            //   element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)posts/[id]/page"))}</PageRouteElement>
-            // },
+            {
+              id: "/imgs/[id]",
+              path: "imgs/:id",
+              element: (
+                <PageRouteElement>{lazy(() => import("./app/imgs/[id]/page"))}</PageRouteElement>
+              ),
+            },
           ],
         },
-        // {
-        //   path: "gallery",
-        //   element: <InterceptingRouteElement from="/gallery">{lazy(() => import("./app/gallery/page"))}</InterceptingRouteElement>,
-        //   children: [
-        //     {
-        //       id: "imgs/[id]",
-        //       path: "imgs/:id",
-        //       element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)imgs/[id]/page"))}</PageRouteElement>
-        //     },
-        //     {
-        //       id: "posts/[id]",
-        //       path: "posts/:id",
-        //       element: <PageRouteElement>{lazy(() => import ("./app/gallery/(..)posts/[id]/page"))}</PageRouteElement>
-        //     },
-        //   ]
-        // },
       ],
     },
   ],

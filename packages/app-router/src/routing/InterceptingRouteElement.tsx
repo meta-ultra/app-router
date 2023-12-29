@@ -15,17 +15,19 @@ import LayoutRouteElement from "./LayoutRouteElement";
 import { info } from "../utils/logging";
 
 type InterceptingRouteElementProps = {
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
 };
 
 const getInterceptedUrl = (matches: ReturnType<typeof useMatches>): undefined | string => {
   let url = undefined;
 
-  const NOTATIONS: [string, (dirname: string, basename: string) => string][] = [
+  const notationResolvers: [string, (dirname: string, basename: string) => string][] = [
     ["(...)", (dirname: string, basename: string) => join("/", basename)],
     ["(..)(..)", (dirname: string, basename: string) => join(dirname, "../..", basename)],
     ["(..)", (dirname: string, basename: string) => join(dirname, "../", basename)],
@@ -33,15 +35,20 @@ const getInterceptedUrl = (matches: ReturnType<typeof useMatches>): undefined | 
   const interceptingRoute = matches[matches.length - 1];
   if (interceptingRoute) {
     const { id, pathname } = interceptingRoute;
-    for (let i = 0; url === undefined && i < NOTATIONS.length; ++i) {
-      const notation = NOTATIONS[i];
-      if (notation) {
-        const [n, j] = notation;
-        const index = id.indexOf(n);
+    for (let i = 0; url === undefined && i < notationResolvers.length; ++i) {
+      const notationResolver = notationResolvers[i];
+      if (notationResolver) {
+        const [notation, resolve] = notationResolver;
+        // remove group routes from `id` first
+        const noGroupRouteId = id
+          .split("/")
+          .filter((seg) => !/^\([^()]+\)$/.test(seg))
+          .join("/");
+        const index = noGroupRouteId.indexOf(notation);
         if (index !== -1) {
           const dirname = pathname.slice(0, index - 1);
           const basename = pathname.slice(index);
-          url = j(dirname, basename);
+          url = resolve(dirname, basename);
         }
       }
     }
