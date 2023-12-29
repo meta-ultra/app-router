@@ -18,8 +18,9 @@ Give a ⭐️ if this project helped you!
 - Follows the file conventions and functionalities of Next.js App Router, such as `page`, `layout`, `template`,`loading`, `not-found` and `error`.
 - Supports receiving `params` and `searchParams` as props in `page`, `layout`.
 - Supports dynamic routes including catch-all segments and optional catch-all segments.<span style="font-size: 12px; color: #888;">(by setting route `id`)</span>
-- Supports parallel routes with its own `template`, `loading`, `not-found` and `error`.
 - Supports default root layout.
+- Supports advance feature - parallel routes with its own `template`, `loading`, `not-found` and `error`.
+- Supports advance feature - fully-functional intercepting routes start with `(.)`, `(..)`, `(..)(..)` and `(...)`.
 - Besides the context free `notFound` as Next.js does, an extra `notFound` with context created by `useNotFound()` is available.
 - It's capable of setting the `document.title`, and other metadata like `description`, `keywords` and `author` through `metadata` or `generateMetadata` APIs as Next.js does on Server Components.<span style="font-size: 12px; color: #888;">(At this moment, only basic fields are supported)</span>
 - Based on [React Router v6](https://reactrouter.com/), it's free to structure the application routing and project file-system hierarchy, although it's recommended to abide by the rules of Next.js App Router.
