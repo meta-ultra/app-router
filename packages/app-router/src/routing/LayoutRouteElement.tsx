@@ -11,12 +11,14 @@ import PageRouteElement from "./PageRouteElement";
 
 type LayoutRouteElementProps = {
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
+  children?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   loading?: LoadingBoundaryProps["fallback"];
   error?: ErrorBoundaryProps["fallback"];
   notFound?: NotFoundProviderProps["fallback"];
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   template?: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   parallelRoutes?: {
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     [name: string]: ComponentType | ReactElement | LazyExoticComponent<ComponentType<any>>;
   };
 };
@@ -48,16 +50,18 @@ const LayoutRouteElement: FC<LayoutRouteElementProps> = ({
     }, {} as Record<string, ReactElement>);
   }
 
-  let child = createElement(children, props, layoutChildren);
+  let child = children ? createElement(children, props, layoutChildren) : layoutChildren;
   if (template) {
     // create a brand new key to make sure create a new Template instance every rendering.
     child = createElement(template, { key: +new Date() }, child);
   }
 
-  return (
+  return children ? (
     <MetadataBoundary component={children}>
       <DynamicRouteWrapper>{child}</DynamicRouteWrapper>
     </MetadataBoundary>
+  ) : (
+    <DynamicRouteWrapper>{child}</DynamicRouteWrapper>
   );
 };
 
