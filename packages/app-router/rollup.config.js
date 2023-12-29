@@ -35,6 +35,7 @@ module.exports = {
     nodeResolve({
       extensions,
       modulesOnly: true,
+      preferBuiltins: false,
     }),
     commonjs(),
     babel({
