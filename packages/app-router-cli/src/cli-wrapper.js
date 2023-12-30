@@ -16,7 +16,8 @@ Usage
 Options
   ${chalk.yellow("--version, -v")} Display the version.
   ${chalk.yellow("--watch, -w")} Enable watch mode.
-  ${chalk.yellow("--basename, -b <basename=''>")} Enable watch mode.
+  ${chalk.yellow("--basename <basename=''>")} Set the basename.
+  ${chalk.yellow("--hash")} Use hash instead of history API.
   ${chalk.yellow(
     "--obtuse <milliseconds=300>"
   )} Start to generate router after a specified milliseconds when changes finish.
@@ -49,7 +50,10 @@ const cli = meow(helpText, {
     basename: {
       type: "string",
       default: "",
-      shortFlag: "b",
+    },
+    hash: {
+      type: "boolean",
+      default: false,
     },
     obtuse: {
       type: "number",
@@ -84,6 +88,7 @@ const main = async () => {
   }
 };
 
+// process now
 if (cli.flags.version) {
   console.log(cli.pkg.version);
 } else if (cli.flags.help) {
