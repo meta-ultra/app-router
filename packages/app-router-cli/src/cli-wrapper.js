@@ -16,6 +16,7 @@ Usage
 Options
   ${chalk.yellow("--version, -v")} Display the version.
   ${chalk.yellow("--watch, -w")} Enable watch mode.
+  ${chalk.yellow("--basename, -b <basename=''>")} Enable watch mode.
   ${chalk.yellow(
     "--obtuse <milliseconds=300>"
   )} Start to generate router after a specified milliseconds when changes finish.
@@ -44,6 +45,11 @@ const cli = meow(helpText, {
       type: "boolean",
       default: false,
       shortFlag: "w",
+    },
+    basename: {
+      type: "string",
+      default: "",
+      shortFlag: "b",
     },
     obtuse: {
       type: "number",
