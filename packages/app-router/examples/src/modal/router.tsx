@@ -29,25 +29,29 @@ const router = createBrowserRouter(
           element: <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>,
         },
         {
+          id: "/posts/detail",
+          path: "posts/detail",
+          element: (
+            <InterceptedRouteElement
+              interceptingRouteElement={
+                <PageRouteElement>
+                  {lazy(() => import("./app/posts/(.)detail/page"))}
+                </PageRouteElement>
+              }
+            >
+              <PageRouteElement>{lazy(() => import("./app/posts/detail/page"))}</PageRouteElement>
+            </InterceptedRouteElement>
+          ),
+        },
+        {
           element: (
             <LayoutRouteElement>{lazy(() => import("./app/gallery/layout"))}</LayoutRouteElement>
           ),
           children: [
             {
-              id: "/posts/detail",
-              path: "posts/detail",
+              path: "gallery/list",
               element: (
-                <InterceptedRouteElement
-                  interceptingRouteElement={
-                    <PageRouteElement>
-                      {lazy(() => import("./app/posts/(.)detail/page"))}
-                    </PageRouteElement>
-                  }
-                >
-                  <PageRouteElement>
-                    {lazy(() => import("./app/posts/detail/page"))}
-                  </PageRouteElement>
-                </InterceptedRouteElement>
+                <PageRouteElement>{lazy(() => import("./app/gallery/list/page"))}</PageRouteElement>
               ),
             },
             {

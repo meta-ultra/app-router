@@ -37,6 +37,11 @@ function Home() {
           Go to posts/(.)detail
         </Link>
       </div>
+      <div>
+        <Link to={`gallery/list`} style={{ display: "block" }}>
+          Go to gallery/list
+        </Link>
+      </div>
     </div>
   );
 }

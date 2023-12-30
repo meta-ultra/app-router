@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Page() {
   return (
     <div>
-      <h1>Gallery</h1>
+      <h1>gallery/page</h1>
       <div>
         {[1, 2].map((index: number) => (
           <Link key={index} to={`imgs/${index}`} style={{ display: "block" }}>
