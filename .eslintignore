@@ -1,13 +1,20 @@
-# Ignore artifacts:
+# Ignore artifacts
+
 dist
 build
 bundle
 *.min.js
 
-# Ignore scripts:
+# Ignore scripts
+
 **/scripts
 
-# Ignore configurations:
+# Ignore configurations
+
 *.config.js
 *.conf.js
 *rc.js
+
+# Ignore test
+
+*.spec.js

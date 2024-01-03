@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { join } = require("node:path");
 const { traverseFileSystem } = require("../src/core/traverseFileSystem");
 
