@@ -26,7 +26,8 @@
   "scripts": {
     "dev": "node ./src/cli-wrapper.js -s ./logs/app -o ./logs/router.tsx",
     "precompile": "node ./scripts/precompile.js",
-    "build": "rimraf ./dist && node ./scripts/precompile.js && node ./scripts/build.js"
+    "build": "rimraf ./dist && node ./scripts/precompile.js && node ./scripts/build.js",
+    "test": "jest"
   },
   "keywords": [
     "react",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.1",
+    "jest": "^29.7.0",
     "rimraf": "^5.0.5",
     "uglify-js": "^3.17.4"
   }

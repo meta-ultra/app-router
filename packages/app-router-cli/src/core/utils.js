@@ -1,5 +1,3 @@
-import { isArray } from "lodash-es";
-
 const stripExtension = (name) => name.replace(/\.(t|j)sx?$/, "");
 
 const pipe =

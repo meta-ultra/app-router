@@ -12,15 +12,14 @@ import { generateOutput } from "./template.js";
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {
   const routes = pipe(
-    mapDynamicRoutesToSplats,
-    mergeNestedRouteSegments,
+    // mapDynamicRoutesToSplats,
+    // mergeNestedRouteSegments,
+    // sinkPageWithLayout,
+    // processNotFound,
+    // processGlobalError,
+    // remainValidDynamicRoutes,
     // remainValidRouteSegments,
-    sinkPageWithLayout,
-    processNotFound,
-    processGlobalError,
-    remainValidDynamicRoutes,
-    remainValidRouteSegments,
-    fulfillDefaultRootLayout,
+    // fulfillDefaultRootLayout,
     traverseFileSystem
   )(outputPath, sourcePath);
 

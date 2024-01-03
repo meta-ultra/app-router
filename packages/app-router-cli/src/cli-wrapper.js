@@ -76,11 +76,12 @@ const sourcePath = join(process.cwd(), cli.flags.source);
 const outputPath = join(process.cwd(), cli.flags.output);
 
 const main = async () => {
-  const spinner = ora("Burning the midnight oil to generate App Router configuration...").start();
+  const spinner = ora("App router configuration is being generated now...").start();
 
   const routes = getRoutesFromFileSystem(outputPath, sourcePath);
-  const output = generateRouterOutput(routes);
-  writeFileSync(outputPath, await format(output, { parser: "babel" }));
+  console.log(routes);
+  // const output = generateRouterOutput(routes);
+  // writeFileSync(outputPath, await format(output, { parser: "babel" }));
 
   spinner.succeed("App Router has been ready.");
   if (cli.flags.watch) {
