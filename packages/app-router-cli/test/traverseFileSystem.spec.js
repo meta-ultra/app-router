@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { join } from "node:path";
 import { traverseFileSystem } from "../src/core/traverseFileSystem";
 
@@ -26,6 +25,15 @@ test("no private items", () => {
   };
 
   expect(containsPrivateItems(output)).toBe(false);
+});
+
+test("select the first one sorted alphabetically when there're duplicated files with the same name.", () => {
+  const output = traverseFileSystem(
+    join(__dirname, "./traverseFileSystem"),
+    join(__dirname, "./traverseFileSystem/app")
+  );
+
+  expect(output[0].children[2].props["error"].split(".")[1]).toBe("jsx");
 });
 
 describe("the full paths for page, layout and others are relative to the `outputPath` parameter", () => {

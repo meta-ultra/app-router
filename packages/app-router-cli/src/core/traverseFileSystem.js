@@ -46,7 +46,7 @@ const isGroupName = (filename) => /^\([^)(]+\)$/.test(filename);
  * @param {string} filename   - the folder name inside the input directory which is diving into, such as "login"
  * @param {object[]} output   - the output, type of which is an array of object with "path", "props" and "children" properties.󠁧󠁢
  * The "props" property is an object contains "page", "layout", "template" and other conventions nested property value of which is the full path with extension of that file from the root dirname.
- * For example, { "props": { "page": "app/home/page" } }
+ * For example, { "props": { "page": "app/home/page.js" } }
  * @returns
  */
 const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => {
@@ -67,8 +67,8 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
         }
       } else if (/\.[jt]sx?$/i.test(itemName)) {
         const fileName = stripExtension(itemName);
-        if (isValidFileName(fileName)) {
-          node.props = node.props || {};
+        node.props = node.props || {};
+        if (!node.props[fileName] && isValidFileName(fileName)) {
           node.props[fileName] = relative(outputPath, filepath).replaceAll(sep, "/");
         }
       }
