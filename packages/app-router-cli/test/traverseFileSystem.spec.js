@@ -1,6 +1,6 @@
 /* eslint-disable */
-const { join } = require("node:path");
-const { traverseFileSystem } = require("../src/core/traverseFileSystem");
+import { join } from "node:path";
+import { traverseFileSystem } from "../src/core/traverseFileSystem";
 
 test("no private items", () => {
   const output = traverseFileSystem(
@@ -46,6 +46,14 @@ describe("the full paths for page, layout and others are relative to the `output
     return success;
   };
 
+  test("starts with traverseFileSystem/app/", () => {
+    const output = traverseFileSystem(
+      join(__dirname, "./"),
+      join(__dirname, "./traverseFileSystem/app")
+    );
+    expect(startsWith(output, "traverseFileSystem/app/")).toBe(true);
+  });
+
   test("starts with app/", () => {
     const output = traverseFileSystem(
       join(__dirname, "./traverseFileSystem"),
@@ -60,5 +68,13 @@ describe("the full paths for page, layout and others are relative to the `output
       join(__dirname, "./traverseFileSystem/app")
     );
     expect(startsWith(output, "../app/")).toBe(true);
+  });
+
+  test("starts with ../../app/", () => {
+    const output = traverseFileSystem(
+      join(__dirname, "./traverseFileSystem/test/test"),
+      join(__dirname, "./traverseFileSystem/app")
+    );
+    expect(startsWith(output, "../../app/")).toBe(true);
   });
 });

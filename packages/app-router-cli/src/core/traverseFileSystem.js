@@ -69,9 +69,7 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
         const fileName = stripExtension(itemName);
         if (isValidFileName(fileName)) {
           node.props = node.props || {};
-          node.props[fileName] = relative(outputPath, filepath)
-            .replace(/^\.{2}/, ".")
-            .replaceAll(sep, "/");
+          node.props[fileName] = relative(outputPath, filepath).replaceAll(sep, "/");
         }
       }
     }
