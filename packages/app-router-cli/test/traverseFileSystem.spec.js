@@ -86,3 +86,85 @@ describe("the full paths for page, layout and others are relative to the `output
     expect(startsWith(output, "../../app/")).toBe(true);
   });
 });
+
+test.only("test the generated folder tree fully", () => {
+  const output = traverseFileSystem(
+    join(__dirname, "./traverseFileSystem"),
+    join(__dirname, "./traverseFileSystem/app")
+  );
+
+  const expected = [
+    {
+      children: [
+        {
+          props: {
+            layout: "app/(...group)/layout.tsx",
+          },
+          children: [
+            {
+              props: {
+                page: "app/(...group)/posts/page.ts",
+              },
+            },
+          ],
+        },
+        {
+          props: {
+            page: "app/(group)/page.ts",
+          },
+          children: [
+            {
+              children: [
+                {
+                  props: {
+                    page: "app/(group)/posts/[[...id]]/page.ts",
+                  },
+                },
+              ],
+            },
+            {
+              props: {
+                page: "app/(group)/[id]/page.ts",
+              },
+            },
+          ],
+        },
+        {
+          children: [
+            {
+              props: {
+                "not-found": "app/about/nested/not-found.js",
+                page: "app/about/nested/page.js",
+                template: "app/about/nested/template.tsx",
+              },
+            },
+          ],
+          props: {
+            page: "app/about/page.jsx",
+            "global-error": "app/about/global-error.tsx",
+          },
+        },
+        {
+          props: {
+            page: "app/error/page.ts",
+          },
+        },
+        {
+          props: {
+            error: "app/home/error.jsx",
+            layout: "app/home/layout.jsx",
+            page: "app/home/page.tsx",
+          },
+        },
+      ],
+      props: {
+        error: "app/error.js",
+        "global-error": "app/global-error.js",
+        layout: "app/layout.tsx",
+        loading: "app/loading.jsx",
+      },
+    },
+  ];
+
+  expect(output).toStrictEqual(expected);
+});

@@ -38,8 +38,6 @@ const isValidFolderName = (name) => {
   );
 };
 
-const isGroupName = (filename) => /^\([^)(]+\)$/.test(filename);
-
 /**
  * @param {string} outputPath - the output file path, such as "./src/router.tsx"
  * @param {string} dirname    - the input directory path, such as "./src/app"
@@ -47,6 +45,8 @@ const isGroupName = (filename) => /^\([^)(]+\)$/.test(filename);
  * @param {object[]} output   - the output, type of which is an array of object with "path", "props" and "children" properties.󠁧󠁢
  * The "props" property is an object contains "page", "layout", "template" and other conventions nested property value of which is the full path with extension of that file from the root dirname.
  * For example, { "props": { "page": "app/home/page.js" } }
+ *
+ * Note that, the root node is allowed to have "error" property, while the nested node can have "global-error" property as well.
  * @returns
  */
 const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => {
@@ -78,24 +78,6 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
   if (Object.keys(node).length > 0) {
     output.push(node);
   }
-
-  // Only non-private folder node will be included.
-  // if (Object.keys(node).length > 0) {
-  //   if (filename) {
-  //     if (!isGroupName(filename)) {
-  //       node.path = filename;
-  //     } else {
-  //       node._pathHint = filename;
-  //       // Group route must not have page file.
-  //       if (node.props && node.props.page !== undefined) {
-  //         delete node.props.page;
-  //       }
-  //     }
-  //   }
-
-  //   node.children = node.children || [];
-  //   output.push(node);
-  // }
 
   return output;
 };
