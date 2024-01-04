@@ -40,6 +40,7 @@
     "chokidar": "^3.5.3",
     "cli-welcome": "^2.2.2",
     "handlebars": "^4.7.8",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "meow": "^12.1.1",
     "ora": "^7.0.1",

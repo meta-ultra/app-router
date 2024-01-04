@@ -7,23 +7,29 @@ const prune = (nodes, level = 0) => {
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
     if (node) {
-      // global-error locates in the root route only, while error locates in the nested route.
-      if (level === 0) {
-        delete node.error;
-        node.error = node["global-error"];
-      } else {
-        delete node["global-error"];
-      }
+      const props = node.props;
+      if (props) {
+        // global-error locates in the root route only, while error locates in the nested route.
+        if (level === 0) {
+          delete props.error;
+          if (props["global-error"]) {
+            props.error = props["global-error"];
+            delete props["global-error"];
+          }
+        } else {
+          delete props["global-error"];
+        }
 
-      // fulfill preset layout notation for the root route
-      if (level === 0) {
-        node.layout = node.layout || "preset::root-layout";
-      } else {
-        if (
-          !["page", "layout"].find((feature) => node[feature]) &&
-          !!["loading", "error", "not-found"].find((feature) => node[feature])
-        ) {
-          node.layout = "preset::layout";
+        // fulfill preset layout notation for the root route
+        if (level === 0) {
+          props.layout = props.layout || "preset::root-layout";
+        } else {
+          if (
+            !["page", "layout"].find((feature) => props[feature]) &&
+            !!["loading", "error", "not-found"].find((feature) => props[feature])
+          ) {
+            props.layout = "preset::layout";
+          }
         }
       }
 
