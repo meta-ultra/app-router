@@ -1,11 +1,9 @@
 import { join } from "node:path";
 import { traverseFileSystem } from "../src/core/traverseFileSystem";
+import expectedOutputOfSrcApp from "./expectedOutputOfSrcApp";
 
 test("no private items", () => {
-  const output = traverseFileSystem(
-    join(__dirname, "./traverseFileSystem"),
-    join(__dirname, "./traverseFileSystem/app")
-  );
+  const output = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app"));
 
   const containsPrivateItems = (nodes, contains = false) => {
     for (let i = 0; !contains && i < nodes.length; ++i) {
@@ -28,12 +26,11 @@ test("no private items", () => {
 });
 
 test("select the first one sorted alphabetically when there're duplicated files with the same name.", () => {
-  const output = traverseFileSystem(
-    join(__dirname, "./traverseFileSystem"),
-    join(__dirname, "./traverseFileSystem/app")
-  );
+  const output = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app"));
 
-  expect(output[0].children[2].props["error"].split(".")[1]).toBe("jsx");
+  const homeNode = output[0].children.find((node) => node.path === "app/home");
+
+  expect(homeNode.props["error"].split(".")[1]).toBe("jsx");
 });
 
 describe("the full paths for page, layout and others are relative to the `outputPath` parameter", () => {
@@ -54,117 +51,32 @@ describe("the full paths for page, layout and others are relative to the `output
     return success;
   };
 
-  test("starts with traverseFileSystem/app/", () => {
-    const output = traverseFileSystem(
-      join(__dirname, "./"),
-      join(__dirname, "./traverseFileSystem/app")
-    );
-    expect(startsWith(output, "traverseFileSystem/app/")).toBe(true);
+  test("starts with src/app/", () => {
+    const output = traverseFileSystem(join(__dirname, "./"), join(__dirname, "./src/app"));
+    expect(startsWith(output, "src/app/")).toBe(true);
   });
 
   test("starts with app/", () => {
-    const output = traverseFileSystem(
-      join(__dirname, "./traverseFileSystem"),
-      join(__dirname, "./traverseFileSystem/app")
-    );
+    const output = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app"));
     expect(startsWith(output, "app/")).toBe(true);
   });
 
   test("starts with ../app/", () => {
-    const output = traverseFileSystem(
-      join(__dirname, "./traverseFileSystem/test"),
-      join(__dirname, "./traverseFileSystem/app")
-    );
+    const output = traverseFileSystem(join(__dirname, "./src/test"), join(__dirname, "./src/app"));
     expect(startsWith(output, "../app/")).toBe(true);
   });
 
   test("starts with ../../app/", () => {
     const output = traverseFileSystem(
-      join(__dirname, "./traverseFileSystem/test/test"),
-      join(__dirname, "./traverseFileSystem/app")
+      join(__dirname, "./src/test/test"),
+      join(__dirname, "./src/app")
     );
     expect(startsWith(output, "../../app/")).toBe(true);
   });
 });
 
-test.only("test the generated folder tree fully", () => {
-  const output = traverseFileSystem(
-    join(__dirname, "./traverseFileSystem"),
-    join(__dirname, "./traverseFileSystem/app")
-  );
+test("test the generated folder tree fully", () => {
+  const output = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app"));
 
-  const expected = [
-    {
-      children: [
-        {
-          props: {
-            layout: "app/(...group)/layout.tsx",
-          },
-          children: [
-            {
-              props: {
-                page: "app/(...group)/posts/page.ts",
-              },
-            },
-          ],
-        },
-        {
-          props: {
-            page: "app/(group)/page.ts",
-          },
-          children: [
-            {
-              children: [
-                {
-                  props: {
-                    page: "app/(group)/posts/[[...id]]/page.ts",
-                  },
-                },
-              ],
-            },
-            {
-              props: {
-                page: "app/(group)/[id]/page.ts",
-              },
-            },
-          ],
-        },
-        {
-          children: [
-            {
-              props: {
-                "not-found": "app/about/nested/not-found.js",
-                page: "app/about/nested/page.js",
-                template: "app/about/nested/template.tsx",
-              },
-            },
-          ],
-          props: {
-            page: "app/about/page.jsx",
-            "global-error": "app/about/global-error.tsx",
-          },
-        },
-        {
-          props: {
-            page: "app/error/page.ts",
-          },
-        },
-        {
-          props: {
-            error: "app/home/error.jsx",
-            layout: "app/home/layout.jsx",
-            page: "app/home/page.tsx",
-          },
-        },
-      ],
-      props: {
-        error: "app/error.js",
-        "global-error": "app/global-error.js",
-        layout: "app/layout.tsx",
-        loading: "app/loading.jsx",
-      },
-    },
-  ];
-
-  expect(output).toStrictEqual(expected);
+  expect(output).toStrictEqual(expectedOutputOfSrcApp);
 });

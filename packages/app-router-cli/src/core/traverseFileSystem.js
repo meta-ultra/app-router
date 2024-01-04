@@ -50,8 +50,12 @@ const isValidFolderName = (name) => {
  * @returns
  */
 const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => {
-  const node = {};
   const path = join(dirname, filename);
+  const node = {
+    path: relative(outputPath, path).replaceAll(sep, "/"),
+    props: {},
+    children: [],
+  };
   const itemNames = readdirSync(path);
   for (let i = 0; i < itemNames.length; ++i) {
     const itemName = itemNames[i];
@@ -62,12 +66,10 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
 
       if (stats.isDirectory()) {
         if (isValidFolderName(itemName)) {
-          node.children = node.children || [];
           traverseFileSystem(outputPath, path, itemName, node.children);
         }
       } else if (/\.[jt]sx?$/i.test(itemName)) {
         const fileName = stripExtension(itemName);
-        node.props = node.props || {};
         if (!node.props[fileName] && isValidFileName(fileName)) {
           node.props[fileName] = relative(outputPath, filepath).replaceAll(sep, "/");
         }
