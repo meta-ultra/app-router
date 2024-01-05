@@ -34,8 +34,35 @@ test("fulfill a default root layout if it dosen't exist", () => {
   expect(withoutRootLayout[0].props.layout).toStrictEqual("preset::root-layout");
 });
 
-test("fulfill a default layout if there is a loading, not-found or error inside nested route", () => {});
+test("fulfill a default layout if there is a loading, not-found or error but no layout inside a nested route", () => {
+  const tree = cloneDeep(expectedOutputOfSrcApp);
+  prune(tree);
 
-test("prune routes with neither `props.page` nor `props.layout`", () => {});
+  let aboutNode = expectedOutputOfSrcApp[0].children.find((node) => node.path === "app/about");
+  let nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
+  expect(nestedNode.props.layout).toBe(undefined);
 
-test("prune routes descendants of which are with neither `props.page` nor `props.layout`", () => {});
+  aboutNode = tree[0].children.find((node) => node.path === "app/about");
+  nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
+  expect(nestedNode.props.layout).toStrictEqual("preset::layout");
+});
+
+test("remain routes with neither `props.page` nor `props.layout`, but its descendants have", () => {
+  const tree = cloneDeep(expectedOutputOfSrcApp);
+  prune(tree);
+
+  expect(
+    expectedOutputOfSrcApp[0].children.find((node) => node.path === "app/not-empty")
+  ).toBeDefined();
+  expect(tree[0].children.find((node) => node.path === "app/not-empty")).toBeDefined();
+});
+
+test("prune routes without `props.page` and `props.layout` and its descendants are with neither `props.page` nor `props.layout`", () => {
+  const tree = cloneDeep(expectedOutputOfSrcApp);
+  prune(tree);
+
+  expect(
+    expectedOutputOfSrcApp[0].children.find((node) => node.path === "app/empty")
+  ).toBeDefined();
+  expect(tree[0].children.find((node) => node.path === "app/empty")).toBeUndefined();
+});

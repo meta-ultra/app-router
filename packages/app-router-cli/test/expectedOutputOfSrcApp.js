@@ -96,6 +96,19 @@ export default [
         },
         children: [],
       },
+      {
+        children: [
+          {
+            children: [],
+            path: "app/not-empty/not-empty",
+            props: {
+              page: "app/not-empty/not-empty/page.tsx",
+            },
+          },
+        ],
+        path: "app/not-empty",
+        props: {},
+      },
     ],
   },
 ];
