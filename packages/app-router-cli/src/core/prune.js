@@ -13,6 +13,7 @@ const prune = (nodes, level = 0) => {
         if (level === 0) {
           delete props.error;
           if (props["global-error"]) {
+            // rename global-error to error for follow-up proceeding.
             props.error = props["global-error"];
             delete props["global-error"];
           }
