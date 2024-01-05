@@ -1,13 +1,7 @@
 import { pipe } from "./utils.js";
-import { traverseFileSystem } from "./traverseFileSystem.js";
-import { sinkPageWithLayout } from "./sinkPageWithLayout.js";
-import { processNotFound } from "./processNotFound.js";
-import { processGlobalError } from "./processGlobalError.js";
-import { remainValidRouteSegments } from "./remainValidRouteSegments.js";
-import { mergeNestedRouteSegments } from "./mergeNestedRouteSegments.js";
+import traverseFileSystem from "./traverseFileSystem.js";
+import normalize from "./normalize.js";
 import { collectDefaultImports } from "./collectDefaultImports.js";
-import { mapDynamicRoutesToSplats, remainValidDynamicRoutes } from "./processDynamicRoutes.js";
-import { fulfillDefaultRootLayout } from "./fulfillDefaultRootLayout.js";
 import { generateOutput } from "./template.js";
 
 const getRoutesFromFileSystem = (outputPath, sourcePath) => {
@@ -16,10 +10,9 @@ const getRoutesFromFileSystem = (outputPath, sourcePath) => {
     // mergeNestedRouteSegments,
     // sinkPageWithLayout,
     // processNotFound,
-    // processGlobalError,
     // remainValidDynamicRoutes,
     // remainValidRouteSegments,
-    // fulfillDefaultRootLayout,
+    normalize,
     traverseFileSystem
   )(outputPath, sourcePath);
 

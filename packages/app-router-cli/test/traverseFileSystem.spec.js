@@ -1,6 +1,6 @@
 import { join } from "node:path";
-import { traverseFileSystem } from "../src/core/traverseFileSystem";
-import expectedOutputOfSrcApp from "./expectedOutputOfSrcApp";
+import traverseFileSystem from "../src/core/traverseFileSystem";
+import data from "./data";
 
 test("no private items", () => {
   const output = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app"));
@@ -78,5 +78,5 @@ describe("the full paths for page, layout and others are relative to the `output
 test("test the generated folder tree fully", () => {
   const output = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app"));
 
-  expect(output).toStrictEqual(expectedOutputOfSrcApp);
+  expect(output).toStrictEqual(data);
 });

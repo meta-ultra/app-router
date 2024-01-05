@@ -84,4 +84,4 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
   return output;
 };
 
-export { traverseFileSystem };
+export default traverseFileSystem;

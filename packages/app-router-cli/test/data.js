@@ -72,6 +72,57 @@ export default [
       {
         children: [
           {
+            children: [
+              {
+                children: [],
+                path: "app/catch-all/[...id]/create",
+                props: {
+                  page: "app/catch-all/[...id]/create/page.tsx",
+                },
+              },
+            ],
+            path: "app/catch-all/[...id]",
+            props: {
+              page: "app/catch-all/[...id]/page.tsx",
+            },
+          },
+          {
+            children: [
+              {
+                children: [],
+                path: "app/catch-all/[id]/create",
+                props: {
+                  page: "app/catch-all/[id]/create/page.tsx",
+                },
+              },
+            ],
+            path: "app/catch-all/[id]",
+            props: {
+              page: "app/catch-all/[id]/page.tsx",
+            },
+          },
+          {
+            children: [
+              {
+                children: [],
+                path: "app/catch-all/[[...id]]/create",
+                props: {
+                  page: "app/catch-all/[[...id]]/create/page.tsx",
+                },
+              },
+            ],
+            path: "app/catch-all/[[...id]]",
+            props: {
+              page: "app/catch-all/[[...id]]/page.tsx",
+            },
+          },
+        ],
+        path: "app/catch-all",
+        props: {},
+      },
+      {
+        children: [
+          {
             children: [],
             path: "app/empty/empty",
             props: {},
