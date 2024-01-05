@@ -69,6 +69,10 @@ const removeCatchAllRouteChildren = (node) => {
   }
 };
 
+/**
+ * sink the page to the level below if it's along with a layout
+ * @param {*} node
+ */
 const sinkPageWithLayout = (node) => {
   if (node.props.page && node.props.layout) {
     node.children.unshift({
@@ -80,6 +84,23 @@ const sinkPageWithLayout = (node) => {
     });
     delete node.props.page;
   }
+};
+
+const score = (name) => {
+  const result = [
+    [/^\s*$/, 1], // index page route
+    [/^[a-z][a-z0-9]*$/, 0], // normal route
+    [/^\[[a-z][a-z0-9]*\]$/, -1], // dynamic route
+    [/^\[\.{3}[a-z][a-z0-9]*\]$/, -2], // catch-all route
+    [/^\[\[\.{3}[a-z][a-z0-9]*\]\]$/, -3], // optional catch-all route
+  ].find(([regexp]) => regexp.test(name));
+
+  return result ? result[1] : 0;
+};
+const sortChildren = (node) => {
+  node.children.sort((node1, node2) =>
+    score(node1.path.split("/").pop()) > score(node2.path.split("/").pop()) ? -1 : 1
+  );
 };
 
 /**
@@ -103,6 +124,7 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
 
       removeCatchAllRouteChildren(node);
       sinkPageWithLayout(node);
+      sortChildren(node);
 
       // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };

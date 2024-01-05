@@ -72,6 +72,13 @@ export default [
       {
         children: [
           {
+            children: [],
+            path: "app1/catch-all/anything",
+            props: {
+              page: "app1/catch-all/anything/page.tsx",
+            },
+          },
+          {
             children: [
               {
                 children: [],
@@ -118,7 +125,10 @@ export default [
           },
         ],
         path: "app1/catch-all",
-        props: {},
+        props: {
+          layout: "app1/catch-all/layout.tsx",
+          page: "app1/catch-all/page.tsx",
+        },
       },
       {
         children: [

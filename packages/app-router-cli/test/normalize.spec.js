@@ -114,3 +114,13 @@ test("sink the page to the level below if there's layout along with", () => {
   expect(homeNode.children[0].path).toStrictEqual(`${homeNode.path}/`);
   expect(homeNode.children[0].props.page).toBeDefined();
 });
+
+test("sort children", () => {
+  normalize(output1);
+  let catchAllNode = output1[0].children.find((node) => node.path === "app1/catch-all");
+  expect(catchAllNode.children[0].path).toStrictEqual("app1/catch-all/");
+  expect(catchAllNode.children[1].path).toStrictEqual("app1/catch-all/anything");
+  expect(catchAllNode.children[2].path).toStrictEqual("app1/catch-all/[id]");
+  expect(catchAllNode.children[3].path).toStrictEqual("app1/catch-all/[...id]");
+  expect(catchAllNode.children[4].path).toStrictEqual("app1/catch-all/[[...id]]");
+});
