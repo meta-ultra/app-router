@@ -100,3 +100,17 @@ test("remove nested routes inside catch-all routes or optional catch-all routes"
     catchAllNode.children.find((node) => node.path === "app/catch-all/[id]").children
   ).toHaveLength(1);
 });
+
+test("sink the page to the level below if there's layout along with", () => {
+  normalize(output);
+
+  let homeNode = data[0].children.find((node) => node.path === "app/home");
+  expect(homeNode.props.page).toBeDefined();
+  expect(homeNode.children).toHaveLength(0);
+
+  homeNode = output[0].children.find((node) => node.path === "app/home");
+  expect(homeNode.props.page).toBeUndefined();
+  expect(homeNode.children).toHaveLength(1);
+  expect(homeNode.children[0].path).toStrictEqual(`${homeNode.path}/`);
+  expect(homeNode.children[0].props.page).toBeDefined();
+});

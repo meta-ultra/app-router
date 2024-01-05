@@ -69,6 +69,19 @@ const removeCatchAllRouteChildren = (node) => {
   }
 };
 
+const sinkPageWithLayout = (node) => {
+  if (node.props.page && node.props.layout) {
+    node.children.unshift({
+      path: `${node.path}/`,
+      props: {
+        page: node.props.page,
+      },
+      children: [],
+    });
+    delete node.props.page;
+  }
+};
+
 /**
  * Normalize the nodes returned by `traverseFileSystem` in a place.
  * @param {*} nodes - the return value from `traverseFileSystem`.
@@ -89,6 +102,7 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
       }
 
       removeCatchAllRouteChildren(node);
+      sinkPageWithLayout(node);
 
       // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };
