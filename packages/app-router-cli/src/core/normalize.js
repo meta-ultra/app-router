@@ -4,7 +4,12 @@ const PRESET_LAYOUT = "preset::layout";
 const GLOBAL_ERROR = "global-error";
 const NOT_FOUND = "not-found";
 
-const renameGlobalErrorToError = (props, level) => {
+/**
+ * rename global-error to error, and remove the global-error property inside the nested routes.
+ * @param {*} props
+ * @param {*} level
+ */
+const renameGlobalError = (props, level) => {
   // global-error locates in the root route only, while error locates in the nested route.
   if (level === 0) {
     delete props.error;
@@ -21,6 +26,11 @@ const renameGlobalErrorToError = (props, level) => {
 const isNoLayout = (props) => !["layout"].find((propName) => props[propName]);
 const isWithUtilities = (props) =>
   !!["loading", "error", "not-found"].find((propName) => props[propName]);
+/**
+ * fulfill default layout.
+ * @param {*} props
+ * @param {*} level
+ */
 const fulfillLayout = (props, level) => {
   if (level === 0) {
     // fulfill preset layout notation for the root route.
@@ -33,11 +43,29 @@ const fulfillLayout = (props, level) => {
   }
 };
 
+/**
+ * rename "not-found" to "notFound"
+ * @param {*} props
+ */
 const renameNotFound = (props) => {
-  // rename "not-found" to "notFound"
   if (props[NOT_FOUND]) {
     props["notFound"] = props[NOT_FOUND];
     delete props[NOT_FOUND];
+  }
+};
+
+/**
+ * remove children of catch-all or optional catch-all route in a place.
+ * @param {*} node
+ */
+const removeCatchAllRouteChildren = (node) => {
+  const folderName = node.path.split("/").pop();
+  if (
+    [/^\[\.{3}[a-z][a-z0-9]*\]$/, /^\[\[\.{3}[a-z][a-z0-9]*\]\]$/].find((regexp) =>
+      regexp.test(folderName)
+    )
+  ) {
+    node.children = [];
   }
 };
 
@@ -55,16 +83,18 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
     if (node) {
       const props = node.props;
       if (props) {
-        renameGlobalErrorToError(props, level);
+        renameGlobalError(props, level);
         fulfillLayout(props, level);
         renameNotFound(props);
       }
 
+      removeCatchAllRouteChildren(node);
+
+      // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };
       if (node.children && node.children.length) {
         normalize(node.children, level + 1, state);
       }
-      // remain current node if it has either page or layout, or any of its descendant has.
       state.isRemained = state.isRemained || props.page || props.layout;
       if (state.isRemained) {
         parentState.isRemained = true;
@@ -74,6 +104,7 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
     }
   }
 
+  // nodes are remained if only it has either page or layout, or any of its descendant has.
   for (let i = removingIndexes.length - 1; i >= 0; i--) {
     const pruningIndex = removingIndexes[i];
     nodes.splice(pruningIndex, 1);

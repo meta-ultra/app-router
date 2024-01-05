@@ -75,4 +75,28 @@ test("rename not-found to notFound", () => {
   expect(nestedNode.props["notFound"]).toBeDefined();
 });
 
-test("remove nested routes inside catch-all routes or optional catch-all routes", () => {});
+test("remove nested routes inside catch-all routes or optional catch-all routes", () => {
+  normalize(output);
+
+  let catchAllNode = data[0].children.find((node) => node.path === "app/catch-all");
+  expect(
+    catchAllNode.children.find((node) => node.path === "app/catch-all/[[...id]]").children
+  ).toHaveLength(1);
+  expect(
+    catchAllNode.children.find((node) => node.path === "app/catch-all/[...id]").children
+  ).toHaveLength(1);
+  expect(
+    catchAllNode.children.find((node) => node.path === "app/catch-all/[id]").children
+  ).toHaveLength(1);
+
+  catchAllNode = output[0].children.find((node) => node.path === "app/catch-all");
+  expect(
+    catchAllNode.children.find((node) => node.path === "app/catch-all/[[...id]]").children
+  ).toHaveLength(0);
+  expect(
+    catchAllNode.children.find((node) => node.path === "app/catch-all/[...id]").children
+  ).toHaveLength(0);
+  expect(
+    catchAllNode.children.find((node) => node.path === "app/catch-all/[id]").children
+  ).toHaveLength(1);
+});

@@ -9,9 +9,7 @@ const getRoutesFromFileSystem = (outputPath, sourcePath) => {
     // mapDynamicRoutesToSplats,
     // mergeNestedRouteSegments,
     // sinkPageWithLayout,
-    // processNotFound,
     // remainValidDynamicRoutes,
-    // remainValidRouteSegments,
     normalize,
     traverseFileSystem
   )(outputPath, sourcePath);
