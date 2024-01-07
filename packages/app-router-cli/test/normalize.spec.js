@@ -97,8 +97,8 @@ test("remove nested routes inside catch-all routes or optional catch-all routes"
     catchAllNode.children.find((node) => node.path === "app1/catch-all/[[...id]]").children
   ).toHaveLength(0);
   expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[...id]").children
-  ).toHaveLength(0);
+    catchAllNode.children.find((node) => node.path === "app1/catch-all/[...id]")
+  ).toBeUndefined();
   expect(
     catchAllNode.children.find((node) => node.path === "app1/catch-all/[id]").children
   ).toHaveLength(1);
@@ -124,8 +124,8 @@ test("sort children", () => {
   expect(catchAllNode.children[0].path).toStrictEqual("app1/catch-all/");
   expect(catchAllNode.children[1].path).toStrictEqual("app1/catch-all/anything");
   expect(catchAllNode.children[2].path).toStrictEqual("app1/catch-all/[id]");
-  expect(catchAllNode.children[3].path).toStrictEqual("app1/catch-all/[...id]");
-  expect(catchAllNode.children[4].path).toStrictEqual("app1/catch-all/[[...id]]");
+  expect(catchAllNode.children[3].path).toStrictEqual("app1/catch-all/[[...id]]");
+  expect(catchAllNode.children).toHaveLength(4);
 });
 
 test("remove parallel routes without `props.page` and its descendants are without `props.page`", () => {
