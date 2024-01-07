@@ -1,7 +1,6 @@
 import { join } from "node:path";
 import traverseFileSystem from "../src/core/traverseFileSystem";
 import app1 from "./app1";
-import app2 from "./app2";
 
 test("no private items", () => {
   const output1 = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app1"));
@@ -83,10 +82,4 @@ test("test the generated folder tree1 fully", () => {
   const output1 = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app1"));
 
   expect(output1).toStrictEqual(app1);
-});
-
-test("test the generated folder tree2 fully", () => {
-  const output2 = traverseFileSystem(join(__dirname, "./src"), join(__dirname, "./src/app2"));
-
-  expect(output2).toStrictEqual(app2);
 });

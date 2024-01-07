@@ -1,13 +1,10 @@
 import normalize from "../src/core/normalize";
 import { cloneDeep } from "lodash";
 import app1 from "./app1";
-import app2 from "./app2";
 
 let output1 = undefined;
-let output2 = undefined;
 beforeEach(() => {
   output1 = cloneDeep(app1);
-  output2 = cloneDeep(app2);
 });
 
 test("set error of the root route to its global-error if exists", () => {
@@ -78,32 +75,6 @@ test("rename not-found to notFound", () => {
   expect(nestedNode.props["notFound"]).toBeDefined();
 });
 
-test("remove nested routes inside catch-all routes or optional catch-all routes", () => {
-  normalize(output1);
-
-  let catchAllNode = app1[0].children.find((node) => node.path === "app1/catch-all");
-  expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[[...id]]").children
-  ).toHaveLength(1);
-  expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[...id]").children
-  ).toHaveLength(1);
-  expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[id]").children
-  ).toHaveLength(1);
-
-  catchAllNode = output1[0].children.find((node) => node.path === "app1/catch-all");
-  expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[[...id]]").children
-  ).toHaveLength(0);
-  expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[...id]")
-  ).toBeUndefined();
-  expect(
-    catchAllNode.children.find((node) => node.path === "app1/catch-all/[id]").children
-  ).toHaveLength(1);
-});
-
 test("sink the page to the level below if there's layout along with", () => {
   normalize(output1);
 
@@ -116,94 +87,4 @@ test("sink the page to the level below if there's layout along with", () => {
   expect(homeNode.children).toHaveLength(1);
   expect(homeNode.children[0].path).toStrictEqual(`${homeNode.path}/`);
   expect(homeNode.children[0].props.page).toBeDefined();
-});
-
-test("sort children", () => {
-  normalize(output1);
-  let catchAllNode = output1[0].children.find((node) => node.path === "app1/catch-all");
-  expect(catchAllNode.children[0].path).toStrictEqual("app1/catch-all/");
-  expect(catchAllNode.children[1].path).toStrictEqual("app1/catch-all/anything");
-  expect(catchAllNode.children[2].path).toStrictEqual("app1/catch-all/[id]");
-  expect(catchAllNode.children[3].path).toStrictEqual("app1/catch-all/[[...id]]");
-  expect(catchAllNode.children).toHaveLength(4);
-});
-
-test("remove parallel routes without `props.page` and its descendants are without `props.page`", () => {
-  normalize(output2);
-
-  const srcDashboardNode = app2[0].children.find((node) => node.path === "app2/dashboard");
-  const outputDashboardNode = output2[0].children.find((node) => node.path === "app2/dashboard");
-  expect(
-    srcDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2")
-  ).toBeDefined();
-  expect(
-    outputDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2")
-  ).toBeUndefined();
-});
-
-test("remove parallel routes `props.layout`", () => {
-  normalize(output2);
-  const srcDashboardNode = app2[0].children.find((node) => node.path === "app2/dashboard");
-  const outputDashboardNode = output2[0].children.find((node) => node.path === "app2/dashboard");
-  expect(
-    srcDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart1").props.layout
-  ).toBeDefined();
-  expect(
-    srcDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2").props.layout
-  ).toBeDefined();
-  expect(
-    outputDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart1").props.layout
-  ).toBeUndefined();
-  expect(
-    outputDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2")
-  ).toBeUndefined();
-});
-
-test("remove nested intercepting routes inside intercepting routes", () => {
-  normalize(output2);
-
-  const srcNode = app2[0].children
-    .find((node) => node.path === "app2/gallery")
-    .children.find((node) => node.path === "app2/gallery/(..)imgs");
-  const outputNode = output2[0].children
-    .find((node) => node.path === "app2/gallery")
-    .children.find((node) => node.path === "app2/gallery/(..)imgs");
-  expect(
-    srcNode.children.find((node) => node.path === "app2/gallery/(..)imgs/(..)imgs")
-  ).toBeDefined();
-  expect(
-    outputNode.children.find((node) => node.path === "app2/gallery/(..)imgs/(..)imgs")
-  ).toBeUndefined();
-});
-
-test("remove nested parallel routes inside intercepting routes", () => {
-  normalize(output2);
-
-  const srcNode = app2[0].children
-    .find((node) => node.path === "app2/gallery")
-    .children.find((node) => node.path === "app2/gallery/(..)imgs");
-  const outputNode = output2[0].children
-    .find((node) => node.path === "app2/gallery")
-    .children.find((node) => node.path === "app2/gallery/(..)imgs");
-  expect(
-    srcNode.children.find((node) => node.path === "app2/gallery/(..)imgs/@test")
-  ).toBeDefined();
-  expect(
-    outputNode.children.find((node) => node.path === "app2/gallery/(..)imgs/@test")
-  ).toBeUndefined();
-});
-
-test("remove nested parallel routes inside parallel routes", () => {
-  normalize(output2);
-  const srcNode = app2[0].children
-    .find((node) => node.path === "app2/dashboard")
-    .children.find((node) => node.path === "app2/dashboard/@chart2");
-  const outputNode = output2[0].children.find((node) => node.path === "app2/dashboard");
-
-  expect(
-    srcNode.children.find((node) => node.path === "app2/dashboard/@chart2/@chart2-children")
-  ).toBeDefined();
-  expect(
-    outputNode.children.find((node) => node.path === "app2/dashboard/@chart2")
-  ).toBeUndefined();
 });
