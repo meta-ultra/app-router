@@ -73,9 +73,9 @@ module.exports = {
     ],
   },
   // https://github.com/jsx-eslint/eslint-plugin-react#configuration
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
+  // settings: {
+  //   react: {
+  //     version: "detect",
+  //   },
+  // },
 };

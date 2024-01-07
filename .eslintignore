@@ -17,4 +17,4 @@ bundle
 
 # Ignore test
 
-*.spec.js
+**/test/*
