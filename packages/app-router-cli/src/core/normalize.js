@@ -104,6 +104,23 @@ const sortChildren = (node) => {
 };
 
 /**
+ * remove catch-all route if optional catch-all exists
+ * @param {*} node
+ */
+const normalizeDynamicRoute = (node) => {
+  if (node.children.length >= 2) {
+    const last1 = node.children[node.children.length - 1];
+    const last2 = node.children[node.children.length - 2];
+    if (
+      /^\[\[\.{3}[a-z][a-z0-9]*\]\]$/.test(last1.path.split("/").pop()) &&
+      /^\[\.{3}[a-z][a-z0-9]*\]$/.test(last2.path.split("/").pop())
+    ) {
+      node.children.splice(node.children.length - 2, 1);
+    }
+  }
+};
+
+/**
  * remove layout from parallel route
  */
 const normalizeParallelRoute = (node) => {
@@ -181,6 +198,7 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
       removeCatchAllRouteChildren(node);
       sinkPageWithLayout(node);
       sortChildren(node);
+      normalizeDynamicRoute(node);
 
       // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };
