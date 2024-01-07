@@ -104,6 +104,62 @@ const sortChildren = (node) => {
 };
 
 /**
+ * remove layout from parallel route
+ */
+const normalizeParallelRoute = (node) => {
+  if (node.path.split("/").pop().startsWith("@")) {
+    node.children = [];
+    delete node.props.layout;
+  }
+};
+
+const PARALLEL_RE = /^@[a-z][a-z0-9-_]*$/;
+const INTERCEPTING_SAME_LEVEL_RE = /^\(\.\)[a-z][a-z0-9-_]*$/;
+const INTERCEPTING_ONE_LEVEL_UP_RE = /^\(\.\.\)[a-z][a-z0-9-_]*$/;
+const INTERCEPTING_TWO_LEVEL_UP_RE = /^\(\.\.\)\(\.\.\)[a-z][a-z0-9-_]*$/;
+const INTERCEPTING_ROOT_LEVEL_UP_RE = /^\(\.\.\.\)[a-z][a-z0-9-_]*$/;
+const doNormalizeInterceptingRoute = (node) => {
+  delete node.props.layout;
+  if (node.children && node.children.length) {
+    const removingIndexes = [];
+    for (let i = 0; i < node.children.length; ++i) {
+      const child = node.children[i];
+      if (
+        [
+          PARALLEL_RE,
+          INTERCEPTING_SAME_LEVEL_RE,
+          INTERCEPTING_ONE_LEVEL_UP_RE,
+          INTERCEPTING_TWO_LEVEL_UP_RE,
+          INTERCEPTING_ROOT_LEVEL_UP_RE,
+        ].find((re) => re.test(child.path.split("/").pop()))
+      ) {
+        removingIndexes.push(i);
+      } else {
+        doNormalizeInterceptingRoute(child);
+      }
+    }
+
+    // remove nested intercepting routes
+    for (let i = removingIndexes.length - 1; i >= 0; i--) {
+      node.children.splice(removingIndexes[i], 1);
+    }
+  }
+};
+const normalizeInterceptingRoute = (node) => {
+  const folderName = node.path.split("/").pop();
+  if (
+    [
+      INTERCEPTING_SAME_LEVEL_RE,
+      INTERCEPTING_ONE_LEVEL_UP_RE,
+      INTERCEPTING_TWO_LEVEL_UP_RE,
+      INTERCEPTING_ROOT_LEVEL_UP_RE,
+    ].find((re) => re.test(folderName))
+  ) {
+    doNormalizeInterceptingRoute(node);
+  }
+};
+
+/**
  * Normalize the nodes returned by `traverseFileSystem` in a place.
  * @param {*} nodes - the return value from `traverseFileSystem`.
  * @param {number} level - the level of tree starts from 0.
@@ -116,12 +172,12 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
     const node = nodes[i];
     if (node) {
       const props = node.props;
-      if (props) {
-        renameGlobalError(props, level);
-        fulfillLayout(props, level);
-        renameNotFound(props);
-      }
 
+      renameGlobalError(props, level);
+      fulfillLayout(props, level);
+      renameNotFound(props);
+      normalizeParallelRoute(node);
+      normalizeInterceptingRoute(node);
       removeCatchAllRouteChildren(node);
       sinkPageWithLayout(node);
       sortChildren(node);

@@ -1,10 +1,13 @@
 import normalize from "../src/core/normalize";
 import { cloneDeep } from "lodash";
 import app1 from "./app1";
+import app2 from "./app2";
 
 let output1 = undefined;
+let output2 = undefined;
 beforeEach(() => {
   output1 = cloneDeep(app1);
+  output2 = cloneDeep(app2);
 });
 
 test("set error of the root route to its global-error if exists", () => {
@@ -123,4 +126,69 @@ test("sort children", () => {
   expect(catchAllNode.children[2].path).toStrictEqual("app1/catch-all/[id]");
   expect(catchAllNode.children[3].path).toStrictEqual("app1/catch-all/[...id]");
   expect(catchAllNode.children[4].path).toStrictEqual("app1/catch-all/[[...id]]");
+});
+
+test("remove parallel routes without `props.page` and its descendants are without `props.page`", () => {
+  normalize(output2);
+
+  const srcDashboardNode = app2[0].children.find((node) => node.path === "app2/dashboard");
+  const outputDashboardNode = output2[0].children.find((node) => node.path === "app2/dashboard");
+  expect(
+    srcDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2")
+  ).toBeDefined();
+  expect(
+    outputDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2")
+  ).toBeUndefined();
+});
+
+test("remove parallel routes `props.layout`", () => {
+  normalize(output2);
+  const srcDashboardNode = app2[0].children.find((node) => node.path === "app2/dashboard");
+  const outputDashboardNode = output2[0].children.find((node) => node.path === "app2/dashboard");
+  expect(
+    srcDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart1").props.layout
+  ).toBeDefined();
+  expect(
+    srcDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2").props.layout
+  ).toBeDefined();
+  expect(
+    outputDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart1").props.layout
+  ).toBeUndefined();
+  expect(
+    outputDashboardNode.children.find((node) => node.path === "app2/dashboard/@chart2")
+  ).toBeUndefined();
+});
+
+test("remove nested parallel routes inside parallel routes", () => {
+  normalize(output2);
+
+  const srcNode = app2[0].children
+    .find((node) => node.path === "app2/gallery")
+    .children.find((node) => node.path === "app2/gallery/(..)imgs");
+  const outputNode = output2[0].children
+    .find((node) => node.path === "app2/gallery")
+    .children.find((node) => node.path === "app2/gallery/(..)imgs");
+  expect(
+    srcNode.children.find((node) => node.path === "app2/gallery/(..)imgs/(..)imgs")
+  ).toBeDefined();
+  expect(
+    outputNode.children.find((node) => node.path === "app2/gallery/(..)imgs/(..)imgs")
+  ).toBeUndefined();
+});
+
+test("remove nested intercepting routes inside parallel routes", () => {
+  normalize(output2);
+
+  const srcNode = app2[0].children
+    .find((node) => node.path === "app2/gallery")
+    .children.find((node) => node.path === "app2/gallery/(..)imgs");
+  const outputNode = output2[0].children
+    .find((node) => node.path === "app2/gallery")
+    .children.find((node) => node.path === "app2/gallery/(..)imgs");
+  expect(
+    srcNode.children.find((node) => node.path === "app2/gallery/(..)imgs/@test")
+  ).toBeDefined();
+  expect(
+    outputNode.children.find((node) => node.path === "app2/gallery/(..)imgs/@test")
+  ).toBeUndefined();
 });
