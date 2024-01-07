@@ -159,7 +159,7 @@ test("remove parallel routes `props.layout`", () => {
   ).toBeUndefined();
 });
 
-test("remove nested parallel routes inside parallel routes", () => {
+test("remove nested intercepting routes inside intercepting routes", () => {
   normalize(output2);
 
   const srcNode = app2[0].children
@@ -176,7 +176,7 @@ test("remove nested parallel routes inside parallel routes", () => {
   ).toBeUndefined();
 });
 
-test("remove nested intercepting routes inside parallel routes", () => {
+test("remove nested parallel routes inside intercepting routes", () => {
   normalize(output2);
 
   const srcNode = app2[0].children
@@ -190,5 +190,20 @@ test("remove nested intercepting routes inside parallel routes", () => {
   ).toBeDefined();
   expect(
     outputNode.children.find((node) => node.path === "app2/gallery/(..)imgs/@test")
+  ).toBeUndefined();
+});
+
+test("remove nested parallel routes inside parallel routes", () => {
+  normalize(output2);
+  const srcNode = app2[0].children
+    .find((node) => node.path === "app2/dashboard")
+    .children.find((node) => node.path === "app2/dashboard/@chart2");
+  const outputNode = output2[0].children.find((node) => node.path === "app2/dashboard");
+
+  expect(
+    srcNode.children.find((node) => node.path === "app2/dashboard/@chart2/@chart2-children")
+  ).toBeDefined();
+  expect(
+    outputNode.children.find((node) => node.path === "app2/dashboard/@chart2")
   ).toBeUndefined();
 });
