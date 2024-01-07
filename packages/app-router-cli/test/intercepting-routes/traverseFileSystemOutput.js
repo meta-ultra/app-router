@@ -1,8 +1,23 @@
 export default [
   {
     path: "app",
-    props: {},
+    props: {
+      page: "app/page.js",
+    },
     children: [
+      {
+        path: "app/(.)imgs",
+        props: {},
+        children: [
+          {
+            path: "app/(.)imgs/[id]",
+            props: {
+              page: "app/(.)imgs/[id]/page.js",
+            },
+            children: [],
+          },
+        ],
+      },
       {
         path: "app/gallery",
         props: {},
