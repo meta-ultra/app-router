@@ -4,6 +4,7 @@ const nodeResolve = require("rollup-plugin-node-resolve");
 const replace = require("rollup-plugin-replace");
 const { uglify } = require("rollup-plugin-uglify");
 const pkg = require("./package.json");
+const nodePolyfills = require("rollup-plugin-polyfill-node");
 
 const extensions = [".tsx", ".ts", ".jsx", ".js"];
 
@@ -37,6 +38,7 @@ module.exports = {
       modulesOnly: true,
       preferBuiltins: false,
     }),
+    nodePolyfills(),
     commonjs(),
     babel({
       runtimeHelpers: true,

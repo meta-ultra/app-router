@@ -1,7 +1,7 @@
 {
   "name": "@meta-ultra/app-router",
   "private": false,
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Next.js App Router like routing convention for pure client rendering React application",
   "scripts": {
     "clean": "rimraf ./dist",
@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "path-browserify": "^1.0.1",
     "react-is": "^18.2.0"
   },
   "devDependencies": {
@@ -65,6 +64,7 @@
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-uglify": "^6.0.4",
     "typescript": "^5.1.3",
