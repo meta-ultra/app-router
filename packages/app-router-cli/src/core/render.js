@@ -43,6 +43,8 @@ const lazyImport = (path) => {
   return `{lazy(() => import("${path}"))}`;
 };
 
+Handlebars.registerHelper("join", (array, sep) => array.join(sep));
+Handlebars.registerHelper("preset", preset);
 Handlebars.registerHelper("preset", preset);
 Handlebars.registerHelper("lazyImport", lazyImport);
 Handlebars.registerHelper("undefinable", undefinable);
@@ -66,8 +68,9 @@ const renderOnFly = (path, context, options) => {
   return template(context, options);
 };
 
-const render = (staticDefaultImports) => {
+const render = (appRouterNamedImports, staticDefaultImports) => {
   return renderOnFly(join(__dirname, "../templates/staticDefaultImports.hbs"), {
+    appRouterNamedImports,
     staticDefaultImports,
   });
 };
