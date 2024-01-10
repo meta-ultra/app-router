@@ -70,6 +70,7 @@ const renderOnFly = (path, context, options) => {
 
 const render = (appRouterNamedImports, staticDefaultImports) => {
   return renderOnFly(join(__dirname, "../templates/staticDefaultImports.hbs"), {
+    isHash: false,
     appRouterNamedImports,
     staticDefaultImports,
   });
