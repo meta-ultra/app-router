@@ -1,12 +1,14 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import Handlebars from "handlebars";
-import { nameByFullPath } from "./nameByFullPath.js";
+import escape from "./escape.js";
 import routerSpec from "../templates/router.spec.js";
 import childrenRouteSpec from "../templates/childrenRoute.spec.js";
 
-/* Compile Template */
+/* Register Compiled Template */
 const routerTemplate = Handlebars.template(routerSpec);
 const childrenRouteTemplate = Handlebars.template(childrenRouteSpec);
-/* End of Compile Template */
+/* End of Register Compiled Template */
 
 /* Register Helpers */
 function undefinable(value) {
@@ -44,17 +46,30 @@ const lazyImport = (path) => {
 Handlebars.registerHelper("preset", preset);
 Handlebars.registerHelper("lazyImport", lazyImport);
 Handlebars.registerHelper("undefinable", undefinable);
-Handlebars.registerHelper("nameByFullPath", nameByFullPath);
+Handlebars.registerHelper("nameByFullPath", escape);
 Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
   const children = generateChildrenRoutes(routes);
   return `[${children.join(",")}]`;
 });
 /* End of Register Helpers */
 
-const generateOutput = (defaultImports, routes) =>
-  routerTemplate({
-    defaultImports,
-    routes,
-  });
+/**
+ * render template on fly for development
+ * @param {*} path - the template path
+ * @param {*} context - the context parameter Handlebars template function consumes
+ * @param {*} options - the options parameter Handlebars template function consumes
+ * @returns
+ */
+const renderOnFly = (path, context, options) => {
+  const content = readFileSync(path);
+  const template = Handlebars.compile(content.toString("utf-8"));
+  return template(context, options);
+};
 
-export { generateOutput };
+const render = (staticDefaultImports) => {
+  return renderOnFly(join(__dirname, "../templates/staticDefaultImports.hbs"), {
+    staticDefaultImports,
+  });
+};
+
+export default render;

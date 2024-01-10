@@ -1,5 +1,15 @@
+/**
+ * remove the trailing .jsx, .js, .tsx and .ts.
+ * @param {*} name
+ * @returns
+ */
 const stripExtension = (name) => name.replace(/\.(t|j)sx?$/, "");
 
+/**
+ * execute fns from right to left, the return value of the previous function will be passed as the argument for the next function.
+ * @param  {...any} fns
+ * @returns
+ */
 const pipe =
   (...fns) =>
   (...args) => {
