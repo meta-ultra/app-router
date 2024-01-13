@@ -1,4 +1,4 @@
-import { getRelativePath } from "./utils";
+import { getRelativePath, stripExtension } from "./utils";
 
 const collectRoutes = (nodes) => {
   const routes = [];
@@ -6,9 +6,7 @@ const collectRoutes = (nodes) => {
     const node = nodes[i];
     const route = {
       id: node.path,
-      ...(node.path[node.path.length - 1] === "/"
-        ? { index: true }
-        : { path: getRelativePath(node.path) }),
+      ...(node.path[node.path.length - 1] === "/" ? { index: true } : { path: node.path }), // todo
       props: node.props,
     };
 

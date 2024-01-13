@@ -5,7 +5,7 @@ import escape from "./escape.js";
 import routerSpec from "../templates/deprecated/router.spec.js";
 import childrenRouteSpec from "../templates/deprecated/childrenRoute.spec.js";
 import { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } from "./constants.js";
-import { getRelativePath } from "./utils.js";
+import { getRelativePath, stripExtension } from "./utils.js";
 
 /* Register Compiled Template */
 const routerTemplate = Handlebars.template(routerSpec);
@@ -39,7 +39,7 @@ Handlebars.registerHelper("lazyImport", (path) => {
   } else if (path === PRESET_LAYOUT) {
     output = "<Outlet/>";
   } else {
-    output = `{lazy(() => import("${getRelativePath(path)}"))}`;
+    output = `{lazy(() => import("${stripExtension(getRelativePath(path))}"))}`;
   }
 
   return new Handlebars.SafeString(output);
