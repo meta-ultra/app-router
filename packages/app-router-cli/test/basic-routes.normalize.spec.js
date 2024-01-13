@@ -43,8 +43,7 @@ test("fulfill a default layout if there is a loading, not-found or error but no 
   let nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
   expect(nestedNode.props.layout).toBe(undefined);
 
-  aboutNode = output[0].children.find((node) => node.path === "app/about");
-  nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
+  nestedNode = output[0].children.find((node) => node.path === "app/about/nested");
   expect(nestedNode.props.layout).toStrictEqual("preset::layout");
 });
 
@@ -69,8 +68,7 @@ test("rename not-found to notFound", () => {
   let nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
   expect(nestedNode.props["not-found"]).toBeDefined();
 
-  aboutNode = output[0].children.find((node) => node.path === "app/about");
-  nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
+  nestedNode = output[0].children.find((node) => node.path === "app/about/nested");
   expect(nestedNode.props["not-found"]).toBeUndefined();
   expect(nestedNode.props["notFound"]).toBeDefined();
 });
@@ -87,6 +85,20 @@ test("sink the page to the level below if there's layout along with", () => {
   expect(homeNode.children).toHaveLength(1);
   expect(homeNode.children[0].path).toStrictEqual(`${homeNode.path}/`);
   expect(homeNode.children[0].props.page).toBeDefined();
+});
+
+test("hoist", () => {
+  normalize(output);
+
+  let aboutNode = input[0].children.find((node) => node.path === "app/about");
+  let nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
+  expect(nestedNode).toBeDefined();
+
+  aboutNode = output[0].children.find((node) => node.path === "app/about");
+  nestedNode = aboutNode.children.find((node) => node.path === "app/about/nested");
+  const hoistedNestedNode = output[0].children.find((node) => node.path === "app/about/nested");
+  expect(nestedNode).toBeUndefined();
+  expect(hoistedNestedNode).toBeDefined();
 });
 
 // test.only("", () => {

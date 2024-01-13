@@ -107,6 +107,11 @@ const doHoist = (nodes) => {
       } else {
         hoistedNodes.push(node);
       }
+    } else if (node.props.page && !node.props.layout && node.children && node.children.length) {
+      const children = node.children;
+      node.children = [];
+      hoistedNodes.push(node);
+      hoistedNodes.push(...doHoist(children));
     } else {
       hoistedNodes.push(node);
     }

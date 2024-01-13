@@ -12,23 +12,22 @@ export default [
         props: {
           page: "app/about/page.jsx",
         },
+        children: [],
+      },
+      {
+        path: "app/about/nested",
+        props: {
+          template: "app/about/nested/template.tsx",
+          layout: "preset::layout",
+          notFound: "app/about/nested/not-found.js",
+        },
         children: [
           {
-            path: "app/about/nested",
+            path: "app/about/nested/",
             props: {
-              template: "app/about/nested/template.tsx",
-              layout: "preset::layout",
-              notFound: "app/about/nested/not-found.js",
+              page: "app/about/nested/page.js",
             },
-            children: [
-              {
-                path: "app/about/nested/",
-                props: {
-                  page: "app/about/nested/page.js",
-                },
-                children: [],
-              },
-            ],
+            children: [],
           },
         ],
       },
