@@ -1,12 +1,40 @@
-import { getRelativePath, stripExtension } from "./utils";
+import {
+  INDEX_RE,
+  INTERCEPTING_ONE_LEVEL_UP_RE,
+  INTERCEPTING_TWO_LEVEL_UP_RE,
+  INTERCEPTING_ROOT_LEVEL_UP_RE,
+} from "./constants";
+
+const getLastSeg = (path) => path.split("/").pop();
+const match = (regexps, value) => regexps.find((regexp) => regexp.test(value));
+const isIntercepting = (node) =>
+  node.children.find((child) =>
+    match(
+      [INTERCEPTING_ONE_LEVEL_UP_RE, INTERCEPTING_TWO_LEVEL_UP_RE, INTERCEPTING_ROOT_LEVEL_UP_RE],
+      getLastSeg(child.path)
+    )
+  );
 
 const collectRoutes = (nodes, parent) => {
   const routes = [];
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
+    const lastSeg = getLastSeg(node.path);
+    let type = undefined;
+    if (match([INDEX_RE], lastSeg)) {
+      type = "page";
+    } else if (node.props.intercepted) {
+      type = "intercepted";
+    } else if (isIntercepting(node)) {
+      type = "intercepting";
+    } else {
+      type = node.props.layout ? "layout" : "page";
+    }
+
     const route = {
       id: node.path,
-      ...(node.path[node.path.length - 1] === "/"
+      type,
+      ...(INDEX_RE.test(lastSeg)
         ? { index: true }
         : { path: parent ? node.path.replace(parent.path + "/", "") : node.path }),
       props: node.props,

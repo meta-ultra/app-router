@@ -1,11 +1,14 @@
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, isAbsolute } from "node:path";
 import Handlebars from "handlebars";
 import escape from "./escape.js";
 import routerSpec from "../templates/deprecated/router.spec.js";
 import childrenRouteSpec from "../templates/deprecated/childrenRoute.spec.js";
 import { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } from "./constants.js";
 import { getRelativePath, stripExtension } from "./utils.js";
+
+const readTemplateSync = (path) =>
+  readFileSync(isAbsolute(path) ? path : join(__dirname, path)).toString("utf-8");
 
 /* Register Compiled Template */
 const routerTemplate = Handlebars.template(routerSpec);
@@ -53,19 +56,18 @@ Handlebars.registerHelper(
     basename === "/"
 );
 
-Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
-  const content = readFileSync(join(__dirname, "../templates/childrenRoutes.hbs")).toString(
-    "utf-8"
-  );
-  const template = Handlebars.compile(content);
-  return new Handlebars.SafeString(template({ routes }));
-});
-
 // Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
 //   const children = generateChildrenRoutes(routes);
 //   return `[${children.join(",")}]`;
 // });
 /* End of Register Helpers */
+
+/* Partials */
+Handlebars.registerPartial(
+  "generateChildrenRoutes",
+  readTemplateSync("../templates/childrenRoutes.hbs")
+);
+/* End of Partials */
 
 /**
  * render template on fly for development
@@ -75,18 +77,18 @@ Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
  * @returns
  */
 const generateCodeOnFly = (path, context, options) => {
-  const content = readFileSync(path).toString("utf-8");
+  const content = readTemplateSync(path);
   const template = Handlebars.compile(content);
   return template(context, options);
 };
 
 const generateCode = (appRouterNamedImports, staticDefaultImports) => {
-  return generateCodeOnFly(join(__dirname, "../templates/staticDefaultImports.hbs"), {
+  return generateCodeOnFly("../templates/staticDefaultImports.hbs", {
     isHash: false,
     appRouterNamedImports,
     staticDefaultImports,
   });
 };
 
-export { generateCodeOnFly };
+export { generateCodeOnFly, readTemplateSync };
 export default generateCode;
