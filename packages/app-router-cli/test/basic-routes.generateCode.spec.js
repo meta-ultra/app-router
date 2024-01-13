@@ -57,7 +57,4 @@ test.only("createRouter with basename", () => {
     routes: collectRoutes(nomalizeOutput),
   });
   console.log(output);
-  // const output = collectRoutes(nomalizeOutput)
-
-  // console.log(JSON.stringify(output, null, 2))
 });

@@ -97,6 +97,29 @@ const sinkPageWithLayout = (node) => {
   }
 };
 
+const doHoist = (nodes) => {
+  const hoistedNodes = [];
+  for (let i = 0; i < nodes.length; ++i) {
+    const node = nodes[i];
+    if (!node.props.page && !node.props.layout) {
+      if (node.children && node.children.length) {
+        hoistedNodes.push(...doHoist(node.children));
+      } else {
+        hoistedNodes.push(node);
+      }
+    } else {
+      hoistedNodes.push(node);
+    }
+  }
+
+  return hoistedNodes;
+};
+const hoist = (node) => {
+  if (node.children && node.children.length) {
+    node.children = doHoist(node.children);
+  }
+};
+
 const score = (name) => {
   const result = [
     [INDEX_RE, 1], // index page route
@@ -205,6 +228,7 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
       sinkPageWithLayout(node);
       sortChildren(node);
       normalizeDynamicRoute(node);
+      hoist(node);
 
       // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };

@@ -48,11 +48,11 @@ test("fulfill a default layout if there is a loading, not-found or error but no 
   expect(nestedNode.props.layout).toStrictEqual("preset::layout");
 });
 
-test("remain routes with neither `props.page` nor `props.layout`, but its descendants have", () => {
+test("remain routes with neither `props.page` nor `props.layout`, but its descendants have and hoist", () => {
   normalize(output);
 
   expect(input[0].children.find((node) => node.path === "app/not-empty")).toBeDefined();
-  expect(output[0].children.find((node) => node.path === "app/not-empty")).toBeDefined();
+  expect(output[0].children.find((node) => node.path === "app/not-empty/not-empty")).toBeDefined();
 });
 
 test("remove routes without `props.page` and `props.layout` and its descendants are with neither `props.page` nor `props.layout`", () => {
@@ -88,3 +88,7 @@ test("sink the page to the level below if there's layout along with", () => {
   expect(homeNode.children[0].path).toStrictEqual(`${homeNode.path}/`);
   expect(homeNode.children[0].props.page).toBeDefined();
 });
+
+// test.only("", () => {
+//   console.log(JSON.stringify(normalize(output), null, 2));
+// })

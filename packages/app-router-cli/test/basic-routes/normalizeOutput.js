@@ -49,17 +49,11 @@ export default [
         ],
       },
       {
-        path: "app/not-empty",
-        props: {},
-        children: [
-          {
-            path: "app/not-empty/not-empty",
-            props: {
-              page: "app/not-empty/not-empty/page.js",
-            },
-            children: [],
-          },
-        ],
+        path: "app/not-empty/not-empty",
+        props: {
+          page: "app/not-empty/not-empty/page.js",
+        },
+        children: [],
       },
     ],
   },
