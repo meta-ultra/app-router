@@ -1,19 +1,24 @@
-const router = createRouter([{{#each routes}}{ 
-  id: "{{this.id}}",
+{{#each routes}}
+{
+  {{#if this.id}}id: "{{this.id}}",{{/if}}
+  {{#if this.path}}path: "{{this.path}}",{{/if}}
+  {{~#if this.index}}index: {{this.index}},{{/if}}
   element: (
-    <RootLayoutRouteElement
+    <{{#if props.layout}}LayoutRouteElement{{else}}PageRouteElement{{/if}}
       {{~#unless (isNil this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
       {{~#unless (isNil this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}
       {{~#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}
       {{~#unless (isNil this.props.template)}} notFound={ {{~escape this.props.template~}} }{{/unless~}}
     >
-      {{lazyImport this.props.layout}}
-    </RootLayoutRouteElement>
-  ), 
-  errorElement: <RootErrorElement{{#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}/>
+      {{#if this.props.layout}}
+        {{lazyImport this.props.layout}}
+      {{else}}
+        {{lazyImport this.props.page}}
+      {{/if}}
+    </{{#if props.layout}}LayoutRouteElement{{else}}PageRouteElement{{/if}}>
+  )
   {{~#unless (isNilorEmpty this.children)}},
   children: [{{generateChildrenRoutes this.children}}]
   {{/unless}}
-{{/each}}]{{#unless (isUndefinedBasename basename)}}, {basename: "{{basename}}"}{{/unless}});
-
-export default router
+}
+{{/each}}

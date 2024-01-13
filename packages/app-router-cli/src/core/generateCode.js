@@ -2,8 +2,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Handlebars from "handlebars";
 import escape from "./escape.js";
-import routerSpec from "../templates/router.spec.js";
-import childrenRouteSpec from "../templates/childrenRoute.spec.js";
+import routerSpec from "../templates/deprecated/router.spec.js";
+import childrenRouteSpec from "../templates/deprecated/childrenRoute.spec.js";
 import { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } from "./constants.js";
 import { getRelativePath } from "./utils.js";
 
@@ -28,6 +28,10 @@ const generateChildrenRoutes = (routes) => {
 Handlebars.registerHelper("escape", escape);
 Handlebars.registerHelper("join", (array, sep) => array.join(sep));
 Handlebars.registerHelper("isNil", (value) => value === undefined || value === null);
+Handlebars.registerHelper(
+  "isNilorEmpty",
+  (value) => value === undefined || value === null || !value.length
+);
 Handlebars.registerHelper("lazyImport", (path) => {
   let output = undefined;
   if (path === PRESET_ROOT_LAYOUT) {
@@ -40,11 +44,29 @@ Handlebars.registerHelper("lazyImport", (path) => {
 
   return new Handlebars.SafeString(output);
 });
+// there's no need to set the basename explicitly when it's an undefined basename.
+Handlebars.registerHelper(
+  "isUndefinedBasename",
+  (basename) =>
+    basename === undefined ||
+    basename === null ||
+    typeof basename !== "string" ||
+    basename === "" ||
+    basename === "/"
+);
 
 Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
-  const children = generateChildrenRoutes(routes);
-  return `[${children.join(",")}]`;
+  const content = readFileSync(join(__dirname, "../templates/childrenRoutes.hbs")).toString(
+    "utf-8"
+  );
+  const template = Handlebars.compile(content);
+  return new Handlebars.SafeString(template({ routes }));
 });
+
+// Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
+//   const children = generateChildrenRoutes(routes);
+//   return `[${children.join(",")}]`;
+// });
 /* End of Register Helpers */
 
 /**
@@ -55,8 +77,8 @@ Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
  * @returns
  */
 const generateCodeOnFly = (path, context, options) => {
-  const content = readFileSync(path);
-  const template = Handlebars.compile(content.toString("utf-8"));
+  const content = readFileSync(path).toString("utf-8");
+  const template = Handlebars.compile(content);
   return template(context, options);
 };
 
@@ -68,4 +90,5 @@ const generateCode = (appRouterNamedImports, staticDefaultImports) => {
   });
 };
 
+export { generateCodeOnFly };
 export default generateCode;
