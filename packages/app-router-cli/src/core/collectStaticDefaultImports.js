@@ -2,8 +2,7 @@
  * Collect dependencies need to be static imports, such as error, loading, not-found.
  */
 import escape from "./escape.js";
-
-const isRelativePath = (path) => /^\.{1,2}\//.test(path);
+import { getRelativePath } from "./utils.js";
 
 const isStaticDefaultImportProp = (propName) =>
   ["error", "loading", "notFound"].indexOf(propName) !== -1;
@@ -19,7 +18,7 @@ const collectStaticDefaultImports = (nodes, staticDefaultImports = []) => {
     for (const [name, path] of Object.entries(node.props)) {
       if (isStaticDefaultImportProp(name) && path) {
         staticDefaultImports.push({
-          path: isRelativePath(path) ? path : "./" + path, // the file path
+          path: getRelativePath(path), // the file path
           defaultImportName: escape(path), // the fully qualified default name
         });
       }

@@ -1,0 +1,14 @@
+const router = createRouter([{{#each routes}}{ 
+  element: (
+    <RootLayoutRouteElement
+      {{#unless (isNil this.props.loading)}}loading={ {{escape this.props.loading}} }{{/unless}}
+      {{#unless (isNil this.props.error)}}error={ {{escape this.props.error}} }{{/unless}}
+      {{#unless (isNil this.props.notFound)}}notFound={ {{escape this.props.notFound}} }{{/unless}}
+    >
+      {{lazyImport this.props.layout}}
+    </RootLayoutRouteElement>
+    ), 
+  errorElement: <RootErrorElement notFound={ {{~undefinable (nameByFullPath this.props.notFound)~}} } />,
+{{/each}}], { basename: "{{basename}}" });
+
+export default router

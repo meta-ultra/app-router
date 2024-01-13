@@ -1,8 +1,19 @@
-const PRESET_ROOT_LAYOUT = "preset::root-layout";
-const PRESET_LAYOUT = "preset::layout";
-
-const GLOBAL_ERROR = "global-error";
-const NOT_FOUND = "not-found";
+import {
+  PRESET_ROOT_LAYOUT,
+  PRESET_LAYOUT,
+  GLOBAL_ERROR,
+  NOT_FOUND,
+  INDEX_RE,
+  NORMAL_RE,
+  DYNAMIC_RE,
+  CATCH_ALL_RE,
+  OPTIONAL_CATCH_ALL_RE,
+  PARALLEL_RE,
+  INTERCEPTING_SAME_LEVEL_RE,
+  INTERCEPTING_ONE_LEVEL_UP_RE,
+  INTERCEPTING_TWO_LEVEL_UP_RE,
+  INTERCEPTING_ROOT_LEVEL_UP_RE,
+} from "./constants.js";
 
 /**
  * rename global-error to error, and remove the global-error property inside the nested routes.
@@ -25,7 +36,7 @@ const renameGlobalError = (props, level) => {
 
 const isNoLayout = (props) => !["layout"].find((propName) => props[propName]);
 const isWithUtilities = (props) =>
-  !!["loading", "error", "not-found"].find((propName) => props[propName]);
+  !!["loading", "error", NOT_FOUND].find((propName) => props[propName]);
 /**
  * fulfill default layout.
  * @param {*} props
@@ -88,11 +99,11 @@ const sinkPageWithLayout = (node) => {
 
 const score = (name) => {
   const result = [
-    [/^\s*$/, 1], // index page route
-    [/^[a-z][a-z0-9]*$/, 0], // normal route
-    [/^\[[a-z][a-z0-9]*\]$/, -1], // dynamic route
-    [/^\[\.{3}[a-z][a-z0-9]*\]$/, -2], // catch-all route
-    [/^\[\[\.{3}[a-z][a-z0-9]*\]\]$/, -3], // optional catch-all route
+    [INDEX_RE, 1], // index page route
+    [NORMAL_RE, 0], // normal route
+    [DYNAMIC_RE, -1], // dynamic route
+    [CATCH_ALL_RE, -2], // catch-all route
+    [OPTIONAL_CATCH_ALL_RE, -3], // optional catch-all route
   ].find(([regexp]) => regexp.test(name));
 
   return result ? result[1] : 0;
@@ -112,8 +123,8 @@ const normalizeDynamicRoute = (node) => {
     const last1 = node.children[node.children.length - 1];
     const last2 = node.children[node.children.length - 2];
     if (
-      /^\[\[\.{3}[a-z][a-z0-9]*\]\]$/.test(last1.path.split("/").pop()) &&
-      /^\[\.{3}[a-z][a-z0-9]*\]$/.test(last2.path.split("/").pop())
+      OPTIONAL_CATCH_ALL_RE.test(last1.path.split("/").pop()) &&
+      CATCH_ALL_RE.test(last2.path.split("/").pop())
     ) {
       node.children.splice(node.children.length - 2, 1);
     }
@@ -130,11 +141,6 @@ const normalizeParallelRoute = (node) => {
   }
 };
 
-const PARALLEL_RE = /^@[a-z][a-z0-9-_]*$/;
-const INTERCEPTING_SAME_LEVEL_RE = /^\(\.\)[a-z][a-z0-9-_]*$/;
-const INTERCEPTING_ONE_LEVEL_UP_RE = /^\(\.\.\)[a-z][a-z0-9-_]*$/;
-const INTERCEPTING_TWO_LEVEL_UP_RE = /^\(\.\.\)\(\.\.\)[a-z][a-z0-9-_]*$/;
-const INTERCEPTING_ROOT_LEVEL_UP_RE = /^\(\.\.\.\)[a-z][a-z0-9-_]*$/;
 const doNormalizeInterceptingRoute = (node) => {
   delete node.props.layout;
   if (node.children && node.children.length) {

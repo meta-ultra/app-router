@@ -22,4 +22,7 @@ const pipe =
     return result[0];
   };
 
-export { stripExtension, pipe };
+const isRelativePath = (path) => /^\.{1,2}\//.test(path);
+const getRelativePath = (path) => (isRelativePath(path) ? path : "./" + path);
+
+export { stripExtension, pipe, getRelativePath };
