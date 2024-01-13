@@ -1,0 +1,58 @@
+const router = createRouter([{ 
+  id: "app",
+  element: (
+    <RootLayoutRouteElement loading={App_loading} error={App_globalError}>{lazy(() => import("./app/layout"))}</RootLayoutRouteElement>
+  ),
+  errorElement: <RootErrorElement/>
+  ,
+  children: [{
+  id: "app/about",
+  path: "about",
+  element: (
+    <PageRouteElement>{lazy(() => import("./app/about/page"))}</PageRouteElement>
+  )
+  ,
+  children: [{
+  id: "app/about/nested",
+  path: "nested",
+  element: (
+    <LayoutRouteElement notFound={App_about_nested_notFound} notFound={App_about_nested_template}></LayoutRouteElement>
+  )
+  ,
+  children: [{
+  id: "app/about/nested/",
+  index: true,
+  element: (
+    <PageRouteElement>{lazy(() => import("./app/about/nested/page"))}</PageRouteElement>
+  )
+  },
+]
+},
+]
+},
+{
+  id: "app/home",
+  path: "home",
+  element: (
+    <LayoutRouteElement error={App_home_error}>{lazy(() => import("./app/home/layout"))}</LayoutRouteElement>
+  )
+  ,
+  children: [{
+  id: "app/home/",
+  index: true,
+  element: (
+    <PageRouteElement>{lazy(() => import("./app/home/page"))}</PageRouteElement>
+  )
+  },
+]
+},
+{
+  id: "app/not-empty/not-empty",
+  path: "not-empty/not-empty",
+  element: (
+    <PageRouteElement>{lazy(() => import("./app/not-empty/not-empty/page"))}</PageRouteElement>
+  )
+  },
+]
+},
+], {basename: "/page/index/index"});

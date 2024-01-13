@@ -34,10 +34,8 @@ Handlebars.registerHelper(
 );
 Handlebars.registerHelper("lazyImport", (path) => {
   let output = undefined;
-  if (path === PRESET_ROOT_LAYOUT) {
-    output = "<Outlet/>";
-  } else if (path === PRESET_LAYOUT) {
-    output = "<Outlet/>";
+  if ([PRESET_ROOT_LAYOUT, PRESET_LAYOUT].indexOf(path) !== -1) {
+    output = "";
   } else {
     output = `{lazy(() => import("${stripExtension(getRelativePath(path))}"))}`;
   }

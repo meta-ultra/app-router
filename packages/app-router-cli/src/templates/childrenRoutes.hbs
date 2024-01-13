@@ -8,17 +8,17 @@
       {{~#unless (isNil this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
       {{~#unless (isNil this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}
       {{~#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}
-      {{~#unless (isNil this.props.template)}} notFound={ {{~escape this.props.template~}} }{{/unless~}}
+      {{~#unless (isNil this.props.template)}} template={ {{~escape this.props.template~}} }{{/unless~}}
     >
-      {{#if this.props.layout}}
-        {{lazyImport this.props.layout}}
-      {{else}}
-        {{lazyImport this.props.page}}
-      {{/if}}
+      {{~#if this.props.layout}}
+        {{~lazyImport this.props.layout~}}
+      {{~else~}}
+        {{~lazyImport this.props.page~}}
+      {{/if~}}
     </{{#if props.layout}}LayoutRouteElement{{else}}PageRouteElement{{/if}}>
   )
-  {{~#unless (isNilorEmpty this.children)}},
+  {{#unless (isNilorEmpty this.children)}},
   children: [{{generateChildrenRoutes this.children}}]
   {{/unless}}
-}
+},
 {{/each}}
