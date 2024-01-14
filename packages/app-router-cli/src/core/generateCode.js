@@ -1,11 +1,20 @@
+/*eslint-disable*/
 import { readFileSync } from "node:fs";
-import { join, isAbsolute } from "node:path";
+import { join, isAbsolute, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import Handlebars from "handlebars";
 import escape from "./escape.js";
 import routerSpec from "../templates/deprecated/router.spec.js";
 import childrenRouteSpec from "../templates/deprecated/childrenRoute.spec.js";
 import { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } from "./constants.js";
 import { getRelativePath, stripExtension } from "./utils.js";
+
+let __dirname;
+try {
+  __dirname = dirname(fileURLToPath(import.meta.url));
+} catch (e) {
+  __dirname = __dirname;
+}
 
 /* Utilities */
 const readTemplateSync = (path) =>
@@ -79,11 +88,13 @@ const generateCodeOnFly = (path, context, options) => {
   return template(context, options);
 };
 
-const generateCode = (appRouterNamedImports, staticDefaultImports) => {
-  return generateCodeOnFly("../templates/staticDefaultImports.hbs", {
-    isHash: false,
+const generateCode = (isHash, appRouterNamedImports, staticDefaultImports, routes, basename) => {
+  return generateCodeOnFly("../templates/router.hbs", {
+    isHash,
     appRouterNamedImports,
     staticDefaultImports,
+    routes,
+    basename,
   });
 };
 

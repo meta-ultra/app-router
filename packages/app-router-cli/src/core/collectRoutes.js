@@ -3,7 +3,7 @@ import {
   INTERCEPTING_ONE_LEVEL_UP_RE,
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
-} from "./constants";
+} from "./constants.js";
 
 const getLastSeg = (path) => path.split("/").pop();
 const match = (regexps, value) => regexps.find((regexp) => regexp.test(value));

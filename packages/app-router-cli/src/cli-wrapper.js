@@ -1,5 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 import { debounce } from "lodash-es";
 import meow from "meow";
 import chalk from "chalk";
@@ -7,7 +7,7 @@ import ora from "ora";
 import cliWelcome from "cli-welcome";
 import { watch } from "chokidar"; // https://github.com/paulmillr/chokidar
 import { format } from "prettier"; // https://prettier.io/docs/en/api.html
-import { getRoutesFromFileSystem, generateRouterOutput } from "./core/index.js";
+import { getMetaRoutes, generateRouter } from "./core/index.js";
 
 const helpText = `
 Usage
@@ -78,10 +78,11 @@ const outputPath = join(process.cwd(), cli.flags.output);
 const main = async () => {
   const spinner = ora("App router configuration is being generated now...").start();
 
-  const routes = getRoutesFromFileSystem(outputPath, sourcePath);
-  console.log(routes);
-  // const output = generateRouterOutput(routes);
-  // writeFileSync(outputPath, await format(output, { parser: "babel" }));
+  const segs = outputPath.split(sep);
+  segs.pop();
+  const routes = getMetaRoutes(segs.join(sep), sourcePath);
+  const output = generateRouter(cli.flags.hash, cli.flags.basename, routes);
+  writeFileSync(outputPath, await format(output, { parser: "babel" }));
 
   spinner.succeed("App Router has been ready.");
   if (cli.flags.watch) {
