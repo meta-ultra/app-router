@@ -1,4 +1,4 @@
-import {
+const {
   PRESET_ROOT_LAYOUT,
   PRESET_LAYOUT,
   GLOBAL_ERROR,
@@ -13,7 +13,7 @@ import {
   INTERCEPTING_ONE_LEVEL_UP_RE,
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
-} from "./constants.js";
+} = require("./constants.js");
 
 /**
  * rename global-error to error, and remove the global-error property inside the nested routes.
@@ -258,4 +258,6 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
   return nodes;
 };
 
-export default normalize;
+module.exports = {
+  normalize
+};

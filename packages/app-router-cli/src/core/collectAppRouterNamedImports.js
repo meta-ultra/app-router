@@ -24,4 +24,6 @@ const collectAppRouterNamedImports = (nodes, level = 0, namedImports = new Set()
   return level === 0 ? Array.from(namedImports) : namedImports;
 };
 
-export default collectAppRouterNamedImports;
+module.exports = {
+  collectAppRouterNamedImports
+};

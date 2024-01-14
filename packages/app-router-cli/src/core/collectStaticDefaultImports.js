@@ -1,8 +1,8 @@
 /**
  * Collect dependencies need to be static imports, such as error, loading, not-found.
  */
-import escape from "./escape.js";
-import { getRelativePath, stripExtension } from "./utils.js";
+const { escape } = require("./escape.js");
+const { getRelativePath, stripExtension } = require("./utils.js");
 
 const isStaticDefaultImportProp = (propName) =>
   ["error", "loading", "notFound"].indexOf(propName) !== -1;
@@ -32,4 +32,6 @@ const collectStaticDefaultImports = (nodes, staticDefaultImports = []) => {
   return staticDefaultImports;
 };
 
-export default collectStaticDefaultImports;
+module.exports = {
+  collectStaticDefaultImports
+};

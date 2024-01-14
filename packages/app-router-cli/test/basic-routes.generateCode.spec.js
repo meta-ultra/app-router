@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { readFileSync } from "node:fs";
-import collectRoutes from "../src/core/collectRoutes";
+import { collectRoutes } from "../src/core/collectRoutes";
 import { generateCodeOnFly } from "../src/core/generateCode";
 import collectStaticDefaultImportsOutput from "./basic-routes/collectStaticDefaultImportsOutput";
 import collectAppRouterNamedImportsOutput from "./basic-routes/collectAppRouterNamedImportsOutput";

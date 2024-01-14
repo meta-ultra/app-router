@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import traverseFileSystem from "../src/core/traverseFileSystem";
+import { traverseFileSystem } from "../src/core/traverseFileSystem";
 import input from "./basic-routes/traverseFileSystemOutput";
 
 test("no private items", () => {

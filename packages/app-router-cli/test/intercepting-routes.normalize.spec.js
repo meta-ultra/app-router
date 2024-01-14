@@ -1,4 +1,4 @@
-import normalize from "../src/core/normalize";
+import { normalize } from "../src/core/normalize";
 import { cloneDeep } from "lodash";
 import input from "./intercepting-routes/traverseFileSystemOutput";
 

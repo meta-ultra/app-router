@@ -15,7 +15,7 @@ const INTERCEPTING_ONE_LEVEL_UP_RE = /^\(\.\.\)[a-z][a-z0-9-_]*$/; // intercepti
 const INTERCEPTING_TWO_LEVEL_UP_RE = /^\(\.\.\)\(\.\.\)[a-z][a-z0-9-_]*$/; // intercepting route for two level up
 const INTERCEPTING_ROOT_LEVEL_UP_RE = /^\(\.\.\.\)[a-z][a-z0-9-_]*$/; // intercepting route for the root level up
 
-export {
+module.exports = {
   PRESET_ROOT_LAYOUT,
   PRESET_LAYOUT,
   GLOBAL_ERROR,

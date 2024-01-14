@@ -1,4 +1,4 @@
-import { stripExtension, pipe } from "./utils.js";
+const { stripExtension, pipe } = require("./utils.js");
 
 /**
  * Escape group name with entity name, such as "lp" for "(", "rp" for ")" and "dots" for "..."
@@ -52,4 +52,6 @@ const escape = (fullPath) => {
   return result.join("_");
 };
 
-export default escape;
+module.exports = {
+  escape
+};

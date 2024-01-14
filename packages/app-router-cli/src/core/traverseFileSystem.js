@@ -1,6 +1,6 @@
-import { join, relative, sep } from "node:path";
-import { readdirSync, statSync } from "node:fs";
-import { stripExtension } from "./utils.js";
+const { join, relative, sep } = require("node:path");
+const { readdirSync, statSync } = require("node:fs");
+const { stripExtension } = require("./utils.js");
 
 const isValidFileName = (filename) =>
   ["page", "layout", "error", "global-error", "loading", "not-found", "template"].indexOf(
@@ -84,4 +84,6 @@ const traverseFileSystem = (outputPath, dirname, filename = "", output = []) => 
   return output;
 };
 
-export default traverseFileSystem;
+module.exports = {
+  traverseFileSystem
+};

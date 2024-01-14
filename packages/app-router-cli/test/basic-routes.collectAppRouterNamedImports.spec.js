@@ -1,4 +1,4 @@
-import collectAppRouterNamedImports from "../src/core/collectAppRouterNamedImports";
+import { collectAppRouterNamedImports } from "../src/core/collectAppRouterNamedImports";
 import normalizeOutput from "./basic-routes/normalizeOutput";
 import collectAppRouterNamedImportsOutput from "./basic-routes/collectAppRouterNamedImportsOutput";
 

@@ -1,9 +1,9 @@
-import {
+const {
   INDEX_RE,
   INTERCEPTING_ONE_LEVEL_UP_RE,
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
-} from "./constants.js";
+} = require("./constants.js");
 
 const getLastSeg = (path) => path.split("/").pop();
 const match = (regexps, value) => regexps.find((regexp) => regexp.test(value));
@@ -49,4 +49,6 @@ const collectRoutes = (nodes, parent) => {
   return routes;
 };
 
-export default collectRoutes;
+module.exports = {
+  collectRoutes
+};

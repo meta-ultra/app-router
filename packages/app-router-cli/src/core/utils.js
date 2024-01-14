@@ -30,4 +30,4 @@ const isRelativePath = (path) => /^\.{1,2}\//.test(path);
  */
 const getRelativePath = (path) => (isRelativePath(path) ? path : "./" + path);
 
-export { stripExtension, pipe, getRelativePath };
+module.exports = { stripExtension, pipe, getRelativePath };

@@ -1,4 +1,4 @@
-import collectRoutes from "../src/core/collectRoutes";
+import { collectRoutes } from "../src/core/collectRoutes";
 import normalizeOutput from "./basic-routes/normalizeOutput";
 
 test("", () => {

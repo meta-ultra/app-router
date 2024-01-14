@@ -1,20 +1,12 @@
 /*eslint-disable*/
-import { readFileSync } from "node:fs";
-import { join, isAbsolute, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import Handlebars from "handlebars";
-import escape from "./escape.js";
-import routerSpec from "../templates/deprecated/router.spec.js";
-import childrenRouteSpec from "../templates/deprecated/childrenRoute.spec.js";
-import { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } from "./constants.js";
-import { getRelativePath, stripExtension } from "./utils.js";
-
-let __dirname;
-try {
-  __dirname = dirname(fileURLToPath(import.meta.url));
-} catch (e) {
-  __dirname = __dirname;
-}
+const { readFileSync } = require("node:fs");
+const { join, isAbsolute, dirname } = require("node:path");
+const Handlebars = require("handlebars");
+const { escape } = require("./escape.js");
+// const { routerSpec } = require("../templates/deprecated/router.spec.js");
+// const { childrenRouteSpec } = require("../templates/deprecated/childrenRoute.spec.js");
+const { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } = require("./constants.js");
+const { getRelativePath, stripExtension } = require("./utils.js");
 
 /* Utilities */
 const readTemplateSync = (path) =>
@@ -22,8 +14,8 @@ const readTemplateSync = (path) =>
 /* End of Utilities */
 
 /* Register Compiled Template */
-const routerTemplate = Handlebars.template(routerSpec);
-const childrenRouteTemplate = Handlebars.template(childrenRouteSpec);
+// const routerTemplate = Handlebars.template(routerSpec);
+// const childrenRouteTemplate = Handlebars.template(childrenRouteSpec);
 /* End of Register Compiled Template */
 
 /* Register Helpers */
@@ -98,5 +90,8 @@ const generateCode = (isHash, appRouterNamedImports, staticDefaultImports, route
   });
 };
 
-export { generateCodeOnFly, readTemplateSync };
-export default generateCode;
+module.exports = {
+  generateCode,
+  generateCodeOnFly,
+  readTemplateSync,
+}

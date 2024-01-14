@@ -1,13 +1,13 @@
-import { writeFileSync } from "node:fs";
-import { join, sep } from "node:path";
-import { debounce } from "lodash-es";
-import meow from "meow";
-import chalk from "chalk";
-import ora from "ora";
-import cliWelcome from "cli-welcome";
-import { watch } from "chokidar"; // https://github.com/paulmillr/chokidar
-import { format } from "prettier"; // https://prettier.io/docs/en/api.html
-import { getMetaRoutes, generateRouter } from "./core/index.js";
+const { writeFileSync } = require("node:fs");
+const { join, sep } = require("node:path");
+const { debounce } = require("lodash-es");
+const meow = require("meow");
+const chalk = require("chalk");
+const ora = require("ora");
+const cliWelcome = require("cli-welcome");
+const { watch } = require("chokidar"); // https://github.com/paulmillr/chokidar
+const { format } = require("prettier"); // https://prettier.io/docs/en/api.html
+const { getMetaRoutes, generateRouter } = require("./core/index.js");
 
 const helpText = `
 Usage

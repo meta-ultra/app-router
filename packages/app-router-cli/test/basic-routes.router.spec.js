@@ -1,6 +1,6 @@
 import { join } from "node:path";
-import collectStaticDefaultImports from "../src/core/collectStaticDefaultImports";
-import collectRoutes from "../src/core/collectRoutes";
+import { collectStaticDefaultImports } from "../src/core/collectStaticDefaultImports";
+import { collectRoutes } from "../src/core/collectRoutes";
 import { generateCodeOnFly } from "../src/core/generateCode";
 import collectAppRouterNamedImportsOutput from "./basic-routes/collectAppRouterNamedImportsOutput";
 import nomalizeOutput from "./basic-routes/normalizeOutput";

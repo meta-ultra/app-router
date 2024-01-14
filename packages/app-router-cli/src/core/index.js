@@ -1,10 +1,10 @@
-import { pipe } from "./utils.js";
-import traverseFileSystem from "./traverseFileSystem.js";
-import normalize from "./normalize.js";
-import collectAppRouterNamedImports from "../core/collectAppRouterNamedImports.js";
-import collectStaticDefaultImports from "../core/collectStaticDefaultImports.js";
-import collectRoutes from "../core/collectRoutes.js";
-import generateCode from "./generateCode.js";
+const { pipe } = require("./utils.js");
+const { traverseFileSystem } = require("./traverseFileSystem.js");
+const { normalize } = require("./normalize.js");
+const { collectAppRouterNamedImports } = require("../core/collectAppRouterNamedImports.js");
+const { collectStaticDefaultImports } = require("../core/collectStaticDefaultImports.js");
+const { collectRoutes } = require("../core/collectRoutes.js");
+const { generateCode } = require("./generateCode.js");
 
 const getMetaRoutes = (outputPath, sourcePath) => {
   const routes = pipe(normalize, traverseFileSystem)(outputPath, sourcePath);
@@ -27,4 +27,4 @@ const generateRouter = (isHash, basename, metaRoutes) => {
   return output;
 };
 
-export { getMetaRoutes, generateRouter };
+module.exports = { getMetaRoutes, generateRouter };
