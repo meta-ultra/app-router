@@ -7,8 +7,10 @@ import childrenRouteSpec from "../templates/deprecated/childrenRoute.spec.js";
 import { PRESET_ROOT_LAYOUT, PRESET_LAYOUT } from "./constants.js";
 import { getRelativePath, stripExtension } from "./utils.js";
 
+/* Utilities */
 const readTemplateSync = (path) =>
   readFileSync(isAbsolute(path) ? path : join(__dirname, path)).toString("utf-8");
+/* End of Utilities */
 
 /* Register Compiled Template */
 const routerTemplate = Handlebars.template(routerSpec);
@@ -16,18 +18,6 @@ const childrenRouteTemplate = Handlebars.template(childrenRouteSpec);
 /* End of Register Compiled Template */
 
 /* Register Helpers */
-const generateChildrenRoutes = (routes) => {
-  const children = [];
-  for (let i = 0; routes && i < routes.length; ++i) {
-    const route = routes[i];
-    const grandchildren = generateChildrenRoutes(route.children);
-
-    children.push(childrenRouteTemplate({ ...routes[i], grandchildren }));
-  }
-
-  return children;
-};
-
 Handlebars.registerHelper("escape", escape);
 Handlebars.registerHelper("join", (array, sep) => array.join(sep));
 Handlebars.registerHelper("isNil", (value) => value === undefined || value === null);
@@ -55,19 +45,26 @@ Handlebars.registerHelper(
     basename === "" ||
     basename === "/"
 );
-
-// Handlebars.registerHelper("generateChildrenRoutes", function (routes) {
-//   const children = generateChildrenRoutes(routes);
-//   return `[${children.join(",")}]`;
-// });
+Handlebars.registerHelper("isPageRoute", (value) => value === "page");
+Handlebars.registerHelper("isLayoutRoute", (value) => value === "layout");
 /* End of Register Helpers */
 
-/* Partials */
+/* Partials on fly */
 Handlebars.registerPartial(
-  "generateChildrenRoutes",
-  readTemplateSync("../templates/childrenRoutes.hbs")
+  "staticDefaultImports",
+  readTemplateSync("../templates/staticDefaultImports.hbs")
 );
-/* End of Partials */
+Handlebars.registerPartial("createRouter", readTemplateSync("../templates/createRouter.hbs"));
+Handlebars.registerPartial("childrenRoutes", readTemplateSync("../templates/childrenRoutes.hbs"));
+Handlebars.registerPartial(
+  "pageRouteElement",
+  readTemplateSync("../templates/pageRouteElement.hbs")
+);
+Handlebars.registerPartial(
+  "layoutRouteElement",
+  readTemplateSync("../templates/layoutRouteElement.hbs")
+);
+/* End of Partials on fly*/
 
 /**
  * render template on fly for development

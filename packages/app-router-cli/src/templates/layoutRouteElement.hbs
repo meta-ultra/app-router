@@ -1,0 +1,6 @@
+<LayoutRouteElement
+  {{~#unless (isNil props.loading)}} loading={ {{~escape props.loading~}} }{{/unless}}
+  {{~#unless (isNil props.error)}} error={ {{~escape props.error~}} }{{/unless}}
+  {{~#unless (isNil props.notFound)}} notFound={ {{~escape props.notFound~}} }{{/unless}}
+  {{~#unless (isNil props.template)}} template={ {{~escape props.template~}} }{{/unless~}}
+  {{~#if props.layout}}>{{~lazyImport props.layout~}}</LayoutRouteElement>{{else}}/>{{/if~}}

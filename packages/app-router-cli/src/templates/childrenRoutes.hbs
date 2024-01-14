@@ -4,21 +4,11 @@
   {{#if this.path}}path: "{{this.path}}",{{/if}}
   {{~#if this.index}}index: {{this.index}},{{/if}}
   element: (
-    <{{#if this.props.layout}}LayoutRouteElement{{else}}PageRouteElement{{/if}}
-      {{~#unless (isNil this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
-      {{~#unless (isNil this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}
-      {{~#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}
-      {{~#unless (isNil this.props.template)}} template={ {{~escape this.props.template~}} }{{/unless~}}
-    >
-      {{~#if this.props.layout}}
-        {{~lazyImport this.props.layout~}}
-      {{~else~}}
-        {{~lazyImport this.props.page~}}
-      {{/if~}}
-    </{{#if this.props.layout}}LayoutRouteElement{{else}}PageRouteElement{{/if}}>
+    {{~#if (isPageRoute this.type)}}{{> pageRouteElement this}}{{/if~}}
+    {{~#if (isLayoutRoute this.type)}}{{> layoutRouteElement this}}{{/if~}}
   )
   {{#unless (isNilorEmpty this.children)}},
-  children: [{{> generateChildrenRoutes routes=this.children}}]
+  children: [{{> childrenRoutes routes=this.children}}]
   {{/unless}}
 },
 {{/each}}

@@ -1,20 +1,18 @@
 const router = createRouter([{{#each routes}}{ 
   id: "{{this.id}}",
-  element: (
-    <RootLayoutRouteElement
+  element: (<RootLayoutRouteElement
       {{~#unless (isNil this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
       {{~#unless (isNil this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}
       {{~#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}
       {{~#unless (isNil this.props.template)}} template={ {{~escape this.props.template~}} }{{/unless~}}
     >
       {{~lazyImport this.props.layout~}}
-    </RootLayoutRouteElement>
-  ), 
+    </RootLayoutRouteElement>), 
   errorElement: <RootErrorElement{{#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}/>
   {{#unless (isNilorEmpty this.children)}},
-  children: [{{> generateChildrenRoutes routes=this.children}}]
+  children: [{{> childrenRoutes routes=this.children}}]
   {{/unless}}
 },
 {{/each}}]{{#unless (isUndefinedBasename basename)}}, {basename: "{{basename}}"}{{/unless}});
 
-export default router
+export default router;
