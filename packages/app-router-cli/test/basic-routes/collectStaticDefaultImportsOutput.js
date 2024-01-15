@@ -1,18 +1,18 @@
 export default [
   {
-    path: "./app/loading.jsx",
+    path: "./app/loading",
     defaultImportName: "App_loading",
   },
   {
-    path: "./app/global-error.js",
+    path: "./app/global-error",
     defaultImportName: "App_globalError",
   },
   {
-    path: "./app/about/nested/not-found.js",
+    path: "./app/about/nested/not-found",
     defaultImportName: "App_about_nested_notFound",
   },
   {
-    path: "./app/home/error.jsx",
+    path: "./app/home/error",
     defaultImportName: "App_home_error",
   },
 ];
