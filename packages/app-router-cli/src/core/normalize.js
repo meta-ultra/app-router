@@ -65,17 +65,14 @@ const renameNotFound = (props) => {
   }
 };
 
+const isCatchAll = (folderName) => !![CATCH_ALL_RE, OPTIONAL_CATCH_ALL_RE].find((re) => re.test(folderName))
 /**
  * remove children of catch-all or optional catch-all route in a place.
  * @param {*} node
  */
 const removeCatchAllRouteChildren = (node) => {
   const folderName = node.path.split("/").pop();
-  if (
-    [/^\[\.{3}[a-z][a-z0-9]*\]$/, /^\[\[\.{3}[a-z][a-z0-9]*\]\]$/].find((regexp) =>
-      regexp.test(folderName)
-    )
-  ) {
+  if (isCatchAll(folderName)) {
     node.children = [];
   }
 };
@@ -97,33 +94,6 @@ const sinkPageWithLayout = (node) => {
   }
 };
 
-const doHoist = (nodes) => {
-  const hoistedNodes = [];
-  for (let i = 0; i < nodes.length; ++i) {
-    const node = nodes[i];
-    if (!node.props.page && !node.props.layout) {
-      if (node.children && node.children.length) {
-        hoistedNodes.push(...doHoist(node.children));
-      } else {
-        hoistedNodes.push(node);
-      }
-    } else if (node.props.page && !node.props.layout && node.children && node.children.length) {
-      const children = node.children;
-      node.children = [];
-      hoistedNodes.push(node);
-      hoistedNodes.push(...doHoist(children));
-    } else {
-      hoistedNodes.push(node);
-    }
-  }
-
-  return hoistedNodes;
-};
-const hoist = (node) => {
-  if (node.children && node.children.length) {
-    node.children = doHoist(node.children);
-  }
-};
 
 const score = (name) => {
   const result = [
@@ -148,6 +118,7 @@ const sortChildren = (node) => {
  */
 const normalizeDynamicRoute = (node) => {
   if (node.children.length >= 2) {
+    // be sure to call sortChildren before calling normalizeDynamicRoute.
     const last1 = node.children[node.children.length - 1];
     const last2 = node.children[node.children.length - 2];
     if (
@@ -217,7 +188,7 @@ const normalizeInterceptingRoute = (node) => {
  * @param {{isRemained: boolean}} parentState - indicate whether to remain the current branch.
  * @returns
  */
-const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
+const doNormalize = (nodes, level = 0, parentState = { isRemained: false }) => {
   const removingIndexes = [];
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
@@ -233,12 +204,11 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
       sinkPageWithLayout(node);
       sortChildren(node);
       normalizeDynamicRoute(node);
-      hoist(node);
 
       // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };
       if (node.children && node.children.length) {
-        normalize(node.children, level + 1, state);
+        doNormalize(node.children, level + 1, state);
       }
       state.isRemained = state.isRemained || props.page || props.layout;
       if (state.isRemained) {
@@ -257,6 +227,53 @@ const normalize = (nodes, level = 0, parentState = { isRemained: false }) => {
 
   return nodes;
 };
+
+/**
+ * hoist the nested routes to the nearest level has layout.
+ * @param {*} nodes
+ * @param {*} parentHoistedNodes
+ */
+const hoist = (nodes, parentHoistedNodes = undefined) => {
+  const hoistedNodes = []
+  const hoistedNodeIndexes = []
+  for (let i = 0; i < nodes.length; ++i) {
+    const node = nodes[i];
+    if (node.props.page && parentHoistedNodes) {
+      hoistedNodeIndexes.push(i)
+      parentHoistedNodes.push({
+        ...node,
+        children: []
+      });
+    }
+
+    if (node.children && node.children.length > 0) {
+      if (node.props.layout) {
+        hoist(node.children, undefined)
+      }
+      else {
+        hoist(node.children, parentHoistedNodes || hoistedNodes)
+      }
+    }
+  }
+
+  for (let i = hoistedNodeIndexes.length - 1; i >= 0; i--) {
+    nodes.splice(hoistedNodeIndexes[i], 1)
+  }
+
+  // append the hoisted nodes
+  nodes.push(...hoistedNodes)
+  // sort to ensure the catch-all and optional catch-all routes are both at the end.
+  nodes.sort((node1, node2) =>
+    score(node1.path.split("/").pop()) > score(node2.path.split("/").pop()) ? -1 : 1
+  );
+}
+
+const normalize = (nodes) => {
+  doNormalize(nodes);
+  hoist(nodes);
+
+  return nodes
+}
 
 module.exports = {
   normalize
