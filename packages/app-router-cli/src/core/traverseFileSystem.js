@@ -1,6 +1,18 @@
 const { join, relative, sep } = require("node:path");
 const { readdirSync, statSync } = require("node:fs");
 const { stripExtension } = require("./utils.js");
+const {
+  NORMAL_RE,
+  GROUP_RE,
+  DYNAMIC_RE,
+  CATCH_ALL_RE,
+  OPTIONAL_CATCH_ALL_RE,
+  PARALLEL_RE,
+  INTERCEPTING_SAME_LEVEL_RE,
+  INTERCEPTING_ONE_LEVEL_UP_RE,
+  INTERCEPTING_TWO_LEVEL_UP_RE,
+  INTERCEPTING_ROOT_LEVEL_UP_RE,
+ } = require("./constants.js");
 
 const isValidFileName = (filename) =>
   ["page", "layout", "error", "global-error", "loading", "not-found", "template"].indexOf(
@@ -13,23 +25,12 @@ const isValidFileName = (filename) =>
  * - Group name: (...<Route Name>) or (<Route Name>)
  */
 const isValidFolderName = (name) => {
-  const ROUTE_RE = /^[a-z][a-z0-9-_]*$/;
-  const GROUP_RE = /^\(([.]{3})?[a-z][a-z0-9-_]*\)$/;
-  const DYNAMIC_RE = /^\[[a-z][a-z0-9-_]*\]$/;
-  const DYNAMIC_CATCH_ALL_RE = /^\[([.]{3})[a-z][a-z0-9-_]*\]$/;
-  const DYNAMIC_OPTIONAL_CATCH_ALL_RE = /^\[\[([.]{3})[a-z][a-z0-9-_]*\]\]$/;
-  const PARALLEL_RE = /^@[a-z][a-z0-9-_]*$/;
-  const INTERCEPTING_SAME_LEVEL_RE = /^\(\.\)[a-z][a-z0-9-_]*$/;
-  const INTERCEPTING_ONE_LEVEL_UP_RE = /^\(\.\.\)[a-z][a-z0-9-_]*$/;
-  const INTERCEPTING_TWO_LEVEL_UP_RE = /^\(\.\.\)\(\.\.\)[a-z][a-z0-9-_]*$/;
-  const INTERCEPTING_ROOT_LEVEL_UP_RE = /^\(\.\.\.\)[a-z][a-z0-9-_]*$/;
-
   return (
-    ROUTE_RE.test(name) ||
+    NORMAL_RE.test(name) ||
     GROUP_RE.test(name) ||
     DYNAMIC_RE.test(name) ||
-    DYNAMIC_CATCH_ALL_RE.test(name) ||
-    DYNAMIC_OPTIONAL_CATCH_ALL_RE.test(name) ||
+    CATCH_ALL_RE.test(name) ||
+    OPTIONAL_CATCH_ALL_RE.test(name) ||
     PARALLEL_RE.test(name) ||
     INTERCEPTING_SAME_LEVEL_RE.test(name) ||
     INTERCEPTING_ONE_LEVEL_UP_RE.test(name) ||

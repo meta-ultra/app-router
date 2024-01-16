@@ -1,5 +1,6 @@
 const {
   INDEX_RE,
+  GROUP_RE,
   INTERCEPTING_ONE_LEVEL_UP_RE,
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
@@ -31,12 +32,21 @@ const collectRoutes = (nodes, parent) => {
       type = node.props.layout ? "layout" : "page";
     }
 
+    let path = node.path
+    if (parent) {
+      path = path.replace(parent.path + "/", "")
+    }
+    // strip group name from route's path
+    path = path.split("/").filter((seg) => !GROUP_RE.test(seg)).join("/")
+
     const route = {
       id: node.path,
       type,
       ...(INDEX_RE.test(lastSeg)
         ? { index: true }
-        : { path: parent ? node.path.replace(parent.path + "/", "") : node.path }),
+        : path
+        ? { path }
+        : {}),
       props: node.props,
     };
 

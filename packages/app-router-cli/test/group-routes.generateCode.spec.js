@@ -2,9 +2,9 @@ import { join } from "node:path";
 import { readFileSync } from "node:fs";
 import { collectRoutes } from "../src/core/collectRoutes";
 import { generateCodeOnFly } from "../src/core/generateCode";
-import collectStaticDefaultImportsOutput from "./basic-routes/collectStaticDefaultImportsOutput";
-import collectAppRouterNamedImportsOutput from "./basic-routes/collectAppRouterNamedImportsOutput";
-import nomalizeOutput from "./basic-routes/normalizeOutput";
+import collectStaticDefaultImportsOutput from "./group-routes/collectStaticDefaultImportsOutput";
+// import collectAppRouterNamedImportsOutput from "./group-routes/collectAppRouterNamedImportsOutput";
+import nomalizeOutput from "./group-routes/normalizeOutput";
 
 test("staticDefaultImports with hash router", () => {
   const output = generateCodeOnFly(join(__dirname, "../src/templates/staticDefaultImports.hbs"), {
@@ -14,7 +14,7 @@ test("staticDefaultImports with hash router", () => {
   });
 
   expect(output).toStrictEqual(
-    readFileSync(join(__dirname, "./basic-routes/staticDefaultImportsOutput.hash.hbs")).toString(
+    readFileSync(join(__dirname, "./group-routes/staticDefaultImportsOutput.hash.hbs")).toString(
       "utf-8"
     )
   );
@@ -28,7 +28,7 @@ test("staticDefaultImports with browser router", () => {
   });
 
   expect(output).toStrictEqual(
-    readFileSync(join(__dirname, "./basic-routes/staticDefaultImportsOutput.browser.hbs")).toString(
+    readFileSync(join(__dirname, "./group-routes/staticDefaultImportsOutput.browser.hbs")).toString(
       "utf-8"
     )
   );
@@ -51,7 +51,7 @@ test("createRouter with undefined basename", () => {
   console.log(output);
 });
 
-test("createRouter with basename", () => {
+test.only("createRouter with basename", () => {
   const output = generateCodeOnFly(join(__dirname, "../src/templates/createRouter.hbs"), {
     basename: "/page/index/index",
     routes: collectRoutes(nomalizeOutput),

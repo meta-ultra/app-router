@@ -7,7 +7,7 @@ import nomalizeOutput from "./basic-routes/normalizeOutput";
 
 const staticDefaultImports = collectStaticDefaultImports(nomalizeOutput);
 
-test.only("createRouter with basename", () => {
+test("createRouter with basename", () => {
   const output = generateCodeOnFly(join(__dirname, "../src/templates/router.hbs"), {
     isHash: false,
     appRouterNamedImports: collectAppRouterNamedImportsOutput,

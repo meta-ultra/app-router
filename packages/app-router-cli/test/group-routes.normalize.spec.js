@@ -11,7 +11,8 @@ test("remain routes with neither `props.page` nor `props.layout`, but its descen
   normalize(output);
 
   expect(input[0].children.find((node) => node.path === "app/(group)")).toBeDefined();
-  expect(output[0].children.find((node) => node.path === "app/(group)")).toBeDefined();
+  expect(output[0].children.find((node) => node.path === "app/(group)")).toBeUndefined();
+  expect(output[0].children.find((node) => node.path === "app/(group)/something")).toBeDefined();
 });
 
 test("remove routes without `props.page` and `props.layout` and its descendants are with neither `props.page` nor `props.layout`", () => {
@@ -20,3 +21,7 @@ test("remove routes without `props.page` and `props.layout` and its descendants 
   expect(input[0].children.find((node) => node.path === "app/(...empty)")).toBeDefined();
   expect(output[0].children.find((node) => node.path === "app/(...empty)")).toBeUndefined();
 });
+
+test.only("", () => {
+  console.log(JSON.stringify(normalize(output), null, 2))
+})

@@ -1,6 +1,6 @@
 const { writeFileSync } = require("node:fs");
 const { join, sep } = require("node:path");
-const { debounce } = require("lodash-es");
+const { debounce } = require("lodash");
 const meow = require("meow");
 const chalk = require("chalk");
 const ora = require("ora");
@@ -28,7 +28,6 @@ Options
 `;
 
 const cli = meow(helpText, {
-  importMeta: import.meta,
   description: false,
   autoHelp: false,
   flags: {

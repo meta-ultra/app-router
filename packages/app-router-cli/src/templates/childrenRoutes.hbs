@@ -1,14 +1,17 @@
 {{#each routes}}
 {
-  {{#if this.id}}id: "{{this.id}}",{{/if}}
-  {{#if this.path}}path: "{{this.path}}",{{/if}}
-  {{~#if this.index}}index: {{this.index}},{{/if}}
+  {{#if this.id}}
+  id: "{{this.id}}",{{/if}}
+  {{~#if this.path}}
+  path: "{{this.path}}",{{/if}}
+  {{~#if this.index}}
+  index: {{this.index}},{{/if}}
   element: (
     {{~#if (isPageRoute this.type)}}{{> pageRouteElement this}}{{/if~}}
     {{~#if (isLayoutRoute this.type)}}{{> layoutRouteElement this}}{{/if~}}
   )
-  {{#unless (isNilorEmpty this.children)}},
+  {{~#unless (isNilorEmpty this.children)}},
   children: [{{> childrenRoutes routes=this.children}}]
-  {{/unless}}
+  {{~/unless~}}
 },
 {{/each}}

@@ -13,6 +13,7 @@ const isStaticDefaultImportProp = (propName) =>
  * @returns
  */
 const collectStaticDefaultImports = (nodes, staticDefaultImports = []) => {
+  console.log(nodes.length)
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
     for (const [name, path] of Object.entries(node.props)) {

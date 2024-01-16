@@ -11,7 +11,7 @@ const router = createRouter([{{#each routes}}{
   errorElement: <RootErrorElement{{#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}/>
   {{#unless (isNilorEmpty this.children)}},
   children: [{{> childrenRoutes routes=this.children}}]
-  {{/unless}}
+  {{~/unless~}}
 },
 {{/each}}]{{#unless (isUndefinedBasename basename)}}, {basename: "{{basename}}"}{{/unless}});
 
