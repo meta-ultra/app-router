@@ -74,9 +74,9 @@ const router = createBrowserRouter(
             {
               path: "other",
               element: (
-                <LayoutRouteElement template={lazy(() => import("./app/template-layout/template"))}>
+                <PageRouteElement template={lazy(() => import("./app/template-layout/template"))}>
                   {lazy(() => import("./app/template-layout/other/page"))}
-                </LayoutRouteElement>
+                </PageRouteElement>
               ),
             },
             {

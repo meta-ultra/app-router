@@ -31,7 +31,7 @@ Handlebars.registerHelper("lazyImport", (path) => {
   if ([PRESET_ROOT_LAYOUT, PRESET_LAYOUT].indexOf(path) !== -1) {
     output = "";
   } else {
-    output = `{lazy(() => import("${stripExtension(getRelativePath(path))}"))}`;
+    output = `lazy(() => import("${stripExtension(getRelativePath(path))}"))`;
   }
 
   return new Handlebars.SafeString(output);
@@ -48,6 +48,14 @@ Handlebars.registerHelper(
 );
 Handlebars.registerHelper("isPageRoute", (value) => value === "page");
 Handlebars.registerHelper("isLayoutRoute", (value) => value === "layout");
+Handlebars.registerHelper(
+  "parallelRoutesProps",
+  (parallelRoutes) => {
+    const template = Handlebars.compile(readTemplateSync("../templates/parallelRoutesProps.hbs"))
+    const content = template({parallelRoutes: Object.entries(parallelRoutes).map(([key, value]) => ({key, value}))})
+    return new Handlebars.SafeString(`{${content}}`)
+  }
+);
 /* End of Register Helpers */
 
 /* Partials on fly */

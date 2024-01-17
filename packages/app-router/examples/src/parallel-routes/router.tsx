@@ -29,7 +29,7 @@ const router = createBrowserRouter(
               /**
                * Note that,
                * - The component subtree will not display until all parallel routes of root route have been loaded.
-               * - Once all parallel routes of root route are ready, they display immediately.
+               * - Once all parallel routes of root route are ready, they pop in together immediately.
                */
               await sleep(2000);
               return import("./app/@root/page");
