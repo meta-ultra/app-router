@@ -18,6 +18,7 @@ const {
 const {
   isIntercepted,
   isIntercepting,
+  findInterceptingIndex,
 } = require("./utils.js")
 
 /**
@@ -324,33 +325,61 @@ const hoistParallelRoutesAsOneLevelUpLayoutProps = (nodes, parentNode = undefine
   }
 }
 
-const normalizeInterceptingSameLevel = (nodes) => {
+const normalizeIntercepting = (nodes) => {
   const removingIndexes = [];
+  const addingNodes = [];
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
 
     const segs = node.path.split("/");
     if (isIntercepted(segs)) {
-      const nodePath = segs.filter((seg) => !seg.test(GROUP_RE)).map((seg) => {
+      const nodePath = segs.filter((seg) => !GROUP_RE.test(seg)).map((seg) => {
         const match = INTERCEPTING_SAME_LEVEL_RE.exec(seg);
         return match ? match[1] : seg;
-      });
+      }).join("/");
       const interceptedNode = nodes.find((other) => {
         if (other.path !== node.path) {
-          const otherPath = other.path.split("/").filter((seg) => !seg.test(GROUP_RE)).join("/");
+          const otherPath = other.path.split("/").filter((seg) => !GROUP_RE.test(seg)).join("/");
           return nodePath === otherPath;
         }
       })
+
       if (interceptedNode) {
         interceptedNode.props["intercepted"] = node;
         removingIndexes.push(i);
       }
+    }
+    else if (removingIndexes.indexOf(i) === -1 && isIntercepting(segs)) {
+      const interceptingIndexes = [];
+      interceptingIndexes.push(i);
+      for (let j = i + 1; j < nodes.length; j++) {
+        if (isIntercepting(nodes[j].path.split("/"))) {
+          interceptingIndexes.push(j);
+        }
+      }
+      const interceptedNodes = interceptingIndexes.map((index) => nodes[index]);
+      const distances = interceptedNodes.map((node) => findInterceptingIndex(node.path.split("/")));
+      distances.sort();
+
+      const leastCommonNode = {
+        path: segs.slice(0, distances[0]).join("/"),
+        props: { intercepting: true },
+        children: interceptedNodes,
+      }
+      addingNodes.push(leastCommonNode);
+
+      removingIndexes.push(...interceptingIndexes);
+    }
+
+    if (removingIndexes.indexOf(i) === -1 && node.children && node.children.length > 0) {
+      normalizeIntercepting(node.children);
     }
   }
 
   for (let i = removingIndexes.length - 1; i >= 0; i--) {
     nodes.splice(removingIndexes[i], 1);
   }
+  nodes.push(...addingNodes);
 }
 
 
@@ -359,7 +388,7 @@ const normalize = (nodes) => {
   hoist(nodes);
   sinkTemplateAfterHoist(nodes);
   hoistParallelRoutesAsOneLevelUpLayoutProps(nodes);
-  normalizeInterceptingSameLevel(nodes);
+  normalizeIntercepting(nodes);
 
   return nodes
 }

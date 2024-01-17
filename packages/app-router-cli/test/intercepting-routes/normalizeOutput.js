@@ -13,39 +13,47 @@ export default [
         "children": []
       },
       {
-        "path": "app/(.)imgs/[id]",
-        "props": {
-          "page": "app/(.)imgs/[id]/page.js"
-        },
-        "children": []
-      },
-      {
-        "path": "app/gallery/(..)imgs/[id]",
-        "props": {
-          "page": "app/gallery/(..)imgs/[id]/page.tsx"
-        },
-        "children": []
-      },
-      {
-        "path": "app/gallery/nested/(..)(..)imgs/[id]",
-        "props": {
-          "page": "app/gallery/nested/(..)(..)imgs/[id]/page.tsx"
-        },
-        "children": []
-      },
-      {
-        "path": "app/gallery/nested/nested/(...)imgs/[id]",
-        "props": {
-          "page": "app/gallery/nested/nested/(...)imgs/[id]/page.tsx"
-        },
-        "children": []
-      },
-      {
         "path": "app/imgs/[id]",
         "props": {
-          "page": "app/imgs/[id]/page.tsx"
+          "page": "app/imgs/[id]/page.tsx",
+          "intercepted": {
+            "path": "app/(.)imgs/[id]",
+            "props": {
+              "page": "app/(.)imgs/[id]/page.js"
+            },
+            "children": []
+          }
         },
         "children": []
+      },
+      {
+        "path": "app/gallery",
+        "props": {
+          "intercepting": true
+        },
+        "children": [
+          {
+            "path": "app/gallery/(..)imgs/[id]",
+            "props": {
+              "page": "app/gallery/(..)imgs/[id]/page.tsx"
+            },
+            "children": []
+          },
+          {
+            "path": "app/gallery/nested/(..)(..)imgs/[id]",
+            "props": {
+              "page": "app/gallery/nested/(..)(..)imgs/[id]/page.tsx"
+            },
+            "children": []
+          },
+          {
+            "path": "app/gallery/nested/nested/(...)imgs/[id]",
+            "props": {
+              "page": "app/gallery/nested/nested/(...)imgs/[id]/page.tsx"
+            },
+            "children": []
+          }
+        ]
       }
     ]
   }
