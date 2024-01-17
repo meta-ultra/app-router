@@ -57,10 +57,6 @@ const collectRoutes = (nodes, parent) => {
     path = segs.join("/")
 
     const props = node.props
-    // // convert paralleNodes prop from object to array, which is easier to process in Handlebars.
-    // if (props.parallelNodes) {
-    //   props.parallelNodes = Object.entries(node.props.parallelNodes)
-    // }
 
     const route = {
       id: node.path,

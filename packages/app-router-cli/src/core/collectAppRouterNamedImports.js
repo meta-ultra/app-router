@@ -1,7 +1,14 @@
+const {
+  isIntercepted,
+  isIntercepting,
+} = require("./utils");
+
 const ROOT_ERROR = "RootErrorElement";
 const ROOT_LAYOUT = "RootLayoutRouteElement";
 const LAYOUT = "LayoutRouteElement";
 const PAGE = "PageRouteElement";
+const INTERCEPTING = "InterceptingLayoutRouteElement";
+const INTERCEPTED = "InterceptedRouteElement";
 
 const collectAppRouterNamedImports = (nodes, level = 0, namedImports = new Set()) => {
   for (let i = 0; i < nodes.length; ++i) {
@@ -18,6 +25,15 @@ const collectAppRouterNamedImports = (nodes, level = 0, namedImports = new Set()
     if (node.props.parallelRoutes) {
       const parallelNodes = Object.values(node.props.parallelRoutes);
       collectAppRouterNamedImports(parallelNodes, level, namedImports);
+    }
+    if (node.path) {
+      const segs = node.path.split("/");
+      if (isIntercepted(segs)) {
+        namedImports.add(INTERCEPTED);
+      }
+      else if (isIntercepting(segs)) {
+        namedImports.add(INTERCEPTING);
+      }
     }
 
     if (node.children.length > 0) {

@@ -1,3 +1,10 @@
+const {
+  INTERCEPTING_SAME_LEVEL_RE,
+  INTERCEPTING_ONE_LEVEL_UP_RE,
+  INTERCEPTING_TWO_LEVEL_UP_RE,
+  INTERCEPTING_ROOT_LEVEL_UP_RE,
+} = require("./constants");
+
 /**
  * remove the trailing .jsx, .js, .tsx and .ts.
  * @param {*} name
@@ -30,4 +37,7 @@ const isRelativePath = (path) => /^\.{1,2}\//.test(path);
  */
 const getRelativePath = (path) => (isRelativePath(path) ? path : "./" + path);
 
-module.exports = { stripExtension, pipe, getRelativePath };
+const isIntercepting = (segs) => segs.find((seg) => [INTERCEPTING_ONE_LEVEL_UP_RE, INTERCEPTING_TWO_LEVEL_UP_RE, INTERCEPTING_ROOT_LEVEL_UP_RE].find((re) => re.test(seg)));
+const isIntercepted = (segs) => segs.find((seg) => INTERCEPTING_SAME_LEVEL_RE.test(seg));
+
+module.exports = { stripExtension, pipe, getRelativePath, isIntercepting, isIntercepted };

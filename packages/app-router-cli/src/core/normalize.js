@@ -4,6 +4,7 @@ const {
   GLOBAL_ERROR,
   NOT_FOUND,
   INDEX_RE,
+  GROUP_RE,
   NORMAL_RE,
   DYNAMIC_RE,
   CATCH_ALL_RE,
@@ -14,6 +15,10 @@ const {
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
 } = require("./constants.js");
+const {
+  isIntercepted,
+  isIntercepting,
+} = require("./utils.js")
 
 /**
  * rename global-error to error, and remove the global-error property inside the nested routes.
@@ -93,7 +98,6 @@ const sinkPageWithLayout = (node) => {
     delete node.props.page;
   }
 };
-
 
 const score = (name) => {
   const result = [
@@ -189,7 +193,7 @@ const normalizeInterceptingRoute = (node) => {
  * @param {{isRemained: boolean}} parentState - indicate whether to remain the current branch.
  * @returns
  */
-const doNormalize = (nodes, level = 0, parentState = { isRemained: false }) => {
+const normalizeBasic = (nodes, level = 0, parentState = { isRemained: false }) => {
   const removingIndexes = [];
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
@@ -209,7 +213,7 @@ const doNormalize = (nodes, level = 0, parentState = { isRemained: false }) => {
       // collect nodes to be being removed if it has either page or layout, or any of its descendant has.
       const state = { isRemained: false };
       if (node.children && node.children.length) {
-        doNormalize(node.children, level + 1, state);
+        normalizeBasic(node.children, level + 1, state);
       }
       state.isRemained = state.isRemained || props.page || props.layout;
       if (state.isRemained) {
@@ -320,11 +324,42 @@ const hoistParallelRoutesAsOneLevelUpLayoutProps = (nodes, parentNode = undefine
   }
 }
 
+const normalizeInterceptingSameLevel = (nodes) => {
+  const removingIndexes = [];
+  for (let i = 0; i < nodes.length; ++i) {
+    const node = nodes[i];
+
+    const segs = node.path.split("/");
+    if (isIntercepted(segs)) {
+      const nodePath = segs.filter((seg) => !seg.test(GROUP_RE)).map((seg) => {
+        const match = INTERCEPTING_SAME_LEVEL_RE.exec(seg);
+        return match ? match[1] : seg;
+      });
+      const interceptedNode = nodes.find((other) => {
+        if (other.path !== node.path) {
+          const otherPath = other.path.split("/").filter((seg) => !seg.test(GROUP_RE)).join("/");
+          return nodePath === otherPath;
+        }
+      })
+      if (interceptedNode) {
+        interceptedNode.props["intercepted"] = node;
+        removingIndexes.push(i);
+      }
+    }
+  }
+
+  for (let i = removingIndexes.length - 1; i >= 0; i--) {
+    nodes.splice(removingIndexes[i], 1);
+  }
+}
+
+
 const normalize = (nodes) => {
-  doNormalize(nodes);
+  normalizeBasic(nodes);
   hoist(nodes);
   sinkTemplateAfterHoist(nodes);
   hoistParallelRoutesAsOneLevelUpLayoutProps(nodes);
+  normalizeInterceptingSameLevel(nodes);
 
   return nodes
 }
