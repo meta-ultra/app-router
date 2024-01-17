@@ -22,6 +22,6 @@ test("remove routes without `props.page` and `props.layout` and its descendants 
   expect(output[0].children.find((node) => node.path === "app/(...empty)")).toBeUndefined();
 });
 
-test.only("", () => {
-  console.log(JSON.stringify(normalize(output), null, 2))
-})
+// test.only("", () => {
+//   console.log(JSON.stringify(normalize(output), null, 2))
+// })

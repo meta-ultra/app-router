@@ -1,15 +1,6 @@
 const { stripExtension, pipe } = require("./utils.js");
 
 /**
- * Escape group name with entity name, such as "lp" for "(", "rp" for ")" and "dots" for "..."
- */
-const escapeGroupName = (identifier) => {
-  return identifier
-    .replace(/\(([.]{3})([^)(]+)\)/, "lp-dots-$2-rp")
-    .replace(/\(([^)(]+)\)/, "lp-$1-rp");
-};
-
-/**
  * Escape kabbe-case to camelCase, like not-found to notFound, global-error to globalError.
  */
 const escapeKebabCase = (identifier) => {
@@ -30,7 +21,21 @@ const escapeKebabCase = (identifier) => {
   return result.join("");
 };
 
-const doEscape = pipe(escapeGroupName, escapeKebabCase);
+/**
+ * Escape group name with entity name, such as "lp" for "(", "rp" for ")" and "dots" for "..."
+ */
+const escapeGroupName = (identifier) => {
+  return identifier
+    .replace(/\(([.]{3})([^)(]+)\)/, "lp-dots-$2-rp")
+    .replace(/\(([^)(]+)\)/, "lp-$1-rp");
+};
+
+/**
+ * Escape @
+ */
+const escapeIntercepting = (identifier) => identifier.replace(/@/g, "At")
+
+const doEscape = pipe(escapeIntercepting, escapeGroupName, escapeKebabCase);
 
 /**
  * Convert full file path into React component name, for example "./app/not-found.tsx" is converted to "App_NotFound".

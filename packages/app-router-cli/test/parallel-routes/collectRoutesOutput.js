@@ -1,12 +1,16 @@
 export default [
   {
+    "id": "app",
+    "type": "layout",
     "path": "app",
     "props": {
       "layout": "preset::root-layout"
     },
     "children": [
       {
-        "path": "app/dashboard",
+        "id": "app/dashboard",
+        "type": "layout",
+        "path": "dashboard",
         "props": {
           "layout": "app/dashboard/layout.js",
           "parallelRoutes": {
@@ -24,7 +28,9 @@ export default [
         },
         "children": [
           {
-            "path": "app/dashboard/",
+            "id": "app/dashboard/",
+            "type": "page",
+            "index": true,
             "props": {
               "page": "app/dashboard/page.js",
               "template": "app/dashboard/template.js"

@@ -5,6 +5,5 @@ import collectStaticDefaultImportsOutput from "./parallel-routes/collectStaticDe
 test("strictly equivalent", () => {
   const output = collectStaticDefaultImports(normalizeOutput);
 
-  console.log(JSON.stringify(output, null, 2))
-  // expect(output).toStrictEqual(collectStaticDefaultImportsOutput);
+  expect(output).toStrictEqual(collectStaticDefaultImportsOutput);
 });

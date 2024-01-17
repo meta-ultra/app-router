@@ -131,12 +131,13 @@ const normalizeDynamicRoute = (node) => {
 };
 
 /**
- * remove layout from parallel route
+ * remove its own layout and template from parallel route
  */
 const normalizeParallelRoute = (node) => {
   if (node.path.split("/").pop().startsWith("@")) {
     node.children = [];
     delete node.props.layout;
+    delete node.props.template;
   }
 };
 
@@ -257,7 +258,7 @@ const hoist = (nodes, parentHoistedNodes = undefined, trace = 0) => {
         hoist(node.children, parentHoistedNodes || hoistedChildNodes, trace + 1);
 
         if (!node.props.page) {
-          hoistedNodeIndexes.push(i)
+          hoistedNodeIndexes.push(i);
         }
       }
     }
@@ -265,25 +266,65 @@ const hoist = (nodes, parentHoistedNodes = undefined, trace = 0) => {
     if (hoistingNode) {
       // in the case that, the children of the hoisting node will change when its children or grandchildren do hoist as well.
       hoistingNode.children = node.children;
-      parentHoistedNodes.push(hoistingNode)
+      parentHoistedNodes.push(hoistingNode);
     }
   }
 
   for (let i = hoistedNodeIndexes.length - 1; i >= 0; i--) {
-    nodes.splice(hoistedNodeIndexes[i], 1)
+    nodes.splice(hoistedNodeIndexes[i], 1);
   }
 
   // append the hoisted nodes
-  nodes.push(...hoistedChildNodes)
+  nodes.push(...hoistedChildNodes);
   // sort to ensure the catch-all and optional catch-all routes are both at the end.
   nodes.sort((node1, node2) =>
     score(node1.path.split("/").pop()) > score(node2.path.split("/").pop()) ? -1 : 1
   );
 }
 
+const sinkTemplateAfterHoist = (nodes, parentTemplate = undefined) => {
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    if (node.children && node.children.length > 0) {
+      sinkTemplateAfterHoist(node.children, node.props.template)
+    }
+    delete node.props.template
+    if (parentTemplate) {
+      node.props.template = parentTemplate
+    }
+  }
+}
+
+const hoistParallelRoutesAsOneLevelUpLayoutProps = (nodes, parentNode = undefined) => {
+  const hoistedIndexes = [];
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+
+    if (node.path) {
+      const lastSeg = node.path.split("/").pop();
+      const match = PARALLEL_RE.exec(lastSeg);
+      if (match && parentNode && parentNode.props && parentNode.props.layout) {
+        parentNode.props["parallelRoutes"] = parentNode.props["parallelRoutes"] || {};
+        parentNode.props["parallelRoutes"][match[1]] = node;
+        hoistedIndexes.push(i);
+      }
+    }
+
+    if (node.children && node.children.length > 0) {
+      hoistParallelRoutesAsOneLevelUpLayoutProps(node.children, node);
+    }
+  }
+
+  for (let i = hoistedIndexes.length - 1; i >= 0; i--) {
+    nodes.splice(hoistedIndexes[i], 1);
+  }
+}
+
 const normalize = (nodes) => {
   doNormalize(nodes);
   hoist(nodes);
+  sinkTemplateAfterHoist(nodes);
+  hoistParallelRoutesAsOneLevelUpLayoutProps(nodes);
 
   return nodes
 }

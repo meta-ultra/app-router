@@ -53,8 +53,19 @@ test("remove nested parallel routes inside parallel routes", () => {
   expect(outputNode.children.find((node) => node.path === "app/dashboard/@chart2")).toBeUndefined();
 });
 
-test.only("", () => {
+test("move the template down a layer", () => {
   normalize(output);
 
-  console.log(JSON.stringify(output, null, 2))
+  expect(
+    output[0].children[0].children.find((node) => node.path === "app/dashboard/").props.template
+  ).toStrictEqual("app/dashboard/template.js")
+  expect(
+    output[0].children[0].children.find((node) => node.path === "app/dashboard/@chart1").props.template
+  ).toStrictEqual("app/dashboard/template.js")
 })
+
+// test.only("", () => {
+//   normalize(output);
+
+//   console.log(JSON.stringify(output, null, 2))
+// })

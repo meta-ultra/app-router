@@ -22,6 +22,10 @@ const collectStaticDefaultImports = (nodes, staticDefaultImports = []) => {
           defaultImportName: escape(path), // the fully qualified default name
         });
       }
+      else if (name === "parallelRoutes") {
+        const parallelNodes = Object.values(path);
+        collectStaticDefaultImports(parallelNodes, staticDefaultImports);
+      }
     }
 
     if (node.children.length > 0) {

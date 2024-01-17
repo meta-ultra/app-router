@@ -15,6 +15,10 @@ const collectAppRouterNamedImports = (nodes, level = 0, namedImports = new Set()
     if (node.props.page) {
       namedImports.add(PAGE);
     }
+    if (node.props.parallelRoutes) {
+      const parallelNodes = Object.values(node.props.parallelRoutes);
+      collectAppRouterNamedImports(parallelNodes, level, namedImports);
+    }
 
     if (node.children.length > 0) {
       collectAppRouterNamedImports(node.children, level + 1, namedImports);
