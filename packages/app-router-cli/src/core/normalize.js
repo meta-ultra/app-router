@@ -255,13 +255,17 @@ const hoist = (nodes, parentHoistedNodes = undefined, trace = 0) => {
       }
       else {
         hoist(node.children, parentHoistedNodes || hoistedChildNodes, trace + 1);
-      }
 
-      if (hoistingNode) {
-        // in the case that, the children of the hoisting node will change when its children or grandchildren do hoist as well.
-        hoistingNode.children = node.children;
-        parentHoistedNodes.push(hoistingNode)
+        if (!node.props.page) {
+          hoistedNodeIndexes.push(i)
+        }
       }
+    }
+
+    if (hoistingNode) {
+      // in the case that, the children of the hoisting node will change when its children or grandchildren do hoist as well.
+      hoistingNode.children = node.children;
+      parentHoistedNodes.push(hoistingNode)
     }
   }
 
