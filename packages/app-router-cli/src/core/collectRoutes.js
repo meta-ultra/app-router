@@ -4,6 +4,9 @@ const {
   INTERCEPTING_ONE_LEVEL_UP_RE,
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
+  DYNAMIC_RE,
+  CATCH_ALL_RE,
+  OPTIONAL_CATCH_ALL_RE,
 } = require("./constants.js");
 
 const getLastSeg = (path) => path.split("/").pop();
@@ -37,7 +40,21 @@ const collectRoutes = (nodes, parent) => {
       path = path.replace(parent.path + "/", "")
     }
     // strip group name from route's path
-    path = path.split("/").filter((seg) => !GROUP_RE.test(seg)).join("/")
+    let segs = path.split("/").filter((seg) => !GROUP_RE.test(seg))
+    // process dynamic, catch-all and optional catch-all routes
+    segs = segs.map((seg) => {
+      const dynamicMatch = DYNAMIC_RE.exec(seg)
+      if (dynamicMatch) {
+        return `:${dynamicMatch[1]}`
+      }
+      else if ([CATCH_ALL_RE, OPTIONAL_CATCH_ALL_RE].find((re) => re.test(seg))) {
+        return "*"
+      }
+      else {
+        return seg
+      }
+    })
+    path = segs.join("/")
 
     const route = {
       id: node.path,
