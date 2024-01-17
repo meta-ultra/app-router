@@ -232,26 +232,35 @@ const doNormalize = (nodes, level = 0, parentState = { isRemained: false }) => {
  * hoist the nested routes to the nearest level has layout.
  * @param {*} nodes
  * @param {*} parentHoistedNodes
+ * @param {Number} trace - for debug only.
  */
-const hoist = (nodes, parentHoistedNodes = undefined) => {
-  const hoistedNodes = []
+const hoist = (nodes, parentHoistedNodes = undefined, trace = 0) => {
+  const hoistedChildNodes = []
   const hoistedNodeIndexes = []
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
-    if (node.props.page && parentHoistedNodes) {
-      hoistedNodeIndexes.push(i)
-      parentHoistedNodes.push({
+
+    let hoistingNode = undefined;
+    if ((node.props.page || node.props.layout) && parentHoistedNodes) {
+      hoistedNodeIndexes.push(i);
+      hoistingNode = {
         ...node,
-        children: []
-      });
+        children: [] // the children will be completed afterwards
+      };
     }
 
     if (node.children && node.children.length > 0) {
       if (node.props.layout) {
-        hoist(node.children, undefined)
+        hoist(node.children, undefined, trace + 1);
       }
       else {
-        hoist(node.children, parentHoistedNodes || hoistedNodes)
+        hoist(node.children, parentHoistedNodes || hoistedChildNodes, trace + 1);
+      }
+
+      if (hoistingNode) {
+        // in the case that, the children of the hoisting node will change when its children or grandchildren do hoist as well.
+        hoistingNode.children = node.children;
+        parentHoistedNodes.push(hoistingNode)
       }
     }
   }
@@ -261,7 +270,7 @@ const hoist = (nodes, parentHoistedNodes = undefined) => {
   }
 
   // append the hoisted nodes
-  nodes.push(...hoistedNodes)
+  nodes.push(...hoistedChildNodes)
   // sort to ensure the catch-all and optional catch-all routes are both at the end.
   nodes.sort((node1, node2) =>
     score(node1.path.split("/").pop()) > score(node2.path.split("/").pop()) ? -1 : 1

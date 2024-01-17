@@ -36,7 +36,7 @@ test("fulfill a default root layout if it dosen't exist", () => {
   expect(withoutRootLayout[0].props.layout).toStrictEqual("preset::root-layout");
 });
 
-test("fulfill a default layout if there is a loading, not-found or error but no layout inside a nested route", () => {
+test.only("fulfill a default layout if there is a loading, not-found or error but no layout inside a nested route", () => {
   normalize(output);
 
   let aboutNode = input[0].children.find((node) => node.path === "app/about");

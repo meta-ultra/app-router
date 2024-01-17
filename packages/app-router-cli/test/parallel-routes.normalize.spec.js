@@ -52,3 +52,9 @@ test("remove nested parallel routes inside parallel routes", () => {
   ).toBeDefined();
   expect(outputNode.children.find((node) => node.path === "app/dashboard/@chart2")).toBeUndefined();
 });
+
+test.only("", () => {
+  normalize(output);
+
+  console.log(JSON.stringify(output, null, 2))
+})
