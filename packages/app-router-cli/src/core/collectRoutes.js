@@ -7,6 +7,7 @@ const {
   DYNAMIC_RE,
   CATCH_ALL_RE,
   OPTIONAL_CATCH_ALL_RE,
+  INTERCEPTING_SAME_LEVEL_RE,
 } = require("./constants.js");
 
 const getLastSeg = (path) => path.split("/").pop();
@@ -35,38 +36,54 @@ const collectRoutes = (nodes, parent) => {
       type = node.props.layout ? "layout" : "page";
     }
 
-    let path = node.path
-    if (parent) {
-      path = path.replace(parent.path + "/", "")
+    /* Index and Path */
+    const isIndex = INDEX_RE.test(lastSeg);
+    let path = undefined;
+    if (!isIndex) {
+      path = node.path;
+      if (parent) {
+        path = path.replace(parent.path + "/", "");
+      }
+      // strip group name from route's path
+      let segs = path.split("/").filter((seg) => !GROUP_RE.test(seg));
+      // process dynamic, catch-all, optional catch-all and intercepting routes
+      segs = segs.map((seg) => {
+        const dynamicMatch = DYNAMIC_RE.exec(seg);
+        if (dynamicMatch) {
+          return `:${dynamicMatch[1]}`;
+        }
+        else if ([CATCH_ALL_RE, OPTIONAL_CATCH_ALL_RE].find((re) => re.test(seg))) {
+          return "*";
+        }
+        else {
+          const res = [
+            INTERCEPTING_SAME_LEVEL_RE,
+            INTERCEPTING_ONE_LEVEL_UP_RE,
+            INTERCEPTING_TWO_LEVEL_UP_RE,
+            INTERCEPTING_ROOT_LEVEL_UP_RE
+          ];
+          let match = undefined;
+          for (let i = 0; !match && i < res.length; ++i) {
+            match = res[i].exec(seg);
+          }
+          if (match) {
+            return match[1];
+          }
+          else {
+            return seg;
+          }
+        }
+      })
+      path = segs.join("/");
     }
-    // strip group name from route's path
-    let segs = path.split("/").filter((seg) => !GROUP_RE.test(seg))
-    // process dynamic, catch-all and optional catch-all routes
-    segs = segs.map((seg) => {
-      const dynamicMatch = DYNAMIC_RE.exec(seg)
-      if (dynamicMatch) {
-        return `:${dynamicMatch[1]}`
-      }
-      else if ([CATCH_ALL_RE, OPTIONAL_CATCH_ALL_RE].find((re) => re.test(seg))) {
-        return "*"
-      }
-      else {
-        return seg
-      }
-    })
-    path = segs.join("/")
-
-    const props = node.props
+    const indexPathProps = isIndex ? { index: true } : path ? { path } : {};
+    /* End of Index and Path */
 
     const route = {
       id: node.path,
       type,
-      ...(INDEX_RE.test(lastSeg)
-        ? { index: true }
-        : path
-        ? { path }
-        : {}),
-      props,
+      ...indexPathProps,
+      props: node.props,
     };
 
     route.children =

@@ -12,9 +12,9 @@ const CATCH_ALL_RE = /^\[\.{3}([a-z][a-z0-9_]*)\]$/; // catch-all route
 const OPTIONAL_CATCH_ALL_RE = /^\[\[\.{3}([a-z][a-z0-9_]*)\]\]$/; // optional catch-all route
 const PARALLEL_RE = /^@([a-z][a-z0-9-_]*)$/; // parallel route
 const INTERCEPTING_SAME_LEVEL_RE = /^\(\.\)([a-z][a-z0-9-_]*)$/; // intercepting route for the same level
-const INTERCEPTING_ONE_LEVEL_UP_RE = /^\(\.\.\)[a-z][a-z0-9-_]*$/; // intercepting route for one level up
-const INTERCEPTING_TWO_LEVEL_UP_RE = /^\(\.\.\)\(\.\.\)[a-z][a-z0-9-_]*$/; // intercepting route for two level up
-const INTERCEPTING_ROOT_LEVEL_UP_RE = /^\(\.\.\.\)[a-z][a-z0-9-_]*$/; // intercepting route for the root level up
+const INTERCEPTING_ONE_LEVEL_UP_RE = /^\(\.\.\)([a-z][a-z0-9-_]*)$/; // intercepting route for one level up
+const INTERCEPTING_TWO_LEVEL_UP_RE = /^\(\.\.\)\(\.\.\)([a-z][a-z0-9-_]*)$/; // intercepting route for two level up
+const INTERCEPTING_ROOT_LEVEL_UP_RE = /^\(\.\.\.\)([a-z][a-z0-9-_]*)$/; // intercepting route for the root level up
 
 module.exports = {
   PRESET_ROOT_LAYOUT,
