@@ -19,6 +19,7 @@ export default [
       {
         "id": "app/gallery",
         "type": "layout",
+        "path": "gallery",
         "props": {
           "layout": "app/gallery/layout.tsx"
         },
@@ -26,7 +27,7 @@ export default [
           {
             "id": "app/gallery/list",
             "type": "page",
-            "path": "gallery/list",
+            "path": "list",
             "props": {
               "page": "app/gallery/list/page.js"
             },
@@ -37,7 +38,7 @@ export default [
             "type": "intercepting",
             "props": {
               "intercepting": true,
-              "page": {
+              "interceptingPage": {
                 "props": {
                   "page": "app/gallery/page.js"
                 },
@@ -81,8 +82,7 @@ export default [
                 },
                 "children": []
               }
-            ],
-            "path": "gallery"
+            ]
           }
         ]
       },

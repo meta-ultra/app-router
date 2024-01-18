@@ -1,4 +1,4 @@
-export default [
+export default  [
   {
     "path": "app",
     "props": {
@@ -29,7 +29,7 @@ export default [
             "path": "app/gallery",
             "props": {
               "intercepting": true,
-              "page": {
+              "interceptingPage": {
                 "props": {
                   "page": "app/gallery/page.js"
                 },

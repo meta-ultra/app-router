@@ -10,6 +10,7 @@
     {{~#if (isPageRoute this.type)}}{{> pageRouteElement this}}{{/if~}}
     {{~#if (isLayoutRoute this.type)}}{{> layoutRouteElement this}}{{/if~}}
     {{~#if (isInterceptedRoute this.type)}}{{> interceptedRouteElement this}}{{/if~}}
+    {{~#if (isInterceptingRoute this.type)}}{{> interceptingRouteElement this}}{{/if~}}
   )
   {{~#unless (isNilorEmpty this.children)}},
   children: [{{> childrenRoutes routes=this.children}}]

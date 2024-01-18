@@ -87,6 +87,10 @@ Handlebars.registerPartial(
   "interceptedRouteElement",
   readTemplateSync("../templates/interceptedRouteElement.hbs")
 );
+Handlebars.registerPartial(
+  "interceptingRouteElement",
+  readTemplateSync("../templates/interceptingRouteElement.hbs")
+);
 /* End of Partials on fly*/
 
 /**
