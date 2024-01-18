@@ -26,14 +26,11 @@ const collectAppRouterNamedImports = (nodes, level = 0, namedImports = new Set()
       const parallelNodes = Object.values(node.props.parallelRoutes);
       collectAppRouterNamedImports(parallelNodes, level, namedImports);
     }
-    if (node.path) {
-      const segs = node.path.split("/");
-      if (isIntercepted(segs)) {
-        namedImports.add(INTERCEPTED);
-      }
-      else if (isIntercepting(segs)) {
-        namedImports.add(INTERCEPTING);
-      }
+    if (node.props.intercepted) {
+      namedImports.add(INTERCEPTED);
+    }
+    else if (node.props.intercepting) {
+      namedImports.add(INTERCEPTING);
     }
 
     if (node.children.length > 0) {

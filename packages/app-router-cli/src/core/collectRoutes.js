@@ -29,7 +29,7 @@ const collectRoutes = (nodes, parent) => {
       type = "page";
     } else if (node.props.intercepted) {
       type = "intercepted";
-    } else if (isIntercepting(node)) {
+    } else if (node.props.intercepting) {
       type = "intercepting";
     } else {
       type = node.props.layout ? "layout" : "page";
