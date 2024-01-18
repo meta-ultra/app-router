@@ -8,5 +8,7 @@ test("generate the expected tree", () => {
     join(__dirname, "./intercepting-routes/app")
   );
 
+  // console.log(JSON.stringify(output, null, 2));
+
   expect(output).toStrictEqual(expectedTree);
 });

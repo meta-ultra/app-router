@@ -17,13 +17,82 @@ export default [
         "children": []
       },
       {
+        "id": "app/gallery",
+        "type": "layout",
+        "props": {
+          "layout": "app/gallery/layout.tsx"
+        },
+        "children": [
+          {
+            "id": "app/gallery/list",
+            "type": "page",
+            "path": "gallery/list",
+            "props": {
+              "page": "app/gallery/list/page.js"
+            },
+            "children": []
+          },
+          {
+            "id": "app/gallery",
+            "type": "intercepting",
+            "props": {
+              "intercepting": true,
+              "page": {
+                "props": {
+                  "page": "app/gallery/page.js"
+                },
+                "children": []
+              }
+            },
+            "children": [
+              {
+                "id": "app/gallery/(..)imgs/[id]",
+                "type": "page",
+                "path": "imgs/:id",
+                "props": {
+                  "page": "app/gallery/(..)imgs/[id]/page.tsx"
+                },
+                "children": []
+              },
+              {
+                "id": "app/gallery/(..)imgs/[id]",
+                "type": "page",
+                "path": "imgs/:id",
+                "props": {
+                  "page": "app/gallery/(..)imgs/[id]/page.tsx"
+                },
+                "children": []
+              },
+              {
+                "id": "app/gallery/nested/(..)(..)imgs/[id]",
+                "type": "page",
+                "path": "nested/imgs/:id",
+                "props": {
+                  "page": "app/gallery/nested/(..)(..)imgs/[id]/page.tsx"
+                },
+                "children": []
+              },
+              {
+                "id": "app/gallery/nested/nested/(...)imgs/[id]",
+                "type": "page",
+                "path": "nested/nested/imgs/:id",
+                "props": {
+                  "page": "app/gallery/nested/nested/(...)imgs/[id]/page.tsx"
+                },
+                "children": []
+              }
+            ],
+            "path": "gallery"
+          }
+        ]
+      },
+      {
         "id": "app/imgs/[id]",
         "type": "intercepted",
         "path": "imgs/:id",
         "props": {
           "page": "app/imgs/[id]/page.tsx",
           "intercepted": {
-            "path": "app/(.)imgs/[id]",
             "props": {
               "page": "app/(.)imgs/[id]/page.js"
             },
@@ -31,43 +100,6 @@ export default [
           }
         },
         "children": []
-      },
-      {
-        "id": "app/gallery",
-        "type": "intercepting",
-        "path": "gallery",
-        "props": {
-          "intercepting": true
-        },
-        "children": [
-          {
-            "id": "app/gallery/(..)imgs/[id]",
-            "type": "page",
-            "path": "imgs/:id",
-            "props": {
-              "page": "app/gallery/(..)imgs/[id]/page.tsx"
-            },
-            "children": []
-          },
-          {
-            "id": "app/gallery/nested/(..)(..)imgs/[id]",
-            "type": "page",
-            "path": "nested/imgs/:id",
-            "props": {
-              "page": "app/gallery/nested/(..)(..)imgs/[id]/page.tsx"
-            },
-            "children": []
-          },
-          {
-            "id": "app/gallery/nested/nested/(...)imgs/[id]",
-            "type": "page",
-            "path": "nested/nested/imgs/:id",
-            "props": {
-              "page": "app/gallery/nested/nested/(...)imgs/[id]/page.tsx"
-            },
-            "children": []
-          }
-        ]
       }
     ]
   }

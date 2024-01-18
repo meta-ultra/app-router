@@ -20,7 +20,10 @@ export default [
       },
       {
         "path": "app/gallery",
-        "props": {},
+        "props": {
+          "layout": "app/gallery/layout.tsx",
+          "page": "app/gallery/page.js"
+        },
         "children": [
           {
             "path": "app/gallery/(..)imgs",
@@ -48,6 +51,13 @@ export default [
                 "children": []
               }
             ]
+          },
+          {
+            "path": "app/gallery/list",
+            "props": {
+              "page": "app/gallery/list/page.js"
+            },
+            "children": []
           },
           {
             "path": "app/gallery/nested",

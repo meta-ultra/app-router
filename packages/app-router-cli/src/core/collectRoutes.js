@@ -20,7 +20,8 @@ const isIntercepting = (node) =>
     )
   );
 
-const collectRoutes = (nodes, parent) => {
+const collectRoutes = (nodes, parent, parentState) => {
+  let interceptingRouteIndex = -1;
   const routes = [];
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
@@ -32,6 +33,7 @@ const collectRoutes = (nodes, parent) => {
       type = "intercepted";
     } else if (node.props.intercepting) {
       type = "intercepting";
+      interceptingRouteIndex = i;
     } else {
       type = node.props.layout ? "layout" : "page";
     }
@@ -42,7 +44,13 @@ const collectRoutes = (nodes, parent) => {
     if (!isIndex) {
       path = node.path;
       if (parent) {
-        path = path.replace(parent.path + "/", "");
+        if (path === parent.path) {
+          // for intercepting route
+          path = "";
+        }
+        else {
+          path = path.replace(parent.path + "/", "");
+        }
       }
       // strip group name from route's path
       let segs = path.split("/").filter((seg) => !GROUP_RE.test(seg));
@@ -86,10 +94,24 @@ const collectRoutes = (nodes, parent) => {
       props: node.props,
     };
 
+    const state = {type, path: indexPathProps.path};
     route.children =
-      node.children && node.children.length ? collectRoutes(node.children, node) : [];
+      node.children && node.children.length ? collectRoutes(node.children, node, state) : [];
+    if (route.path && state.path !== route.path) {
+      delete route.path;
+    }
 
     routes.push(route);
+  }
+
+  if (routes[interceptingRouteIndex] && routes[interceptingRouteIndex].props.page && parentState.path) {
+    for (let i = 0; i < routes.length; i++) {
+      if (i !== interceptingRouteIndex && routes[i].path) {
+        routes[i].path = parentState.path + "/" + routes[i].path;
+      }
+    }
+    routes[interceptingRouteIndex].path = parentState.path;
+    parentState.path = undefined;
   }
 
   return routes;

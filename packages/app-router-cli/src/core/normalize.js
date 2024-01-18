@@ -345,15 +345,23 @@ const normalizeIntercepting = (nodes) => {
       })
 
       if (interceptedNode) {
-        interceptedNode.props["intercepted"] = node;
+        interceptedNode.props["intercepted"] = {
+          props: node.props,
+          children: [],
+        };
         removingIndexes.push(i);
       }
     }
     else if (removingIndexes.indexOf(i) === -1 && isIntercepting(segs)) {
       const interceptingIndexes = [];
       interceptingIndexes.push(i);
-      for (let j = i + 1; j < nodes.length; j++) {
-        if (isIntercepting(nodes[j].path.split("/"))) {
+      let indexRouteIndex = -1;
+      for (let j = 0; j < nodes.length; j++) {
+        console.log(nodes[j].path)
+        if (nodes[j].path[nodes[j].path.length - 1] === "/") {
+          indexRouteIndex = j;
+        }
+        else if (isIntercepting(nodes[j].path.split("/"))) {
           interceptingIndexes.push(j);
         }
       }
@@ -366,6 +374,13 @@ const normalizeIntercepting = (nodes) => {
         props: { intercepting: true },
         children: interceptedNodes,
       }
+      if (indexRouteIndex !== -1) {
+        leastCommonNode.props.interceptingPage = {
+          props: nodes[indexRouteIndex].props,
+          children: []
+        };
+        removingIndexes.push(indexRouteIndex);
+      }
       addingNodes.push(leastCommonNode);
 
       removingIndexes.push(...interceptingIndexes);
@@ -376,6 +391,7 @@ const normalizeIntercepting = (nodes) => {
     }
   }
 
+  removingIndexes.sort();
   for (let i = removingIndexes.length - 1; i >= 0; i--) {
     nodes.splice(removingIndexes[i], 1);
   }
