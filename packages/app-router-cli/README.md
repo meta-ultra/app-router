@@ -2,21 +2,23 @@
 
 <div>
   <img style="display:inline;" src="https://img.shields.io/github/package-json/v/meta-ultra/app-router?filename=packages%2Fapp-router-cli%2Fpackage.json">
-  <!-- <img style="display:inline;" src="https://img.shields.io/bundlephobia/min/%40meta-ultra/app-router-cli">
-  <img style="display:inline;" src="https://img.shields.io/bundlejs/size/%40meta-ultra/app-router-cli"> -->
   <img style="display:inline;" src="https://img.shields.io/github/license/meta-ultra/app-router">
 </div>
 
-With `@meta-ultra/app-router` and `@meta-ultra/app-router-auth`, we can structure our project in Next.js App Router convention by setting up the router configuration manually. Are you looking for a more effective way to automate the configure processing. There we are! `@meta-ultra/app-router-cli` is exact what you want.
+With `@meta-ultra/app-router` and `@meta-ultra/app-router-auth`, we can structure our project in Next.js App Router convention by setting up the router configuration manually. Are you looking for a more effective way to automate the configure processing. There we are! `@meta-ultra/app-router-cli` is exactly what you want.
 
 Give a ⭐️ if this project helped you!
 
 ## 🌟 Features
 
-- Supports group route segments, including extended group route segment `(...name)`.
+- Supports page, layout, not-found, error, global-error and template.
+- Supports group routes, including extended group route segment `(...name)`.
 - Supports dynamic routes including catch-all and optional catch-all segments.
-- Supports nested route segments.
+- Supports parallel routes.
+- Supports intercepting routes.
 - Generates root layout automatically if no root layout is found.
+- Allows to prefer browser router or hash router.
+- Be able to customize basename of the router.
 - Supports watch mode, easy to integrate to your building workflow.
 
 ## :alien: Prerequisites
@@ -38,15 +40,18 @@ Install `@meta-ultra/app-router` with your favorite package manager:
   ```bash
   > app-router -h
 
-  Usage
-    app-router [options]
+  Usage:
+  $ app-router <command> [options]
 
-  Options
-    --version, -w Display the version.
-    --watch, -w Enable watch mode.
-    --obtuse <milliseconds=100> Start to generate router after a specified milliseconds when changes finish.
-    --source, -s <folder=./src/app> Specify the folder contains app router.
-    --output, -o <filepath=./src/router.tsx> Specify the react-router-dom router file path.
+  Options:
+    -h, --help                 Display this message
+    -v, --version              Display version number
+    --hash                     Use hash instead of history API (default: false)
+    --basename [basename]      The URL basename (default: /)
+    --watch, -w                Enable watch mode (default: false)
+    --watch-aggregate-timeout  Add a delay(ms) before rebuilding once the first file added or removed (default: 300)
+    --source, -s [folder]      The app folder path (default: ./src/app)
+    --output, -o [file]        The router file path (default: ./src/router.tsx)
   ```
 
 - Run in watch mode
