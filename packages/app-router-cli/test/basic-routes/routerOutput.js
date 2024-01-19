@@ -16,7 +16,7 @@ const router = createRouter([
     id: "app",
     element: (
       <RootLayoutRouteElement loading={App_loading} error={App_globalError}>
-        lazy(() => import("./app/layout"))
+        {lazy(() => import("./app/layout"))}
       </RootLayoutRouteElement>
     ),
     errorElement: <RootErrorElement />,
@@ -53,11 +53,7 @@ const router = createRouter([
       {
         id: "app/about/nested",
         path: "about/nested",
-        element: (
-          <LayoutRouteElement notFound={App_about_nested_notFound}>
-            {}
-          </LayoutRouteElement>
-        ),
+        element: <LayoutRouteElement notFound={App_about_nested_notFound} />,
         children: [
           {
             id: "app/about/nested/",

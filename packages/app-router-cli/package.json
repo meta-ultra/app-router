@@ -1,6 +1,6 @@
 {
   "name": "@meta-ultra/app-router-cli",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A program for generating router configuration abiding by Next.js App Router.",
   "author": "John Huang <fsjohnhuang@hotmail.com>",
   "license": "MIT",
@@ -15,15 +15,16 @@
   },
   "main": "./src/core/index.js",
   "bin": {
-    "app-router": "./dist/index.js"
+    "app-router": "./src/cli-wrapper.js"
   },
+  "files": ["src"],
   "preferGlobal": true,
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "dev": "node ./src/cli-wrapper.js -s ./test/basic-routes/app -o ./test/basic-routes/router.js",
+    "dev": "node ./src/cli-wrapper.js",
     "precompile": "node ./scripts/precompile.js",
     "build": "rimraf ./dist && node ./scripts/precompile.js && node ./scripts/build.js",
     "test": "jest"

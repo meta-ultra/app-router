@@ -26,6 +26,10 @@ Handlebars.registerHelper(
   "isNilorEmpty",
   (value) => value === undefined || value === null || !value.length
 );
+Handlebars.registerHelper(
+  "isNilorPreset",
+  (value) => value === undefined || value === null || !value.length || /^preset::/i.test(value)
+);
 Handlebars.registerHelper("lazyImport", (path) => {
   let output = undefined;
   if ([PRESET_ROOT_LAYOUT, PRESET_LAYOUT].indexOf(path) !== -1) {

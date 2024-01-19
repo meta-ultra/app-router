@@ -1,9 +1,9 @@
 {{#each routes}}
 {
-  {{#if this.id}}
-  id: "{{this.id}}",{{/if}}
-  {{~#if this.path}}
-  path: "{{this.path}}",{{/if}}
+  {{#unless (isNilorEmpty this.id)}}
+  id: "{{this.id}}",{{/unless}}
+  {{~#unless (isNilorEmpty this.path)}}
+  path: "{{this.path}}",{{/unless}}
   {{~#if this.index}}
   index: {{this.index}},{{/if}}
   element: (

@@ -1,6 +1,6 @@
 <PageRouteElement
-  {{~#unless (isNil props.loading)}} loading={ {{~escape props.loading~}} }{{/unless}}
-  {{~#unless (isNil props.error)}} error={ {{~escape props.error~}} }{{/unless}}
-  {{~#unless (isNil props.notFound)}} notFound={ {{~escape props.notFound~}} }{{/unless}}
-  {{~#unless (isNil props.template)}} template={ {{~lazyImport props.template~}} }{{/unless~}}
-  {{~#if props.page}}>{ {{~lazyImport props.page~}} }</PageRouteElement>{{else}}/>{{/if~}}
+  {{~#unless (isNilorEmpty props.loading)}} loading={ {{~escape props.loading~}} }{{/unless}}
+  {{~#unless (isNilorEmpty props.error)}} error={ {{~escape props.error~}} }{{/unless}}
+  {{~#unless (isNilorEmpty props.notFound)}} notFound={ {{~escape props.notFound~}} }{{/unless}}
+  {{~#unless (isNilorEmpty props.template)}} template={ {{~lazyImport props.template~}} }{{/unless~}}
+  {{~#unless (isNilorEmpty props.page)}}>{ {{~lazyImport props.page~}} }</PageRouteElement>{{else}}/>{{/unless~}}

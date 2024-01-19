@@ -1,14 +1,13 @@
 const router = createRouter([{{#each routes}}{ 
   id: "{{this.id}}",
   element: (<RootLayoutRouteElement
-      {{~#unless (isNil this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
-      {{~#unless (isNil this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}
-      {{~#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}
-      {{~#unless (isNil this.props.template)}} template={ {{~escape this.props.template~}} }{{/unless~}}
-    >
-      {{~lazyImport this.props.layout~}}
-    </RootLayoutRouteElement>), 
-  errorElement: <RootErrorElement{{#unless (isNil this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}/>
+      {{~#unless (isNilorEmpty this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
+      {{~#unless (isNilorEmpty this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}
+      {{~#unless (isNilorEmpty this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}
+      {{~#unless (isNilorEmpty this.props.template)}} template={ {{~escape this.props.template~}} }{{/unless~}}
+      {{~#unless (isNilorPreset this.props.layout)}}>{ {{~lazyImport this.props.layout~}} }</RootLayoutRouteElement>{{else}}/>{{/unless~}}
+  ), 
+  errorElement: <RootErrorElement{{#unless (isNilorEmpty this.props.notFound)}} notFound={ {{~escape this.props.notFound~}} }{{/unless}}/>
   {{#unless (isNilorEmpty this.children)}},
   children: [{{> childrenRoutes routes=this.children}}]
   {{~/unless~}}

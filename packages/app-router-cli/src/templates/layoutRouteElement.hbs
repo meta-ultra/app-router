@@ -4,5 +4,5 @@
   {{~#unless (isNil props.notFound)}} notFound={ {{~escape props.notFound~}} }{{/unless}}
   {{~#unless (isNil props.template)}} template={ {{~lazyImport props.template~}} }{{/unless~}}
   {{~#unless (isNil props.parallelRoutes)}} parallelRoutes={ {{~parallelRoutesProps props.parallelRoutes~}} }{{/unless~}}
-  {{~#if props.layout}}>{ {{~lazyImport props.layout~}} }</LayoutRouteElement>{{else}}/>{{/if~}}
+  {{~#unless (isNilorPreset props.layout)}}>{ {{~lazyImport props.layout~}} }</LayoutRouteElement>{{else}}/>{{/unless~}}
 
