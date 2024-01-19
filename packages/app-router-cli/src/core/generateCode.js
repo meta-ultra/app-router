@@ -53,7 +53,7 @@ Handlebars.registerHelper(
 Handlebars.registerHelper("isPageRoute", (value) => value === "page");
 Handlebars.registerHelper("isLayoutRoute", (value) => value === "layout");
 Handlebars.registerHelper("isInterceptedRoute", (value) => value === "intercepted");
-Handlebars.registerHelper("isInterceptingRoute", (value) => value === "intercepting");
+Handlebars.registerHelper("isInterceptingLayoutRoute", (value) => value === "intercepting");
 Handlebars.registerHelper(
   "parallelRoutesProps",
   (parallelRoutes) => {
@@ -92,8 +92,8 @@ Handlebars.registerPartial(
   readTemplateSync("../templates/interceptedRouteElement.hbs")
 );
 Handlebars.registerPartial(
-  "interceptingRouteElement",
-  readTemplateSync("../templates/interceptingRouteElement.hbs")
+  "interceptingLayoutRouteElement",
+  readTemplateSync("../templates/interceptingLayoutRouteElement.hbs")
 );
 /* End of Partials on fly*/
 

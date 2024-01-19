@@ -104,7 +104,7 @@ const collectRoutes = (nodes, parent, parentState) => {
     routes.push(route);
   }
 
-  if (routes[interceptingRouteIndex] && routes[interceptingRouteIndex].props.page && parentState.path) {
+  if (routes[interceptingRouteIndex] && routes[interceptingRouteIndex].props.interceptingPage && parentState.path) {
     for (let i = 0; i < routes.length; i++) {
       if (i !== interceptingRouteIndex && routes[i].path) {
         routes[i].path = parentState.path + "/" + routes[i].path;
