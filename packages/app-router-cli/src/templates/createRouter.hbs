@@ -1,5 +1,7 @@
 const router = createRouter([{{#each routes}}{ 
   id: "{{this.id}}",
+  {{~#unless (isNilorEmpty this.path)}}
+  path: "{{this.path}}",{{/unless}}
   element: (<RootLayoutRouteElement
       {{~#unless (isNilorEmpty this.props.loading)}} loading={ {{~escape this.props.loading~}} }{{/unless}}
       {{~#unless (isNilorEmpty this.props.error)}} error={ {{~escape this.props.error~}} }{{/unless}}

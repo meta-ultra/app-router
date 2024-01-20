@@ -12,15 +12,9 @@ const {
 
 const getLastSeg = (path) => path.split("/").pop();
 const match = (regexps, value) => regexps.find((regexp) => regexp.test(value));
-const isIntercepting = (node) =>
-  node.children.find((child) =>
-    match(
-      [INTERCEPTING_ONE_LEVEL_UP_RE, INTERCEPTING_TWO_LEVEL_UP_RE, INTERCEPTING_ROOT_LEVEL_UP_RE],
-      getLastSeg(child.path)
-    )
-  );
 
-const collectRoutes = (nodes, parent, parentState) => {
+const collectRoutes = (nodes, parent, parentState, level = 0) => {
+  let indexPageIndex = -1;
   let interceptingRouteIndex = -1;
   const routes = [];
   for (let i = 0; i < nodes.length; ++i) {
@@ -84,7 +78,19 @@ const collectRoutes = (nodes, parent, parentState) => {
       })
       path = segs.join("/");
     }
-    const indexPathProps = isIndex ? { index: true } : path ? { path } : {};
+    let indexPathProps = {};
+    if (isIndex) {
+      indexPathProps = { index: true };
+    }
+    else if (level === 0 && (!node.children || node.children.length === 0)) {
+      indexPathProps = { path: "/" };
+    }
+    else if (path) {
+      indexPathProps =  { path };
+    }
+    if (isIndex) {
+      indexPageIndex = i;
+    }
     /* End of Index and Path */
 
     const route = {
@@ -96,15 +102,25 @@ const collectRoutes = (nodes, parent, parentState) => {
 
     const state = {type, path: indexPathProps.path};
     route.children =
-      node.children && node.children.length ? collectRoutes(node.children, node, state) : [];
+      node.children && node.children.length ? collectRoutes(node.children, node, state, level + 1) : [];
     if (route.path && state.path !== route.path) {
-      delete route.path;
+      if (state.path === undefined) {
+        delete route.path;
+      }
+      else {
+        route.path = state.path;
+      }
     }
 
     routes.push(route);
   }
 
-  if (routes[interceptingRouteIndex] && routes[interceptingRouteIndex].props.interceptingPage && parentState.path) {
+  // for the case, there is no page inside the app folder.
+  if (level === 1 && indexPageIndex === -1) {
+    parentState.path = "/";
+  }
+  else if (routes[interceptingRouteIndex] && routes[interceptingRouteIndex].props.interceptingPage && parentState.path) {
+    // move the parent node's path to the intercepting layout node, if the intercepting layout node has a page.
     for (let i = 0; i < routes.length; i++) {
       if (i !== interceptingRouteIndex && routes[i].path) {
         routes[i].path = parentState.path + "/" + routes[i].path;
