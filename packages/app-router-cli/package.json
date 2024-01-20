@@ -1,6 +1,6 @@
 {
   "name": "@meta-ultra/app-router-cli",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A program for generating router configuration abiding by Next.js App Router.",
   "author": "John Huang <fsjohnhuang@hotmail.com>",
   "license": "MIT",

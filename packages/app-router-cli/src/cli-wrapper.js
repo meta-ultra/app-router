@@ -14,13 +14,13 @@ cli.version('1.0.0')
 cli.option('--hash', 'Use hash instead of history API', {
   default: false,
 })
-cli.option('--basename [basename]', 'The URL basename', {
+cli.option('--basename, -b [basename]', 'The URL basename starts with "/"', {
   default: '/',
 })
 cli.option('--watch, -w', 'Enable watch mode', {
   default: false,
 })
-cli.option('--watch-aggregate-timeout', 'Add a delay(ms) before rebuilding once the first file added or removed', {
+cli.option('--watch-aggregate-timeout [timeout]', 'Add a delay(ms) before rebuilding once the first file added or removed', {
   default: 300,
 })
 cli.option('--source, -s [folder]', 'The app folder path', {
@@ -39,7 +39,11 @@ if (!parsed.options.h && !parsed.options.v) {
     const segs = outputPath.split(sep);
     segs.pop();
     const routes = getMetaRoutes(segs.join(sep), sourcePath);
-    const output = generateRouter(cli.options.hash, cli.options.basename, routes);
+    let basename = cli.options.basename;
+    if (basename && !basename.startsWith("/")) {
+      basename = "/" + basename;
+    }
+    const output = generateRouter(cli.options.hash, basename, routes);
     writeFileSync(outputPath, await format(output, { parser: 'babel' }));
 
     console.log('App Router config has been done.');

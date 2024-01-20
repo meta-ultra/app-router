@@ -74,8 +74,8 @@ Handlebars.registerHelper(
 
 /* Partials on fly */
 Handlebars.registerPartial(
-  "staticDefaultImports",
-  readTemplateSync("../templates/staticDefaultImports.hbs")
+  "staticImports",
+  readTemplateSync("../templates/staticImports.hbs")
 );
 Handlebars.registerPartial("createRouter", readTemplateSync("../templates/createRouter.hbs"));
 Handlebars.registerPartial("childrenRoutes", readTemplateSync("../templates/childrenRoutes.hbs"));

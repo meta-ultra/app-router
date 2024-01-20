@@ -357,7 +357,6 @@ const normalizeIntercepting = (nodes) => {
       interceptingIndexes.push(i);
       let indexRouteIndex = -1;
       for (let j = 0; j < nodes.length; j++) {
-        console.log(nodes[j].path)
         if (nodes[j].path[nodes[j].path.length - 1] === "/") {
           indexRouteIndex = j;
         }

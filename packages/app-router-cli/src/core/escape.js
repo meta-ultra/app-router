@@ -35,7 +35,7 @@ const escapeGroupName = (identifier) => {
  */
 const escapeIntercepting = (identifier) => identifier.replace(/@/g, "At")
 
-const doEscape = pipe(escapeIntercepting, escapeGroupName, escapeKebabCase);
+const doEscape = pipe(escapeIntercepting, escapeKebabCase, escapeGroupName);
 
 /**
  * Convert full file path into React component name, for example "./app/not-found.tsx" is converted to "App_NotFound".

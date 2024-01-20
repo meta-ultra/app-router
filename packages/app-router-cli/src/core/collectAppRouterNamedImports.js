@@ -1,8 +1,3 @@
-const {
-  isIntercepted,
-  isIntercepting,
-} = require("./utils");
-
 const ROOT_ERROR = "RootErrorElement";
 const ROOT_LAYOUT = "RootLayoutRouteElement";
 const LAYOUT = "LayoutRouteElement";
