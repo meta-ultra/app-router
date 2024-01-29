@@ -49,7 +49,7 @@ Install `@meta-ultra/app-router` with your favorite package manager:
     --hash                     Use hash instead of history API (default: false)
     --basename [basename]      The URL basename (default: /)
     --watch, -w                Enable watch mode (default: false)
-    --watch-aggregate-timeout  Add a delay(ms) before rebuilding once the first file added or removed (default: 300)
+    --watch-aggregate-timeout [timeout]  Add a delay(ms) before rebuilding once the first file added or removed (default: 300)
     --source, -s [folder]      The app folder path (default: ./src/app)
     --output, -o [file]        The router file path (default: ./src/router.tsx)
   ```
