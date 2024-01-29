@@ -43,10 +43,16 @@ if (!parsed.options.h && !parsed.options.v) {
     if (basename && !basename.startsWith("/")) {
       basename = "/" + basename;
     }
-    const output = generateRouter(cli.options.hash, basename, routes);
-    writeFileSync(outputPath, await format(output, { parser: 'babel' }));
 
-    console.log('App Router config has been done.');
+    try {
+      const output = generateRouter(cli.options.hash, basename, routes);
+      writeFileSync(outputPath, await format(output, { parser: 'babel' }));
+      console.log('App Router config has been done.');
+    }
+    catch(e) {
+      console.error(e.message);
+    }
+
     if (cli.options.watch) {
       console.log('app-router is running.');
     }

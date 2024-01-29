@@ -7,7 +7,7 @@ import collectAppRouterNamedImportsOutput from "./parallel-routes/collectAppRout
 import nomalizeOutput from "./parallel-routes/normalizeOutput";
 
 test("staticDefaultImports with hash router", () => {
-  const output = generateCodeOnFly(join(__dirname, "../src/templates/staticDefaultImports.hbs"), {
+  const output = generateCodeOnFly(join(__dirname, "../src/templates/staticImports.hbs"), {
     isHash: true,
     appRouterNamedImports: collectAppRouterNamedImportsOutput,
     staticDefaultImports: collectStaticDefaultImportsOutput,
@@ -21,7 +21,7 @@ test("staticDefaultImports with hash router", () => {
 });
 
 test("staticDefaultImports with browser router", () => {
-  const output = generateCodeOnFly(join(__dirname, "../src/templates/staticDefaultImports.hbs"), {
+  const output = generateCodeOnFly(join(__dirname, "../src/templates/staticImports.hbs"), {
     isHash: false,
     appRouterNamedImports: collectAppRouterNamedImportsOutput,
     staticDefaultImports: collectStaticDefaultImportsOutput,

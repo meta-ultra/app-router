@@ -4,6 +4,9 @@ const {
   INTERCEPTING_TWO_LEVEL_UP_RE,
   INTERCEPTING_ROOT_LEVEL_UP_RE,
 } = require("./constants");
+const {
+  groupBy,
+} = require("lodash");
 
 /**
  * remove the trailing .jsx, .js, .tsx and .ts.
@@ -52,4 +55,31 @@ const findInterceptingIndex = (segs) => {
 const isIntercepting = (segs) => segs.find((seg) => [INTERCEPTING_ONE_LEVEL_UP_RE, INTERCEPTING_TWO_LEVEL_UP_RE, INTERCEPTING_ROOT_LEVEL_UP_RE].find((re) => re.test(seg)));
 const isIntercepted = (segs) => segs.find((seg) => INTERCEPTING_SAME_LEVEL_RE.test(seg));
 
-module.exports = { stripExtension, pipe, getRelativePath, isIntercepting, isIntercepted, findInterceptingIndex };
+const collectSlugs = (path, slugs = []) => {
+  const match = /\[([a-z][a-z0-9_]*)\]/.exec(path);
+  if (match) {
+    slugs.push(match[1]);
+    return collectSlugs(path.substring(match.index + match[0].length), slugs);
+  }
+  else {
+    return slugs;
+  }
+}
+const getRepeatedSlugs = (slugs) => {
+  const repeatedSlugs = [];
+  for (const [slug, value] of Object.entries(groupBy(slugs))) {
+    if (value.length > 1) {
+      repeatedSlugs.push(slug);
+    }
+  }
+
+  return repeatedSlugs;
+}
+const assertNoRepeatedSlugs = (path) => {
+  const slugs = pipe(getRepeatedSlugs, collectSlugs)(path);
+  if (slugs.length > 0) {
+    throw Error(`You cannot have the same slug name ${slugs.map((slug) => '"' + slug + '"').join(',')} repeat within a single dynamic path.`)
+  }
+}
+
+module.exports = { stripExtension, pipe, getRelativePath, isIntercepting, isIntercepted, findInterceptingIndex, assertNoRepeatedSlugs };

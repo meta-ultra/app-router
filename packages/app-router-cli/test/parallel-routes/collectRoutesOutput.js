@@ -2,7 +2,7 @@ export default [
   {
     "id": "app",
     "type": "layout",
-    "path": "app",
+    "path": "/",
     "props": {
       "layout": "preset::root-layout"
     },

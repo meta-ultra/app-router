@@ -25,6 +25,7 @@ test("remove parallel routes `props.layout`", () => {
 
   const srcDashboardNode = input[0].children.find((node) => node.path === "app/dashboard");
   const outputDashboardNode = output[0].children.find((node) => node.path === "app/dashboard");
+
   expect(
     srcDashboardNode.children.find((node) => node.path === "app/dashboard/@chart1").props.layout
   ).toBeDefined();
@@ -32,7 +33,7 @@ test("remove parallel routes `props.layout`", () => {
     srcDashboardNode.children.find((node) => node.path === "app/dashboard/@chart2").props.layout
   ).toBeDefined();
   expect(
-    outputDashboardNode.children.find((node) => node.path === "app/dashboard/@chart1").props.layout
+    outputDashboardNode.children.find((node) => node.path === "app/dashboard/@chart1")
   ).toBeUndefined();
   expect(
     outputDashboardNode.children.find((node) => node.path === "app/dashboard/@chart2")
@@ -58,9 +59,9 @@ test("move the template down a layer", () => {
 
   expect(
     output[0].children[0].children.find((node) => node.path === "app/dashboard/").props.template
-  ).toStrictEqual("app/dashboard/template.js")
+  ).toStrictEqual("app/dashboard/template.js");
   expect(
-    output[0].children[0].children.find((node) => node.path === "app/dashboard/@chart1").props.template
+    output[0].children.find((node) => node.path === "app/dashboard").props.parallelRoutes.chart1.props.template
   ).toStrictEqual("app/dashboard/template.js")
 })
 

@@ -9,6 +9,7 @@ const {
   OPTIONAL_CATCH_ALL_RE,
   INTERCEPTING_SAME_LEVEL_RE,
 } = require("./constants.js");
+const { assertNoRepeatedSlugs } = require("./utils.js");
 
 const getLastSeg = (path) => path.split("/").pop();
 const match = (regexps, value) => regexps.find((regexp) => regexp.test(value));
@@ -28,6 +29,7 @@ const collectRoutes = (nodes, parent, parentState, level = 0) => {
       type = "intercepting";
       interceptingRouteIndex = i;
     } else {
+      assertNoRepeatedSlugs(node.path);
       type = node.props.layout ? "layout" : "page";
     }
 
