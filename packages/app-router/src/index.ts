@@ -17,11 +17,3 @@ export type { InterceptingLayoutRouteElementProps } from "./routing/Intercepting
 export { default as InterceptingLayoutRouteElement } from "./routing/InterceptingLayoutRouteElement";
 export type { InterceptedRouteElementProps } from "./routing/InterceptedRouteElement";
 export { default as InterceptedRouteElement } from "./routing/InterceptedRouteElement";
-
-// deprecated APIs
-export type { RouteSegmentElementProps } from "./routing/RouteSegmentElement";
-export {
-  default as RouteSegmentElement,
-  RouteSegmentElementLayout,
-} from "./routing/RouteSegmentElement";
-export { default as RootRouteSegmentElement } from "./routing/RootRouteSegmentElement";
