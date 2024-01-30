@@ -79,6 +79,7 @@ Let's demonstrate how to use `@meta-ultra/app-router` with Next.js App Router co
 
   const router = createHashRouter([
     {
+      path: "/",
       element: (
         <RootLayoutRouteElement 
           loading={RootLoading} 
