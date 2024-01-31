@@ -17,3 +17,5 @@ export type { InterceptingLayoutRouteElementProps } from "./routing/Intercepting
 export { default as InterceptingLayoutRouteElement } from "./routing/InterceptingLayoutRouteElement";
 export type { InterceptedRouteElementProps } from "./routing/InterceptedRouteElement";
 export { default as InterceptedRouteElement } from "./routing/InterceptedRouteElement";
+export * from "./route-handler";
+export type * from "./route-handler";

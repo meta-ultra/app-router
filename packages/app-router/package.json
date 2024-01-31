@@ -38,7 +38,9 @@
     "react-router-dom": "^6.14.1"
   },
   "dependencies": {
+    "axios-mock-adapter": "^1.22.0",
     "lodash-es": "^4.17.21",
+    "path-to-regexp": "^6.2.1",
     "react-is": "^18.2.0"
   },
   "devDependencies": {
