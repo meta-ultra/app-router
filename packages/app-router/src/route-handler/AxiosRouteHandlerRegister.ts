@@ -16,7 +16,7 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
     super();
 
     this.#mockAdapter = mockAdapter;
-    this.#baseUrl = baseUrl || "/";
+    this.#baseUrl = typeof baseUrl === "string" ?  baseUrl || "/" : "/";
   }
 
   doRegister(path: string, handler: RouteHandler, method: HTTPMethod): void {
