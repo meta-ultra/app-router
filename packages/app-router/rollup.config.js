@@ -27,7 +27,7 @@ module.exports = {
       globals: {},
     },
   ],
-  external: ["react", "react-dom", "react-router-dom"],
+  external: ["react", "react-dom", "react-router-dom", "axios-mock-adapter", "yup"],
   plugins: [
     replace({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),

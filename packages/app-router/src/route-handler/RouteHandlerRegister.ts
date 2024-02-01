@@ -6,7 +6,7 @@ interface RouteHandlerRegister {
 }
 
 abstract class AbsRouteHandlerRegister implements RouteHandlerRegister {
-  abstract doRegister(path: string, handler: RouteHandler, method: HTTPMethod): void;
+  protected abstract doRegister(path: string, handler: RouteHandler, method: HTTPMethod): void;
 
   register(path: string, route: object) {
     Object.entries(route || {}).forEach(([name, handler]) => {

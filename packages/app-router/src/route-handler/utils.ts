@@ -26,4 +26,37 @@ const dynamicRoute2ExpressPathname = (path: string): string => {
   }
 };
 
-export { joinURL, dynamicRoute2ExpressPathname };
+function objectify(source: URLSearchParams): Record<string, string | string[]>;
+function objectify(source: any): Record<string, any>;
+function objectify(source: URLSearchParams | any): Record<string, string | string[]> | Record<string, any> {
+  if (source instanceof URLSearchParams) {
+    return objectifyURLSearchParams(source);
+  }
+  else {
+    return objectifyAnything(source);
+  }
+}
+function objectifyURLSearchParams(searchParams: URLSearchParams) {
+  const obj: Record<string, string | string[]> = {};
+  for (const key of searchParams.keys()) {
+    const values = searchParams.getAll(key);
+    if (values.length > 1) {
+      obj[key] = values;
+    }
+    else if (values[0] !== undefined) {
+      obj[key] = values[0];
+    }
+  }
+
+  return obj;
+}
+function objectifyAnything(source: any) {
+  if (source) {
+    return source as Record<string, any>;
+  }
+  else {
+    return {};
+  }
+}
+
+export { joinURL, dynamicRoute2ExpressPathname, objectify };

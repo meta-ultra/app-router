@@ -1,12 +1,13 @@
 import { pathToRegexp, match } from "path-to-regexp";
 import type MockAdapter from "axios-mock-adapter";
 import { capitalize } from "lodash-es";
-import { RouteHandler, HTTPMethod } from "./RouteHandler";
+import { type RouteHandler, type HTTPMethod } from "./RouteHandler";
 import { AbsRouteHandlerRegister } from "./RouteHandlerRegister";
-import { joinURL, dynamicRoute2ExpressPathname } from "./utils";
+import { joinURL, dynamicRoute2ExpressPathname, objectify } from "./utils";
 import { NextRequest } from "./NextRequest";
+import { MIME_JSON } from "./MIME";
 
-type AdapterMethodFunction = "onGet" | "onPost" | "onPut" | "onPatch" | "onDelete" | "onHead" | "onOptions";
+type AdapterMethodFunction = `on${Capitalize<Lowercase<HTTPMethod>>}`;
 
 class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
   #mockAdapter: MockAdapter;
@@ -19,7 +20,7 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
     this.#baseUrl = typeof baseUrl === "string" ?  baseUrl || "/" : "/";
   }
 
-  doRegister(path: string, handler: RouteHandler, method: HTTPMethod): void {
+  protected doRegister(path: string, handler: RouteHandler, method: HTTPMethod): void {
     const { origin, pathname } = joinURL(this.#baseUrl, path);
     let expressPathname = dynamicRoute2ExpressPathname(pathname);
     const regexp = RegExp("^" + origin + pathToRegexp(expressPathname).source.replace(/^[^]/, ""));
@@ -33,13 +34,27 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
         params = urlMatchResult.params;
       }
 
-      const request = new NextRequest(origin + pathname);
+      const method = config.method || "GET";
+      const contentType = config.headers && config.headers["Content-Type"] || MIME_JSON;
+      const queryString = new URLSearchParams(config.params || {}).toString();
+      const nextRequestUrl = origin + pathname + (queryString ? "?" + queryString : "");
+      const nextRequestInit: {
+        method: string;
+        headers: Record<string, any>;
+        body?: string;
+      } = { method, headers: objectify(config.headers) };
+      nextRequestInit.headers["Content-Type"] = contentType;
+      if (["GET", "HEAD"].indexOf(method) !== -1 && config.data) {
+        nextRequestInit.body = config.data;
+      }
+      const request = new NextRequest(nextRequestUrl, nextRequestInit);
+      console.info(`[@meta-ultra/app-router] ${request.method} ${request.url} has been intercepted.`)
       const response = await handler(request, { params });
 
       if (response) {
         let body = undefined;
-        const contentType = response.headers && response.headers.get("Content-Type") || "application/json";
-        if (contentType === "application/json") {
+        const contentType = response.headers && response.headers.get("Content-Type") || MIME_JSON;
+        if (contentType === MIME_JSON) {
           body = await response.json();
         }
         else {
