@@ -1,4 +1,5 @@
 const { stripExtension, pipe } = require("./utils.js");
+const { DYNAMIC_RE, CATCH_ALL_RE, OPTIONAL_CATCH_ALL_RE } = require("./constants.js");
 
 /**
  * Escape kabbe-case to camelCase, like not-found to notFound, global-error to globalError.
@@ -33,9 +34,19 @@ const escapeGroupName = (identifier) => {
 /**
  * Escape @
  */
-const escapeIntercepting = (identifier) => identifier.replace(/@/g, "At")
+const escapeIntercepting = (identifier) => identifier.replace(/@/g, "At");
 
-const doEscape = pipe(escapeIntercepting, escapeKebabCase, escapeGroupName);
+const LOOSE_DYNAMIC_RE = RegExp(DYNAMIC_RE.source.replace(/^[^]|[$]$/, ""));
+const LOOSE_CATCH_ALL_RE = RegExp(CATCH_ALL_RE.source.replace(/^[^]|[$]$/, ""));
+const LOOSE_OPTIONAL_CATCH_ALL_RE = RegExp(OPTIONAL_CATCH_ALL_RE.source.replace(/^[^]|[$]$/, ""));
+const escapeDynamicRouteParameters = (identifier) => {
+  return identifier
+    .replace(LOOSE_OPTIONAL_CATCH_ALL_RE, "ls-opt-$2-rs")
+    .replace(LOOSE_CATCH_ALL_RE, "ls-cat-$1-rs")
+    .replace(LOOSE_DYNAMIC_RE, "ls-$1-rs");
+};
+
+const doEscape = pipe(escapeIntercepting, escapeKebabCase, escapeDynamicRouteParameters, escapeGroupName);
 
 /**
  * Convert full file path into React component name, for example "./app/not-found.tsx" is converted to "App_NotFound".

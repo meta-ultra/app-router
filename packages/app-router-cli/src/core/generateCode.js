@@ -73,10 +73,8 @@ Handlebars.registerHelper(
 /* End of Register Helpers */
 
 /* Partials on fly */
-Handlebars.registerPartial(
-  "staticImports",
-  readTemplateSync("../templates/staticImports.hbs")
-);
+Handlebars.registerPartial("staticImports", readTemplateSync("../templates/staticImports.hbs"));
+Handlebars.registerPartial("routeHandlers", readTemplateSync("../templates/routeHandlers.hbs"));
 Handlebars.registerPartial("createRouter", readTemplateSync("../templates/createRouter.hbs"));
 Handlebars.registerPartial("childrenRoutes", readTemplateSync("../templates/childrenRoutes.hbs"));
 Handlebars.registerPartial(
@@ -110,13 +108,16 @@ const generateCodeOnFly = (path, context, options) => {
   return template(context, options);
 };
 
-const generateCode = (isHash, appRouterNamedImports, staticDefaultImports, routes, basename) => {
+const generateCode = (isHash, appRouterNamedImports, staticDefaultImports, routes, basename, routeHandlerRoutes, baseUrl, mockAdapter) => {
   return generateCodeOnFly("../templates/router.hbs", {
     isHash,
     appRouterNamedImports,
     staticDefaultImports,
     routes,
     basename,
+    routeHandlerRoutes,
+    baseUrl,
+    mockAdapter
   });
 };
 

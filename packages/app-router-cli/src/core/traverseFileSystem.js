@@ -15,7 +15,7 @@ const {
  } = require("./constants.js");
 
 const isValidFileName = (filename) =>
-  ["page", "layout", "error", "global-error", "loading", "not-found", "template"].indexOf(
+  ["page", "layout", "error", "global-error", "loading", "not-found", "template", "route"].indexOf(
     filename
   ) !== -1;
 

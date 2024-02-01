@@ -4,7 +4,7 @@ const cac = require('cac')
 const { debounce } = require("lodash");
 const { watch } = require("chokidar"); // https://github.com/paulmillr/chokidar
 const { format } = require("prettier"); // https://prettier.io/docs/en/api.html
-const { getMetaRoutes, generateRouter } = require("./core/index.js");
+const { getMetaRoutes, generateRouter, getMetaRouteHandlerRoutes } = require("./core/index.js");
 
 const cli = cac('app-router')
 
@@ -14,14 +14,20 @@ cli.version('1.0.0')
 cli.option('--hash', 'Use hash instead of history API', {
   default: false,
 })
-cli.option('--basename, -b [basename]', 'The URL basename starts with "/"', {
+cli.option('--basename, -b [basename]', 'The URL basename(synonym for publicUrl in Webpack) starts with "/" by default', {
   default: '/',
 })
 cli.option('--watch, -w', 'Enable watch mode', {
   default: false,
 })
 cli.option('--watch-aggregate-timeout [timeout]', 'Add a delay(ms) before rebuilding once the first file added or removed', {
-  default: 300,
+  default: 700,
+})
+cli.option('--base-url [baseUrl]', 'The baseUrl for route handlers, defaults to process.env.REACT_APP_BASE_URL', {
+  default: "process.env.REACT_APP_BASE_URL",
+})
+cli.option('--mock-adapter [mockAdapter]', 'The import statement path of mock adapter, defaults to "./utils/mockAdapter"', {
+  default: "./utils/mockAdapter",
 })
 cli.option('--source, -s [folder]', 'The app folder path', {
   default: './src/app',
@@ -38,14 +44,20 @@ if (!parsed.options.h && !parsed.options.v) {
   const main = async () => {
     const segs = outputPath.split(sep);
     segs.pop();
-    const routes = getMetaRoutes(segs.join(sep), sourcePath);
+    const metaRoutes = getMetaRoutes(segs.join(sep), sourcePath);
+    const metaRouteHandlerRoutes = getMetaRouteHandlerRoutes(segs.join(sep), sourcePath);
+    // "basename" is a synonym for "publicPath" of Webpack.
     let basename = cli.options.basename;
     if (basename && !basename.startsWith("/")) {
-      basename = "/" + basename;
+      // the value of basename must be either an empty string or url starts with slash and ends without slash.
+      basename = "/" + basename.replace(/\/$/, "");
     }
+    // for axios's baseUrl
+    let baseUrl = cli.options.baseUrl || "";
+    let mockAdapter = cli.options.mockAdapter;
 
     try {
-      const output = generateRouter(cli.options.hash, basename, routes);
+      const output = generateRouter(cli.options.hash, basename, metaRoutes, metaRouteHandlerRoutes, baseUrl, mockAdapter);
       writeFileSync(outputPath, await format(output, { parser: 'babel' }));
       console.log('App Router config has been done.');
     }
