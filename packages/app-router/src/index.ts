@@ -22,3 +22,5 @@ export { default as InterceptedRouteElement } from "./routing/InterceptedRouteEl
 export type { NextContext, NextRequest, RouteHandler, RouteHandlerRegister } from "./route-handler";
 export { NextResponse, AxiosRouteHandlerRegister, objectify } from "./route-handler";
 export { withValidation } from "./route-handler/validation/withValidation";
+// helper utilities
+export { normalizeCreateRouterOptions } from "./utils/normalizeCreateRouterOptions";
