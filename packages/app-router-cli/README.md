@@ -16,6 +16,7 @@ Give a ⭐️ if this project helped you!
 - Supports dynamic routes including catch-all and optional catch-all segments.
 - Supports parallel routes.
 - Supports intercepting routes.
+- Supports route handlers.
 - Generates root layout automatically if no root layout is found.
 - Allows to prefer browser router or hash router.
 - Be able to customize basename of the router.
@@ -44,14 +45,16 @@ Install `@meta-ultra/app-router` with your favorite package manager:
   $ app-router <command> [options]
 
   Options:
-    -h, --help                 Display this message
-    -v, --version              Display version number
-    --hash                     Use hash instead of history API (default: false)
-    --basename [basename]      The URL basename (default: /)
-    --watch, -w                Enable watch mode (default: false)
-    --watch-aggregate-timeout [timeout]  Add a delay(ms) before rebuilding once the first file added or removed (default: 300)
-    --source, -s [folder]      The app folder path (default: ./src/app)
-    --output, -o [file]        The router file path (default: ./src/router.tsx)
+    -h, --help                           Display this message
+    -v, --version                        Display version number
+    --hash                               Use hash instead of history API (default: false)
+    --basename, -b [basename]            The URL basename(synonym for publicPath in Webpack) defaults to process.env.PUBLIC_URL (default: process.env.PUBLIC_URL)
+    --watch, -w                          Enable watch mode (default: false)
+    --watch-aggregate-timeout [timeout]  Add a delay(ms) before rebuilding once the first file added or removed (default: 700)
+    --base-url [baseUrl]                 The baseUrl for route handlers, defaults to process.env.REACT_APP_BASE_URL (default: process.env.REACT_APP_BASE_URL)
+    --mock-adapter [mockAdapter]         The import statement path of mock adapter, defaults to "./utils/mockAdapter" (default: ./utils/mockAdapter)
+    --source, -s [folder]                The app folder path (default: ./src/app)
+    --output, -o [file]                  The router file path (default: ./src/router.tsx)
   ```
 
 - Run in watch mode

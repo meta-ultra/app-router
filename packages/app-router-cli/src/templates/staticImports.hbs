@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { {{#if isHash~}}createHashRouter{{~else~}}createBrowserRouter{{~/if}} as createRouter } from "react-router-dom";
-import { {{join appRouterNamedImports ", "}} } from "@meta-ultra/app-router";
+import { normalizeCreateRouterOptions, {{join appRouterNamedImports ", "}} } from "@meta-ultra/app-router";
 {{#each staticDefaultImports}}
 import {{this.defaultImportName}} from "{{this.path}}";
 {{/each}}

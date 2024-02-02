@@ -14,8 +14,8 @@ cli.version('1.0.0')
 cli.option('--hash', 'Use hash instead of history API', {
   default: false,
 })
-cli.option('--basename, -b [basename]', 'The URL basename(synonym for publicUrl in Webpack) starts with "/" by default', {
-  default: '/',
+cli.option('--basename, -b [basename]', 'The URL basename(synonym for publicPath in Webpack) defaults to process.env.PUBLIC_URL', {
+  default: "process.env.PUBLIC_URL",
 })
 cli.option('--watch, -w', 'Enable watch mode', {
   default: false,
@@ -48,10 +48,6 @@ if (!parsed.options.h && !parsed.options.v) {
     const metaRouteHandlerRoutes = getMetaRouteHandlerRoutes(segs.join(sep), sourcePath);
     // "basename" is a synonym for "publicPath" of Webpack.
     let basename = cli.options.basename;
-    if (basename && !basename.startsWith("/")) {
-      // the value of basename must be either an empty string or url starts with slash and ends without slash.
-      basename = "/" + basename.replace(/\/$/, "");
-    }
     // for axios's baseUrl
     let baseUrl = cli.options.baseUrl || "";
     let mockAdapter = cli.options.mockAdapter;

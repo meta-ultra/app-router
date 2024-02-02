@@ -15,6 +15,6 @@ const router = createRouter([{{#each routes}}{
   children: [{{> childrenRoutes routes=this.children}}]
   {{~/unless~}}
 },
-{{/each}}]{{#unless (isUndefinedBasename basename)}}, {basename: "{{basename}}"}{{/unless}});
+{{/each}}], normalizeCreateRouterOptions({{{basename}}}));
 
 export default router;

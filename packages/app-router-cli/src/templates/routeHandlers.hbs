@@ -1,4 +1,5 @@
 {{#unless (isNilorEmpty routeHandlerRoutes)}}
+/* Route Handlers */
 import { AxiosRouteHandlerRegister as RouteHandlerRegister } from "@meta-ultra/app-router";
 import mockAdapter from "{{mockAdapter}}";
 {{#each routeHandlerRoutes}}
@@ -9,4 +10,5 @@ const routeHandlerRegister = new RouteHandlerRegister(mockAdapter, {{{baseUrl}}}
 {{#each routeHandlerRoutes}}
 routeHandlerRegister.register("{{this.url}}", {{this.defaultImportName}});
 {{/each}}
+/* Route Handlers End */
 {{/unless}}

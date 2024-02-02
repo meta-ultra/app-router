@@ -23,7 +23,7 @@ const collectRouteHandlerRoutes = (nodes, routes = [], existings = new Set(), ro
           }
           existings.add(url);
           routes.push({
-            url: url.replace(RegExp("^"+rootPath), ""),
+            url: url.replace(RegExp(`^${rootPath}|\/route$`, "g"), ""),
             path: getRelativePath(filepath.replace(EXTENSION_RE, "")),
             defaultImportName: escape(url),
           });
