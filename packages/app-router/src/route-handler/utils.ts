@@ -1,3 +1,5 @@
+import { isNil } from "lodash-es";
+
 const joinURL = (...paths: string[]) => {
   let url = paths.reduce((result, path) => {
     result.push(path.replace(/^\/|\/$/g, ""));
@@ -27,10 +29,14 @@ const dynamicRoute2ExpressPathname = (path: string): string => {
 };
 
 function objectify(source: URLSearchParams): Record<string, string | string[]>;
+function objectify(source: Headers): Record<string, string | string[]>;
 function objectify(source: any): Record<string, any>;
 function objectify(source: URLSearchParams | any): Record<string, string | string[]> | Record<string, any> {
   if (source instanceof URLSearchParams) {
     return objectifyURLSearchParams(source);
+  }
+  else if (source instanceof Headers) {
+    return objectifyHeaders(source);
   }
   else {
     return objectifyAnything(source);
@@ -45,6 +51,17 @@ function objectifyURLSearchParams(searchParams: URLSearchParams) {
     }
     else if (values[0] !== undefined) {
       obj[key] = values[0];
+    }
+  }
+
+  return obj;
+}
+function objectifyHeaders(headers: Headers) {
+  const obj: Record<string, string> = {};
+  for (const key of headers.keys()) {
+    const value = headers.get(key);
+    if (!isNil(value)) {
+      obj[key] = value;
     }
   }
 

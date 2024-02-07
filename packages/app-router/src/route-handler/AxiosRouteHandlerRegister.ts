@@ -1,6 +1,6 @@
 import { pathToRegexp, match } from "path-to-regexp";
-// import type MockAdapter from "axios-mock-adapter";
-import { capitalize } from "lodash-es";
+import type MockAdapter from "axios-mock-adapter";
+import { capitalize, isArray, isObject, upperCase } from "lodash-es";
 import { type RouteHandler, type HTTPMethod } from "./RouteHandler";
 import { AbsRouteHandlerRegister } from "./RouteHandlerRegister";
 import { joinURL, dynamicRoute2ExpressPathname, objectify } from "./utils";
@@ -8,11 +8,6 @@ import { NextRequest } from "./NextRequest";
 import { MIME_JSON } from "./MIME";
 
 type AdapterMethodFunction = `on${Capitalize<Lowercase<HTTPMethod>>}`;
-type MockAdapter = {
-  onPut: (regexp: RegExp) => {
-    reply: (config: {url: string}) => Promise<any>
-  }
-};
 
 class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
   #mockAdapter: MockAdapter;
@@ -30,8 +25,8 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
     let expressPathname = dynamicRoute2ExpressPathname(pathname);
     const regexp = RegExp("^" + origin + pathToRegexp(expressPathname).source.replace(/^[^]/, ""));
     const urlMatch = match(expressPathname, { decode: decodeURIComponent });
-// AdapterMethodFunction
-    this.#mockAdapter[`on${capitalize(method || handler.name)}` as "onPut"](regexp).reply(async (config) => {
+
+    this.#mockAdapter[`on${capitalize(method || handler.name)}` as AdapterMethodFunction](regexp).reply(async (config) => {
       let params = {};
       const { origin, pathname } = joinURL(config.baseURL || "", config.url || "");
       const urlMatchResult = urlMatch(pathname);
@@ -41,7 +36,21 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
 
       const method = config.method || "GET";
       const contentType = config.headers && config.headers["Content-Type"] || MIME_JSON;
-      const queryString = new URLSearchParams(config.params || {}).toString();
+      // fix: the returned of new URLSearchParams(axiosParams).toString() will stringify an array into "a=x,y,c" pattern rather not "a=x&a=y&a=c".
+      const urlSearchParams = new URLSearchParams();
+      const axiosParams = config.params || {};
+      for (const [name, value] of Object.entries(axiosParams)) {
+        if (isArray(value)) {
+          for (const x of value) {
+            urlSearchParams.append(name, x);
+          }
+        }
+        else {
+          urlSearchParams.append(name, String(value));
+        }
+      }
+      const queryString = urlSearchParams.toString();
+
       const nextRequestUrl = origin + pathname + (queryString ? "?" + queryString : "");
       const nextRequestInit: {
         method: string;
@@ -49,7 +58,7 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
         body?: string;
       } = { method, headers: objectify(config.headers) };
       nextRequestInit.headers["Content-Type"] = contentType;
-      if (["GET", "HEAD"].indexOf(method) !== -1 && config.data) {
+      if (["GET", "HEAD"].indexOf(upperCase(method)) === -1 && config.data) {
         nextRequestInit.body = config.data;
       }
       const request = new NextRequest(nextRequestUrl, nextRequestInit);
@@ -69,7 +78,7 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
         return [
           response.status || 200,
           body,
-          response.headers
+          objectify(response.headers)
         ]
       }
       else {
