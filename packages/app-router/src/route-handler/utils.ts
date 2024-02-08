@@ -18,7 +18,7 @@ const joinURL = (...paths: string[]) => {
 };
 
 const dynamicRoute2ExpressPathname = (path: string): string => {
-  const match = /\[([a-z][a-z0-9-_]*)\]/.exec(path);
+  const match = /\[([a-z][a-z0-9-_]*)\]/i.exec(path);
   if (match) {
     path = path.replace(match[0], `:${match[1]}`);
     return dynamicRoute2ExpressPathname(path);
