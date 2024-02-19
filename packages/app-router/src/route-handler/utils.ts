@@ -1,4 +1,5 @@
 import { isNil } from "lodash-es";
+import qs from "qs";
 
 const joinURL = (...paths: string[]) => {
   let url = paths.reduce((result, path) => {
@@ -43,18 +44,8 @@ function objectify(source: URLSearchParams | any): Record<string, string | strin
   }
 }
 function objectifyURLSearchParams(searchParams: URLSearchParams) {
-  const obj: Record<string, string | string[]> = {};
-  for (const key of searchParams.keys()) {
-    const values = searchParams.getAll(key);
-    if (values.length > 1) {
-      obj[key] = values;
-    }
-    else if (values[0] !== undefined) {
-      obj[key] = values[0];
-    }
-  }
-
-  return obj;
+  // parse search params using qs instead of getting it by manual.
+  return qs.parse(searchParams.toString());
 }
 function objectifyHeaders(headers: Headers) {
   const obj: Record<string, string> = {};

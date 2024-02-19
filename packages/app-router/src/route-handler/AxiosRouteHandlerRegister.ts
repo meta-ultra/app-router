@@ -1,6 +1,7 @@
 import { pathToRegexp, match } from "path-to-regexp";
 import type MockAdapter from "axios-mock-adapter";
-import { capitalize, isArray, isObject, upperCase } from "lodash-es";
+import { capitalize, upperCase } from "lodash-es";
+import qs from "qs";
 import { type RouteHandler, type HTTPMethod } from "./RouteHandler";
 import { AbsRouteHandlerRegister } from "./RouteHandlerRegister";
 import { joinURL, dynamicRoute2ExpressPathname, objectify } from "./utils";
@@ -36,20 +37,8 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
 
       const method = config.method || "GET";
       const contentType = config.headers && config.headers["Content-Type"] || MIME_JSON;
-      // fix: the returned of new URLSearchParams(axiosParams).toString() will stringify an array into "a=x,y,c" pattern rather not "a=x&a=y&a=c".
-      const urlSearchParams = new URLSearchParams();
-      const axiosParams = config.params || {};
-      for (const [name, value] of Object.entries(axiosParams)) {
-        if (isArray(value)) {
-          for (const x of value) {
-            urlSearchParams.append(name, x);
-          }
-        }
-        else {
-          urlSearchParams.append(name, String(value));
-        }
-      }
-      const queryString = urlSearchParams.toString();
+      // fix: stringify axiosParams using qs instead of URLSearchParams
+      const queryString = qs.stringify(config.params);
 
       const nextRequestUrl = origin + pathname + (queryString ? "?" + queryString : "");
       const nextRequestInit: {
