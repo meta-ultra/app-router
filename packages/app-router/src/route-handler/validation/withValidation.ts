@@ -1,4 +1,4 @@
-import { type AnyObjectSchema } from "yup";
+import { type AnyObjectSchema, type MixedSchema, type AnyObject} from "yup";
 import { type NextRequest } from "../NextRequest";
 import { type NextContext } from "../NextContext";
 import { type RouteHandler } from "../RouteHandler";
@@ -6,9 +6,9 @@ import { objectify } from "../utils";
 
 function withValidation(
   schemas: {
-    paramsSchema?: AnyObjectSchema;
-    searchParamsSchema?: AnyObjectSchema;
-    bodySchema?: AnyObjectSchema;
+    paramsSchema?: AnyObjectSchema | MixedSchema<any | undefined, AnyObject, undefined, "">;
+    searchParamsSchema?: AnyObjectSchema | MixedSchema<any | undefined, AnyObject, undefined, "">;
+    bodySchema?: AnyObjectSchema | MixedSchema<any | undefined, AnyObject, undefined, "">;
   },
   handler: RouteHandler
 ) {
