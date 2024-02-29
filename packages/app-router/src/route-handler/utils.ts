@@ -1,4 +1,4 @@
-import { isNil } from "lodash-es";
+import { isEmpty, isNil } from "lodash-es";
 import qs from "qs";
 
 const joinURL = (...paths: string[]) => {
@@ -31,6 +31,7 @@ const dynamicRoute2ExpressPathname = (path: string): string => {
 
 function objectify(source: URLSearchParams): Record<string, string | string[]>;
 function objectify(source: Headers): Record<string, string | string[]>;
+function objectify(source: FormData): Record<string, any>;
 function objectify(source: any): Record<string, any>;
 function objectify(source: URLSearchParams | any): Record<string, string | string[]> | Record<string, any> {
   if (source instanceof URLSearchParams) {
@@ -38,6 +39,9 @@ function objectify(source: URLSearchParams | any): Record<string, string | strin
   }
   else if (source instanceof Headers) {
     return objectifyHeaders(source);
+  }
+  else if (source instanceof FormData) {
+    return objectifyFormData(source);
   }
   else {
     return objectifyAnything(source);
@@ -58,9 +62,27 @@ function objectifyHeaders(headers: Headers) {
 
   return obj;
 }
+function objectifyFormData(formData: FormData) {
+  const obj: Record<string, any> = {};
+  for (const key of formData.keys()) {
+    const values = formData.getAll(key);
+    if (!isEmpty(values)) {
+      obj[key] = values.length === 1 ? values[0] : values;
+    }
+  }
+
+  return obj;
+}
 function objectifyAnything(source: any) {
   if (source) {
-    return source as Record<string, any>;
+    const obj = {} as Record<string, any>;
+    for (const name in source) {
+      if (typeof source[name] !== "function") {
+        obj[name] = source[name];
+      }
+    }
+
+    return obj;
   }
   else {
     return {};

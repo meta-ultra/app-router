@@ -1,3 +1,8 @@
+/**
+ * Create the options argument for `createRouter` of react-router-dom.
+ * @param basename
+ * @returns
+ */
 const normalizeCreateRouterOptions = (basename: any) => {
   const opts: { basename?: string } = {};
   if (typeof basename === "string" && !/^(\s*\/\s*)*$/.test(basename)) {

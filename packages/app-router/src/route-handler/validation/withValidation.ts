@@ -27,7 +27,16 @@ function withValidation(
         });
       }
       if (schemas.bodySchema) {
-        await schemas.bodySchema.validate(await request.clone().json(), {
+        let data = {};
+        const contentType = request.headers.get("Content-Type") || "application/json";
+        if (/^\s*application\/(ld+)?json\s*$/i.test(contentType)) {
+          data = await request.clone().json();
+        }
+        else {
+          const formData = await request.clone().formData();
+          data = Object.fromEntries(formData.entries());
+        }
+        await schemas.bodySchema.validate(data, {
           abortEarly: false,
           stripUnknown: true,
           strict: true,
