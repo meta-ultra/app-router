@@ -35,8 +35,9 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
         params = urlMatchResult.params;
       }
 
-      const method = config.method || "GET";
-      const contentType = config.data instanceof FormData ? MIME_MULTIPART_FORM_DATA : lowerCase(trim((config.headers && config.headers["Content-Type"] || MIME_JSON)));
+      const method = upperCase(config.method || "GET");
+      // fix: lodash lowerCase will replace splash with blank string.
+      const contentType = config.data instanceof FormData ? MIME_MULTIPART_FORM_DATA : trim((config.headers && config.headers["Content-Type"] || MIME_JSON)).toLowerCase();
       // fix: Stringify axiosParams using qs instead of URLSearchParams
       const queryString = qs.stringify(config.params);
 
@@ -55,7 +56,7 @@ class AxiosRouteHandlerRegister extends AbsRouteHandlerRegister {
       else {
         nextRequestInit.headers["Content-Type"] = contentType;
       }
-      if (["GET", "HEAD"].indexOf(upperCase(method)) === -1 && config.data) {
+      if (["GET", "HEAD"].indexOf(method) === -1 && config.data) {
         nextRequestInit.body = config.data;
       }
       const request = new NextRequest(nextRequestUrl, nextRequestInit);

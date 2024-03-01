@@ -39,7 +39,7 @@ function withValidation(
         await schemas.bodySchema.validate(data, {
           abortEarly: false,
           stripUnknown: true,
-          strict: true,
+          strict: false,
         });
       }
     }
