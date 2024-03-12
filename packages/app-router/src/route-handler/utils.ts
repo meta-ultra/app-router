@@ -89,4 +89,31 @@ function objectifyAnything(source: any) {
   }
 }
 
-export { joinURL, dynamicRoute2ExpressPathname, objectify };
+function toArray(arrayLike: {[name: string | symbol]: any}) {
+  if (Object.prototype.toString.call(arrayLike) === "[object Array]") {
+    return arrayLike;
+  }
+  else {
+    let length = 0;
+    for (const name in arrayLike) {
+      if (/^([0-9]|[1-9][0-9]+)$/.test(name)) {
+        length += 1;
+      }
+    }
+
+    return Array.prototype.slice.call(Object.assign({}, arrayLike, {length}));
+  }
+}
+
+/**
+ * Return false if the converted array contains undefined item or the lenght of it is 0.
+ * @param arrayLike
+ * @returns
+ */
+function isArrayLike(arrayLike: {[name: string | symbol]: any}) {
+  const array = toArray(arrayLike);
+  return !(array.length === 0 || Object.values(array).findIndex(x => x === undefined) !== -1);
+}
+
+
+export { joinURL, dynamicRoute2ExpressPathname, objectify, toArray, isArrayLike };
