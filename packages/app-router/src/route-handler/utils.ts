@@ -111,8 +111,13 @@ function toArray(arrayLike: {[name: string | symbol]: any}) {
  * @returns
  */
 function isArrayLike(arrayLike: {[name: string | symbol]: any}) {
-  const array = toArray(arrayLike);
-  return !(array.length === 0 || Object.values(array).findIndex(x => x === undefined) !== -1);
+  if (Object.prototype.toString.call(arrayLike) === "[object Array]") {
+    return true;
+  }
+  else {
+    const array = toArray(arrayLike);
+    return !(array.length === 0 || Object.values(array).findIndex(x => x === undefined) !== -1);
+  }
 }
 
 
