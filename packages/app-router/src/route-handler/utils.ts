@@ -107,6 +107,7 @@ function toArray(arrayLike: {[name: string | symbol]: any}) {
 
 /**
  * Return false if the converted array contains undefined item or the lenght of it is 0.
+ * Note that, a string is not considered as an array like value.
  * @param arrayLike
  * @returns
  */
@@ -114,9 +115,12 @@ function isArrayLike(arrayLike: {[name: string | symbol]: any}) {
   if (Object.prototype.toString.call(arrayLike) === "[object Array]") {
     return true;
   }
+  else if (typeof arrayLike === "string") {
+    return false;
+  }
   else {
     const array = toArray(arrayLike);
-    return !(array.length === 0 || Object.values(array).findIndex(x => x === undefined) !== -1);
+    return array.filter((x: any) => x !== undefined).length !== 0;
   }
 }
 
